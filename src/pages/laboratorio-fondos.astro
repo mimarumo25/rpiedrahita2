@@ -14,6 +14,9 @@ const variantes = [
   { id: 'aurora', label: 'Aurora', desc: 'Manchas de color que fluyen', icon: 'ph:drop-half-fill' },
   { id: 'particulas', label: 'Partículas', desc: 'Puntos que flotan hacia arriba', icon: 'ph:sparkle-fill' },
   { id: 'malla', label: 'Malla de datos', desc: 'Rejilla de puntos con parallax', icon: 'ph:grid-four-fill' },
+  { id: 'gradiente', label: 'Gradiente vivo', desc: 'Degradado que fluye (estilo Stripe)', icon: 'ph:paint-brush-broad-fill' },
+  { id: 'olas', label: 'Olas 3D', desc: 'Malla de olas en 3D · three.js', icon: 'ph:wave-sine-bold' },
+  { id: 'particulas3d', label: 'Partículas 3D', desc: 'Campo de puntos con profundidad · three.js', icon: 'ph:cube-fill' },
 ];
 ---
 
@@ -38,6 +41,10 @@ const variantes = [
       @keyframes lab-hue {
         0%, 100% { filter: blur(60px) hue-rotate(0deg); }
         50% { filter: blur(60px) hue-rotate(25deg); }
+      }
+      @keyframes lab-grad {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
       }
       .bg-layer { transition: opacity 0.6s ease; }
       .bg-layer[hidden] { display: none; }
@@ -79,6 +86,27 @@ const variantes = [
       ></div>
       <div class="absolute left-[-10%] top-[10%] h-[30rem] w-[30rem] rounded-full bg-institu/15 blur-3xl animate-blob-drift"></div>
       <div class="absolute bottom-[-10%] right-[5%] h-[28rem] w-[28rem] rounded-full bg-coral/12 blur-3xl animate-blob-drift" style="animation-delay:-7s"></div>
+    </div>
+
+    <!-- Variante 5: Gradiente vivo (degradado full-bleed que fluye, estilo Stripe) -->
+    <div id="v-gradiente" class="bg-layer pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-blanco-co" aria-hidden="true" hidden>
+      <div
+        class="absolute inset-0"
+        style="background:linear-gradient(120deg,#0070C0,#00B0F0,#00BDB9,#6CB83F,#7030A0,#0070C0);background-size:300% 300%;animation:lab-grad 20s ease infinite;opacity:0.30;filter:blur(6px)"
+      ></div>
+      <div class="absolute inset-0 bg-white/45"></div>
+    </div>
+
+    <!-- Variante 6: Olas 3D (three.js) -->
+    <div id="v-olas" class="bg-layer pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-blanco-co" aria-hidden="true" hidden>
+      <div class="absolute inset-0 bg-mesh-base opacity-60"></div>
+      <canvas id="lab-waves" class="absolute inset-0 h-full w-full"></canvas>
+    </div>
+
+    <!-- Variante 7: Partículas 3D (three.js) -->
+    <div id="v-particulas3d" class="bg-layer pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-blanco-co" aria-hidden="true" hidden>
+      <div class="absolute inset-0 bg-mesh-base opacity-50"></div>
+      <canvas id="lab-p3d" class="absolute inset-0 h-full w-full"></canvas>
     </div>
 
     <!-- ===================== CONTENIDO DE MUESTRA ===================== -->
@@ -147,8 +175,16 @@ const variantes = [
         aurora: document.getElementById('v-aurora'),
         particulas: document.getElementById('v-particulas'),
         malla: document.getElementById('v-malla'),
+        gradiente: document.getElementById('v-gradiente'),
+        olas: document.getElementById('v-olas'),
+        particulas3d: document.getElementById('v-particulas3d'),
       };
       const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('.lab-btn'));
+
+      // Banderas de inicialización de escenas three.js (declaradas antes de
+      // llamar a activate() para evitar la temporal dead zone).
+      let wavesInited = false;
+      let p3dInited = false;
 
       function activate(id: string) {
         Object.entries(layers).forEach(([key, el]) => {
@@ -156,6 +192,8 @@ const variantes = [
           if (key === id) el.removeAttribute('hidden');
           else el.setAttribute('hidden', '');
         });
+        if (id === 'olas') initWaves();
+        if (id === 'particulas3d') initP3D();
         buttons.forEach((b) => {
           const active = b.dataset.variant === id;
           b.classList.toggle('is-active', active);
@@ -270,6 +308,110 @@ const variantes = [
           g.style.transform = `translate(${x}px, ${y}px)`;
         });
       })();
+
+      // ---------- three.js: Olas 3D (carga diferida) ----------
+      async function initWaves() {
+        if (wavesInited) return;
+        wavesInited = true;
+        let THREE;
+        try {
+          THREE = await import('three');
+        } catch (err) {
+          console.error('[lab] no se pudo cargar three.js:', err);
+          wavesInited = false;
+          return;
+        }
+        const canvas = document.getElementById('lab-waves') as HTMLCanvasElement;
+        const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
+        camera.position.set(0, 5.5, 9);
+        camera.lookAt(0, 0, 0);
+        const geo = new THREE.PlaneGeometry(46, 46, 90, 90);
+        const mat = new THREE.MeshBasicMaterial({ color: 0x0070c0, wireframe: true, transparent: true, opacity: 0.45 });
+        const plane = new THREE.Mesh(geo, mat);
+        plane.rotation.x = -Math.PI / 2.15;
+        scene.add(plane);
+        const pos = geo.attributes.position as any;
+        const base = Float32Array.from(pos.array);
+        function resize() {
+          renderer.setSize(window.innerWidth, window.innerHeight);
+          camera.aspect = window.innerWidth / window.innerHeight;
+          camera.updateProjectionMatrix();
+        }
+        resize();
+        window.addEventListener('resize', resize);
+        let t = 0;
+        function frame() {
+          t += 0.02;
+          for (let i = 0; i < pos.count; i++) {
+            const x = base[i * 3];
+            const y = base[i * 3 + 1];
+            pos.array[i * 3 + 2] = Math.sin(x * 0.35 + t) * 0.7 + Math.cos(y * 0.35 + t * 0.8) * 0.7;
+          }
+          pos.needsUpdate = true;
+          renderer.render(scene, camera);
+          if (!reduce) requestAnimationFrame(frame);
+        }
+        frame();
+      }
+
+      // ---------- three.js: Partículas 3D (carga diferida) ----------
+      async function initP3D() {
+        if (p3dInited) return;
+        p3dInited = true;
+        let THREE;
+        try {
+          THREE = await import('three');
+        } catch (err) {
+          console.error('[lab] no se pudo cargar three.js:', err);
+          p3dInited = false;
+          return;
+        }
+        const canvas = document.getElementById('lab-p3d') as HTMLCanvasElement;
+        const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 100);
+        camera.position.z = 6;
+        const N = 800;
+        const positions = new Float32Array(N * 3);
+        const colors = new Float32Array(N * 3);
+        const pal = [[0, 0.44, 0.75], [0, 0.69, 0.94], [0.42, 0.72, 0.25], [0.9, 0.42, 0.17], [0.44, 0.19, 0.63]];
+        for (let i = 0; i < N; i++) {
+          positions[i * 3] = (Math.random() - 0.5) * 15;
+          positions[i * 3 + 1] = (Math.random() - 0.5) * 10;
+          positions[i * 3 + 2] = (Math.random() - 0.5) * 9;
+          const c = pal[i % pal.length];
+          colors[i * 3] = c[0]; colors[i * 3 + 1] = c[1]; colors[i * 3 + 2] = c[2];
+        }
+        const geo = new THREE.BufferGeometry();
+        geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+        const mat = new THREE.PointsMaterial({ size: 0.11, vertexColors: true, transparent: true, opacity: 0.9, sizeAttenuation: true });
+        const points = new THREE.Points(geo, mat);
+        scene.add(points);
+        let mx = 0, my = 0;
+        window.addEventListener('mousemove', (e) => { mx = e.clientX / window.innerWidth - 0.5; my = e.clientY / window.innerHeight - 0.5; });
+        function resize() {
+          renderer.setSize(window.innerWidth, window.innerHeight);
+          camera.aspect = window.innerWidth / window.innerHeight;
+          camera.updateProjectionMatrix();
+        }
+        resize();
+        window.addEventListener('resize', resize);
+        function frame() {
+          points.rotation.y += 0.0016;
+          points.rotation.x += 0.0007;
+          camera.position.x += (mx * 2.2 - camera.position.x) * 0.04;
+          camera.position.y += (-my * 2.2 - camera.position.y) * 0.04;
+          camera.lookAt(0, 0, 0);
+          renderer.render(scene, camera);
+          if (!reduce) requestAnimationFrame(frame);
+        }
+        frame();
+      }
     </script>
   </body>
 </html>
