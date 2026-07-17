@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ServiceDetail from '../../components/ServiceDetail.astro';
+import { getServicio } from '../../data/servicios';
+
+const servicio = getServicio('revisoria-fiscal')!;
+---
+
+<BaseLayout
+  activeNav="servicios"
+  title="Revisoría Fiscal en Medellín | RPiedrahíta Contadores Públicos"
+  description="Servicio de revisoría fiscal con independencia y criterio profesional. Dictamen sobre estados financieros, cumplimiento tributario y control interno. 40+ años de experiencia."
+>
+  <ServiceDetail servicio={servicio} />
+</BaseLayout>

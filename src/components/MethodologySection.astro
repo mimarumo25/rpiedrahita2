@@ -1,0 +1,88 @@
+---
+import { Icon } from 'astro-icon/components';
+import SectionHeading from './SectionHeading.astro';
+
+const pasos = [
+  {
+    n: '01',
+    titulo: 'Diagnóstico',
+    descripcion: 'Conocemos su empresa, identificamos riesgos y entendemos sus objetivos. Sin esta base, nada funciona.',
+    icono: 'ph:chart-bar-fill',
+    color: '#0070C0',
+  },
+  {
+    n: '02',
+    titulo: 'Plan a la medida',
+    descripcion: 'Diseñamos una estrategia de control, cumplimiento e información que se ajusta como un traje a su realidad.',
+    icono: 'ph:blueprint-fill',
+    color: '#00B0F0',
+  },
+  {
+    n: '03',
+    titulo: 'Implementación',
+    descripcion: 'Ponemos en marcha procesos, controles y reportes con acompañamiento constante y comunicación clara.',
+    icono: 'ph:gear-six-fill',
+    color: '#6CB83F',
+  },
+  {
+    n: '04',
+    titulo: 'Monitoreo y mejora',
+    descripcion: 'Medimos resultados, anticipamos riesgos y mejoramos continuamente. La confianza se cuida todos los días.',
+    icono: 'ph:chart-line-up-fill',
+    color: '#E66C2C',
+  },
+];
+---
+
+<section id="metodologia" class="relative overflow-hidden py-8 sm:py-12">
+  {/* Fondo con tono institucional */}
+  <div class="absolute inset-0 -z-10 bg-gradient-to-b from-transparent via-gris-cl/50 to-transparent" aria-hidden="true"></div>
+
+  <div class="container-rp">
+    <SectionHeading
+      eyebrow="Nuestro método probado"
+      eyebrowIcon="ph:compass-fill"
+      titulo="Una metodología que"
+      tituloDestacado="transforma su contabilidad"
+      descripcion="No vendemos servicios genéricos: aplicamos un método probado durante 40 años para convertir la contaduría en una ventaja competitiva para su empresa."
+    />
+
+    {/* Timeline horizontal (desktop) / vertical (móvil) */}
+    <div class="relative mt-16">
+      {/* Línea conectora horizontal */}
+      <div class="absolute left-0 right-0 top-6 hidden h-0.5 bg-gradient-to-r from-institu via-verde-est to-coral lg:block" aria-hidden="true"></div>
+
+      <div class="grid gap-10 lg:grid-cols-4 lg:gap-6">
+        {pasos.map((p, i) => (
+          <div class="relative" data-reveal="up" data-reveal-delay={i * 120}>
+            {/* Nodo */}
+            <div class="relative z-10 mb-6 flex items-center gap-4 lg:block">
+              <span
+                class="timeline-node ring-4 ring-blanco-co"
+                style={`background: linear-gradient(135deg, ${p.color}, ${p.color}aa)`}
+              >
+                {p.n}
+              </span>
+              {/* Línea vertical en móvil */}
+              {i < pasos.length - 1 && (
+                <span class="h-px w-full bg-gradient-to-r from-gris-cl to-transparent lg:hidden" aria-hidden="true"></span>
+              )}
+            </div>
+
+            {/* Contenido */}
+            <div class="lg:pl-0">
+              <span
+                class="mb-3 flex h-11 w-11 items-center justify-center rounded-2xl text-white shadow-soft"
+                style={`background: ${p.color}`}
+              >
+                <Icon name={p.icono} class="h-5 w-5" />
+              </span>
+              <h3 class="font-display text-xl font-bold text-navy">{p.titulo}</h3>
+              <p class="mt-2 text-sm leading-relaxed text-gris-ej">{p.descripcion}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

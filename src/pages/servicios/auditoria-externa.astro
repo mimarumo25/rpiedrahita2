@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ServiceDetail from '../../components/ServiceDetail.astro';
+import { getServicio } from '../../data/servicios';
+
+const servicio = getServicio('auditoria-externa')!;
+---
+
+<BaseLayout
+  activeNav="servicios"
+  title="Auditoría Externa bajo NIIF en Medellín | RPiedrahíta Contadores Públicos"
+  description="Auditoría externa con dictamen independiente bajo Normas Internacionales de Auditoría (NIA) y NIIF. Estados financieros confiables para socios, bancos y terceros. 40+ años de experiencia."
+>
+  <ServiceDetail servicio={servicio} />
+</BaseLayout>

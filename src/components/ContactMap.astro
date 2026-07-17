@@ -1,0 +1,90 @@
+---
+import { Icon } from 'astro-icon/components';
+import SectionHeading from './SectionHeading.astro';
+import { whatsappLink, firma } from '../data/sitio';
+---
+
+<section id="contacto" class="relative py-8 sm:py-12">
+  <div class="container-rp">
+    <SectionHeading
+      eyebrow="Hablemos"
+      eyebrowIcon="ph:map-pin-fill"
+      titulo="Visítenos en"
+      tituloDestacado="Medellín"
+      descripcion="Estamos en el corazón de Medellín. Pásese a tomar un café o escríbanos desde cualquier lugar de Colombia."
+    />
+
+    <div class="mt-14 grid gap-8 lg:grid-cols-[1fr_1.3fr]">
+      {/* --- Tarjeta de datos --- */}
+      <div class="glass-card flex flex-col" data-reveal="left">
+        <h3 class="font-display text-2xl font-extrabold text-navy">Nuestra oficina</h3>
+        <p class="mt-2 text-gris-ej">Atendemos con cita previa para dedicarle todo nuestro tiempo.</p>
+
+        <ul class="mt-7 space-y-5">
+          <li class="flex gap-4">
+            <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-coral/10 text-coral">
+              <Icon name="ph:map-pin-fill" class="h-5 w-5" />
+            </span>
+            <div>
+              <p class="text-xs font-bold uppercase tracking-widest text-gris-ej">Dirección</p>
+              <p class="font-semibold text-navy">{firma.contacto.direccionLinea1}</p>
+              <p class="text-sm text-gris-ej">{firma.contacto.direccionLinea2}</p>
+              <p class="text-sm text-gris-ej">{firma.contacto.ciudad}</p>
+            </div>
+          </li>
+          <li>
+            <a href={firma.contacto.telefonoFijoHref} class="flex gap-4 transition hover:opacity-80">
+              <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-institu/10 text-institu">
+                <Icon name="ph:phone-fill" class="h-5 w-5" />
+              </span>
+              <div>
+                <p class="text-xs font-bold uppercase tracking-widest text-gris-ej">Teléfono fijo</p>
+                <p class="font-semibold text-navy">{firma.contacto.telefonoFijo}</p>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href={whatsappLink} target="_blank" rel="noopener" class="flex gap-4 transition hover:opacity-80">
+              <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#25D366]/10 text-[#25D366]">
+                <Icon name="ph:whatsapp-logo-fill" class="h-5 w-5" />
+              </span>
+              <div>
+                <p class="text-xs font-bold uppercase tracking-widest text-gris-ej">WhatsApp / Celular</p>
+                <p class="font-semibold text-navy">{firma.contacto.whatsapp}</p>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href={firma.contacto.emailHref} class="flex gap-4 transition hover:opacity-80">
+              <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-turquesa/10 text-turquesa">
+                <Icon name="ph:envelope-fill" class="h-5 w-5" />
+              </span>
+              <div>
+                <p class="text-xs font-bold uppercase tracking-widest text-gris-ej">Correo electrónico</p>
+                <p class="font-semibold text-navy break-all">{firma.contacto.email}</p>
+              </div>
+            </a>
+          </li>
+        </ul>
+
+        <a href={whatsappLink} target="_blank" rel="noopener" class="btn-coral mt-8 w-full">
+          <Icon name="ph:whatsapp-logo-fill" class="h-5 w-5" />
+          Solicitar consulta gratis
+        </a>
+      </div>
+
+      {/* --- Mapa --- */}
+      <div class="relative overflow-hidden rounded-4xl border border-white/60 shadow-soft" data-reveal="right">
+        <iframe
+          src={firma.contacto.mapsEmbed}
+          class="h-full min-h-[420px] w-full"
+          style="border:0"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          allowfullscreen
+          title={`Ubicación de ${firma.nombreCompleto} en Medellín`}
+        ></iframe>
+      </div>
+    </div>
+  </div>
+</section>

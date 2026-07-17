@@ -1,0 +1,49 @@
+---
+/**
+ * Fondo animado GLOBAL del sitio (Constelación de Confianza en Fluido).
+ *
+ * Capas (de atrás hacia adelante):
+ *  1. Base blanca corporativa
+ *  2. Mesh-gradient estático suave (manchas de color institucional)
+ *  3. Tres "blobs" orgánicos que derivan lentamente (animación CSS)
+ *  4. Red de nodos conectados que reaccionan al cursor (misma animación
+ *     que antes vivía sólo en el Hero; ahora unificada en todo el sitio)
+ *  5. Grano sutil de textura para profundidad
+ *
+ * Todo a opacidad baja: colorido sin saturar, alegre sin distraer.
+ * Respeta prefers-reduced-motion (las animaciones se pausan).
+ */
+import ParticleNetwork from './ParticleNetwork.astro';
+---
+<div class="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-blanco-co" aria-hidden="true">
+  {/* --- Capa 2: Mesh-gradient base --- */}
+  <div class="absolute inset-0 bg-mesh-base"></div>
+
+  {/* --- Capa 3: Blobs orgánicos que derivan --- */}
+  <div
+    class="absolute -left-32 top-[-10%] h-[34rem] w-[34rem] rounded-full bg-institu/20 blur-3xl animate-blob-drift"
+    style="animation-delay: 0s"
+  ></div>
+  <div
+    class="absolute right-[-12%] top-[20%] h-[30rem] w-[30rem] rounded-full bg-turquesa/20 blur-3xl animate-blob-drift"
+    style="animation-delay: -6s"
+  ></div>
+  <div
+    class="absolute bottom-[-15%] left-[25%] h-[32rem] w-[32rem] rounded-full bg-coral/15 blur-3xl animate-blob-drift"
+    style="animation-delay: -12s"
+  ></div>
+  <div
+    class="absolute left-[55%] top-[55%] h-[22rem] w-[22rem] rounded-full bg-verde-est/15 blur-3xl animate-blob-drift"
+    style="animation-delay: -3s"
+  ></div>
+
+  {/* --- Capa 4: Red de nodos conectados (Constelación de Confianza) --- */}
+  <ParticleNetwork className="opacity-60" />
+
+  {/* --- Capa 5: Grano sutil (SVG inline) --- */}
+  <div
+    class="absolute inset-0 opacity-[0.025] mix-blend-multiply"
+    style="background-image: url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;);"
+  >
+  </div>
+</div>

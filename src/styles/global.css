@@ -1,0 +1,179 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =========================================================
+   RPiedrahíta — Estilos globales y utilidades custom
+   ========================================================= */
+
+@layer base {
+  :root {
+    /* Tokens de color accesibles a JS / componentes */
+    --navy: #002d56;
+    --institu: #0070c0;
+    --acero: #2e5478;
+    --carbon: #2d2d2d;
+    --gris-ej: #626c77;
+    --gris-cl: #e6e9ed;
+    --blanco-co: #f8f9fb;
+    --verde-est: #6cb83f;
+    --turquesa: #00b0f0;
+    --coral: #e66c2c;
+    --morado: #7030a0;
+    --rojo-riesgo: #c00000;
+    --ambar-riesgo: #ffc000;
+    --verde-control: #92d050;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-blanco-co text-carbon font-sans antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display font-extrabold text-navy tracking-tight;
+    text-wrap: balance;
+  }
+
+  ::selection {
+    @apply bg-institu/20 text-navy;
+  }
+
+  /* Scrollbar con identidad */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-gris-cl;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-acero/40 rounded-full;
+    border: 2px solid #e6e9ed;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-institu;
+  }
+}
+
+@layer components {
+  /* --- Contenedor central --- */
+  .container-rp {
+    @apply mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-12;
+  }
+
+  /* --- Eyebrow / etiqueta superior de sección --- */
+  .eyebrow {
+    @apply inline-flex items-center gap-2 rounded-full border border-institu/20 bg-institu/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-institu;
+  }
+
+  /* --- Botones --- */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-bold transition-all duration-300 focus:outline-none focus-visible:ring-4 focus-visible:ring-institu/30;
+  }
+  .btn-primary {
+    @apply btn bg-institu text-white shadow-soft hover:bg-navy hover:shadow-soft-lg hover:-translate-y-0.5;
+  }
+  .btn-coral {
+    @apply btn bg-coral text-white shadow-soft hover:brightness-110 hover:shadow-glowCoral hover:-translate-y-0.5;
+  }
+  .btn-ghost {
+    @apply btn border-2 border-navy/15 bg-white/70 text-navy backdrop-blur hover:border-institu hover:text-institu hover:-translate-y-0.5;
+  }
+  .btn-whatsapp {
+    @apply btn bg-[#25D366] text-white shadow-soft hover:brightness-105 hover:-translate-y-0.5;
+  }
+
+  /* --- Tarjeta glassmorphism --- */
+  .glass-card {
+    @apply relative rounded-3xl border border-white/60 bg-white/70 p-7 shadow-soft backdrop-blur-xl transition-all duration-500 hover:-translate-y-1.5 hover:shadow-soft-lg;
+  }
+
+  /* --- Prisma de color en hover de tarjetas --- */
+  .prisma-hover::before {
+    content: '';
+    @apply pointer-events-none absolute inset-0 rounded-3xl opacity-0 transition-opacity duration-500;
+    background: linear-gradient(135deg, rgba(0, 112, 192, 0.12), rgba(0, 176, 240, 0.12) 50%, rgba(108, 184, 63, 0.12));
+    z-index: -1;
+  }
+  .prisma-hover:hover::before {
+    @apply opacity-100;
+  }
+
+  /* --- Texto con degradado --- */
+  .text-gradient {
+    @apply bg-grad-institu bg-clip-text text-transparent;
+  }
+  .text-gradient-coral {
+    background: linear-gradient(135deg, #e66c2c 0%, #ffc000 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* --- Enlace de navegación --- */
+  .nav-link {
+    @apply relative text-sm font-semibold text-navy/80 transition-colors duration-200 hover:text-institu;
+  }
+  .nav-link::after {
+    content: '';
+    @apply absolute -bottom-1 left-0 h-0.5 w-0 rounded-full bg-institu transition-all duration-300;
+  }
+  .nav-link:hover::after,
+  .nav-link[aria-current='page']::after {
+    @apply w-full;
+  }
+
+  /* --- Tarjeta de métrica --- */
+  .metric-card {
+    @apply relative overflow-hidden rounded-3xl border border-white/60 bg-white/80 p-8 text-center shadow-soft backdrop-blur-md;
+  }
+
+  /* --- Línea de timeline --- */
+  .timeline-node {
+    @apply flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl text-white font-display font-bold;
+  }
+}
+
+@layer utilities {
+  /* Clip para ondas */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Accesibilidad: reducir movimiento */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* Máscara para fade de carrusel */
+  .mask-fade-x {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 8%,
+      black 92%,
+      transparent
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 8%,
+      black 92%,
+      transparent
+    );
+  }
+}

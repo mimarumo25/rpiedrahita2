@@ -1,0 +1,85 @@
+---
+import { Icon } from 'astro-icon/components';
+import { whatsappLink, firma } from '../data/sitio';
+---
+
+<section class="relative overflow-hidden pt-32 pb-10 sm:pt-40 sm:pb-14">
+  {/* La red de nodos animada ahora es global (ver BackgroundFX). */}
+
+  {/* Blobs de color adicionales para profundidad */}
+  <div class="pointer-events-none absolute -left-20 top-20 h-72 w-72 rounded-full bg-coral/15 blur-3xl animate-blob-drift" aria-hidden="true"></div>
+  <div class="pointer-events-none absolute -right-16 bottom-10 h-80 w-80 rounded-full bg-morado/15 blur-3xl animate-blob-drift" style="animation-delay:-7s" aria-hidden="true"></div>
+
+  <div class="container-rp relative z-10">
+    <div class="mx-auto max-w-4xl text-center">
+      {/* Badge superior */}
+      <span
+        class="inline-flex items-center gap-2 rounded-full border border-white/60 bg-white/70 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-institu shadow-soft backdrop-blur animate-fade-up"
+      >
+        <Icon name="ph:seal-check-fill" class="h-4 w-4 text-verde-est" />
+        {firma.anosExperiencia}+ años protegiendo empresas en Colombia
+      </span>
+
+      {/* Título principal */}
+      <h1
+        class="mt-6 font-display text-fluid-2xl font-extrabold leading-[1.05] tracking-tight text-navy text-balance animate-fade-up"
+        style="animation-delay: 100ms"
+      >
+        Contaduría pública que
+        <span class="relative inline-block">
+          <span class="text-gradient">protege</span>
+          <svg class="absolute -bottom-2 left-0 w-full" viewBox="0 0 200 12" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M2 8 Q 100 -2 198 8" stroke="#E66C2C" stroke-width="3" fill="none" stroke-linecap="round"/>
+          </svg>
+        </span>
+        lo que más importa: su empresa
+      </h1>
+
+      {/* Subtítulo */}
+      <p
+        class="mx-auto mt-6 max-w-2xl text-fluid-base leading-relaxed text-gris-ej animate-fade-up"
+        style="animation-delay: 200ms"
+      >
+        Revisoría fiscal, auditoría y outsourcing contable con criterio experto.
+        Combinamos <strong class="font-semibold text-navy">40 años de experiencia</strong> con una forma
+        fresca y cercana de hacer contaduría, para que su empresa cumpla, crezca y proyecte confianza.
+      </p>
+
+      {/* CTAs */}
+      <div
+        class="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row animate-fade-up"
+        style="animation-delay: 300ms"
+      >
+        <a href={whatsappLink} target="_blank" rel="noopener" class="btn-coral text-base">
+          <Icon name="ph:whatsapp-logo-fill" class="h-5 w-5" />
+          Consulta gratis
+        </a>
+        <a href="/servicios" class="btn-ghost text-base">
+          Conozca nuestros servicios
+          <Icon name="ph:arrow-right-bold" class="h-4 w-4" />
+        </a>
+      </div>
+
+      {/* Mini-indicadores de confianza */}
+      <div
+        class="mx-auto mt-12 flex max-w-2xl flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm text-gris-ej animate-fade-up"
+        style="animation-delay: 400ms"
+      >
+        <span class="flex items-center gap-2">
+          <Icon name="ph:shield-check-fill" class="h-5 w-5 text-verde-est" />
+          {firma.empresasProtegidas}+ empresas protegidas
+        </span>
+        <span class="hidden h-4 w-px bg-gris-cl sm:block"></span>
+        <span class="flex items-center gap-2">
+          <Icon name="ph:x-circle-fill" class="h-5 w-5 text-coral" />
+          {firma.sanciones} sanciones o multas
+        </span>
+        <span class="hidden h-4 w-px bg-gris-cl sm:block"></span>
+        <span class="flex items-center gap-2">
+          <Icon name="ph:handshake-fill" class="h-5 w-5 text-institu" />
+          Atención en todo Colombia
+        </span>
+      </div>
+    </div>
+  </div>
+</section>

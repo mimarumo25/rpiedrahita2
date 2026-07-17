@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ServiceDetail from '../../components/ServiceDetail.astro';
+import { getServicio } from '../../data/servicios';
+
+const servicio = getServicio('outsourcing-contable')!;
+---
+
+<BaseLayout
+  activeNav="servicios"
+  title="Outsourcing Contable en Medellín | RPiedrahíta Contadores Públicos"
+  description="Externalice la contabilidad de su empresa con un equipo experto dedicado. Registro, conciliación, estados financieros y cumplimiento tributario sin contratar personal. 40+ años de experiencia."
+>
+  <ServiceDetail servicio={servicio} />
+</BaseLayout>

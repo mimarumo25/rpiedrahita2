@@ -1,0 +1,102 @@
+---
+import '../styles/global.css';
+import BackgroundFX from '../components/BackgroundFX.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import WhatsAppFloat from '../components/WhatsAppFloat.astro';
+
+export interface Props {
+  title?: string;
+  description?: string;
+  /** Oculta el Header (p.ej. en heroes a pantalla completa) */
+  hideHeader?: boolean;
+  /** Marca la pestaña activa en la navegación */
+  activeNav?: 'inicio' | 'servicios' | 'beneficios' | 'metodologia' | 'contacto';
+}
+
+const {
+  title = 'RPiedrahíta Contadores Públicos | Revisoría Fiscal, Auditoría y Outsourcing en Medellín',
+  description = 'Firma de contaduría pública con más de 40 años de experiencia en Medellín. Revisoría fiscal, auditoría interna y externa, outsourcing contable y nómina. 500+ empresas protegidas, 0 sanciones.',
+  hideHeader = false,
+  activeNav = 'inicio',
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+---
+
+<!doctype html>
+<html lang="es-CO">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="robots" content="index, follow" />
+
+    {/* Open Graph */}
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_CO" />
+    <meta property="og:site_name" content="RPiedrahíta Contadores Públicos" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+    {/* Icono */}
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    {/* Fuentes */}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    {/* Datos estructurados */}
+    <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'AccountingService',
+      name: 'RPiedrahíta Contadores Públicos',
+      description: description,
+      url: 'https://www.rpiedrahita.co',
+      telephone: '+5744489390',
+      email: 'contaduria@rpiedrahita.co',
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: 'Carrera 50 N° 52 – 22, Edificio Bermora, Oficina 501, Pasaje Astoria',
+        addressLocality: 'Medellín',
+        addressCountry: 'CO',
+      },
+      areaServed: 'Colombia',
+      foundingDate: '1984',
+    })} />
+  </head>
+  <body class="relative min-h-screen">
+    {/* Fondo animado global: mesh-gradient + blobs orgánicos */}
+    <BackgroundFX />
+
+    <div class="relative z-10 flex min-h-screen flex-col">
+      {!hideHeader && <Header activeNav={activeNav} />}
+
+      <main class="flex-1">
+        <slot />
+      </main>
+
+      <Footer />
+    </div>
+
+    {/* Botón flotante de WhatsApp (global) */}
+    <WhatsAppFloat />
+
+    {/* Animaciones de revelado al hacer scroll (bundle cliente global) */}
+    <script>
+      import '../scripts/reveal.ts';
+    </script>
+  </body>
+</html>

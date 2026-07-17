@@ -1,0 +1,78 @@
+---
+import { Icon } from 'astro-icon/components';
+import { whatsappLink } from '../data/sitio';
+
+interface Props {
+  eyebrow?: string;
+  eyebrowIcon?: string;
+  titulo: string;
+  tituloDestacado?: string;
+  descripcion?: string;
+  /** Color de acento del eyebrow/badge (hex) */
+  acento?: string;
+  ctaPrimario?: { texto: string; href: string };
+}
+const {
+  eyebrow,
+  eyebrowIcon = 'ph:sparkle-fill',
+  titulo,
+  tituloDestacado,
+  descripcion,
+  acento = '#0070C0',
+  ctaPrimario = { texto: 'Consulta gratis', href: whatsappLink },
+} = Astro.props;
+---
+
+<section class="relative overflow-hidden pt-32 pb-8 sm:pt-40 sm:pb-12">
+  {/* Blobs de color con el acento */}
+  <div
+    class="pointer-events-none absolute -left-20 top-20 h-72 w-72 rounded-full opacity-20 blur-3xl animate-blob-drift"
+    style={`background:${acento}`}
+    aria-hidden="true"
+  ></div>
+  <div class="pointer-events-none absolute -right-16 bottom-0 h-80 w-80 rounded-full bg-morado/15 blur-3xl animate-blob-drift" style="animation-delay:-7s" aria-hidden="true"></div>
+
+  <div class="container-rp relative z-10">
+    <div class="mx-auto max-w-4xl text-center">
+      {eyebrow && (
+        <span
+          class="inline-flex items-center gap-2 rounded-full border bg-white/70 px-4 py-1.5 text-xs font-bold uppercase tracking-widest shadow-soft backdrop-blur animate-fade-up"
+          style={`border-color:${acento}33; color:${acento}`}
+        >
+          <Icon name={eyebrowIcon} class="h-4 w-4" />
+          {eyebrow}
+        </span>
+      )}
+
+      <h1
+        class="mt-6 font-display text-fluid-2xl font-extrabold leading-[1.05] tracking-tight text-navy text-balance animate-fade-up"
+        style="animation-delay: 100ms"
+      >
+        {titulo}{tituloDestacado && (<span class="text-gradient"> {tituloDestacado}</span>)}
+      </h1>
+
+      {descripcion && (
+        <p
+          class="mx-auto mt-6 max-w-2xl text-fluid-base leading-relaxed text-gris-ej animate-fade-up"
+          style="animation-delay: 200ms"
+        >
+          {descripcion}
+        </p>
+      )}
+
+      <div
+        class="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row animate-fade-up"
+        style="animation-delay: 300ms"
+      >
+        <a href={ctaPrimario.href} target={ctaPrimario.href.startsWith('http') ? '_blank' : undefined} rel="noopener" class="btn-coral text-base">
+          <Icon name="ph:whatsapp-logo-fill" class="h-5 w-5" />
+          {ctaPrimario.texto}
+        </a>
+        <a href="/#contacto" class="btn-ghost text-base">
+          <Icon name="ph:map-pin-fill" class="h-4 w-4" />
+          Visítenos en Medellín
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

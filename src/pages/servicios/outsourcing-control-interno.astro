@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ServiceDetail from '../../components/ServiceDetail.astro';
+import { getServicio } from '../../data/servicios';
+
+const servicio = getServicio('outsourcing-control-interno')!;
+---
+
+<BaseLayout
+  activeNav="servicios"
+  title="Outsourcing de Control Interno en Medellín | RPiedrahíta Contadores Públicos"
+  description="Diseño e implementación de sistemas de control interno bajo modelo COSO: manuales, políticas, flujos de autorización y matriz de riesgos a la medida de su empresa. 40+ años de experiencia."
+>
+  <ServiceDetail servicio={servicio} />
+</BaseLayout>

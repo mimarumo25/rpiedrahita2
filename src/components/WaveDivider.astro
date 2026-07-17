@@ -1,0 +1,40 @@
+---
+/**
+ * Separador de ondas SVG — transición fluida entre secciones.
+ *
+ * Uso: <WaveDivider from="blanco-co" to="gris-cl" flip={false} />
+ *
+ * Props:
+ *  - variant: estilo de la onda ('soft' | 'rolling' | 'peak').
+ *  - className: clases extra.
+ *  - height: altura del divisor en px (responsive por CSS).
+ */
+interface Props {
+  variant?: 'soft' | 'rolling' | 'peak';
+  className?: string;
+  color?: string;
+  flip?: boolean;
+}
+const { variant = 'soft', className = '', color = '#F8F9FB', flip = false } = Astro.props;
+
+// Definiciones de paths de onda (viewBox 1440 x 120)
+const paths: Record<string, string> = {
+  soft: 'M0,64L60,69.3C120,75,240,85,360,80C480,75,600,53,720,48C840,43,960,53,1080,58.7C1200,64,1320,64,1380,64L1440,64L1440,120L0,120Z',
+  rolling:
+    'M0,40L80,45.3C160,51,320,61,480,61.3C640,61,800,51,960,45.3C1120,40,1280,40,1360,40L1440,40L1440,120L0,120Z',
+  peak: 'M0,32L80,37.3C160,43,320,53,480,53.3C640,53,800,43,960,42.7C1120,43,1280,53,1360,58.7L1440,64L1440,120L0,120Z',
+};
+---
+
+<div
+  class={`pointer-events-none w-full overflow-hidden leading-[0] ${flip ? 'rotate-180' : ''} ${className}`}
+  aria-hidden="true"
+>
+  <svg
+    class="relative block h-[60px] w-[calc(100%+1.3px)] sm:h-[90px] lg:h-[120px]"
+    viewBox="0 0 1440 120"
+    preserveAspectRatio="none"
+  >
+    <path d={paths[variant]} fill={color}></path>
+  </svg>
+</div>

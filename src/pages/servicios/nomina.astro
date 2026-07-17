@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ServiceDetail from '../../components/ServiceDetail.astro';
+import { getServicio } from '../../data/servicios';
+
+const servicio = getServicio('nomina')!;
+---
+
+<BaseLayout
+  activeNav="servicios"
+  title="Procesamiento y Liquidación de Nómina en Medellín | RPiedrahíta Contadores Públicos"
+  description="Liquidación exacta y oportuna de nómina, prestaciones sociales y aportes a seguridad social con total cumplimiento de la legislación laboral colombiana. 40+ años de experiencia."
+>
+  <ServiceDetail servicio={servicio} />
+</BaseLayout>

@@ -1,0 +1,40 @@
+---
+import MetricCounter from './MetricCounter.astro';
+import { firma } from '../data/sitio';
+---
+
+<section class="relative py-5">
+  <div class="container-rp">
+    <div class="grid gap-5 sm:grid-cols-3">
+      <div data-reveal="up" data-reveal-delay="0">
+        <MetricCounter
+          value={firma.anosExperiencia}
+          suffix="+"
+          label="Años de experiencia"
+          descripcion="Cuatro décadas perfeccionando el oficio de la contaduría pública en Colombia."
+          icono="ph:calendar-star-fill"
+          color="#0070C0"
+        />
+      </div>
+      <div data-reveal="up" data-reveal-delay="120">
+        <MetricCounter
+          value={firma.empresasProtegidas}
+          suffix="+"
+          label="Empresas protegidas"
+          descripcion="Desde pymes familiares hasta grandes compañías confían en nuestro criterio."
+          icono="ph:buildings-fill"
+          color="#6CB83F"
+        />
+      </div>
+      <div data-reveal="up" data-reveal-delay="240">
+        <MetricCounter
+          value={firma.sanciones}
+          label="Sanciones o multas"
+          descripcion="Trabajo impecable: cero contingencias fiscales en nuestro historial profesional."
+          icono="ph:shield-star-fill"
+          color="#E66C2C"
+        />
+      </div>
+    </div>
+  </div>
+</section>

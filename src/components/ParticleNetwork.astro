@@ -1,0 +1,156 @@
+---
+/**
+ * Red de nodos conectados — animación de fondo del Hero (Constelación de Confianza).
+ *
+ * Representa la red de 500+ empresas que la firma protege: nodos que se
+ * conectan entre sí y reaccionan al paso del cursor. Canvas vanilla, ligero,
+ * respeta prefers-reduced-motion.
+ *
+ * Props:
+ *  - density: cantidad aproximada de nodos según el ancho.
+ *  - className: clases extra para el contenedor.
+ */
+interface Props {
+  density?: number;
+  className?: string;
+}
+const { density = 0.00009, className = '' } = Astro.props;
+---
+
+<div class={`pointer-events-none absolute inset-0 -z-0 ${className}`} aria-hidden="true">
+  <canvas
+    id="rp-network"
+    class="h-full w-full"
+    data-density={density}
+  ></canvas>
+</div>
+
+<script>
+  type Node = { x: number; y: number; vx: number; vy: number; r: number };
+
+  function initNetwork() {
+    const canvas = document.getElementById('rp-network') as HTMLCanvasElement | null;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const parent = canvas.parentElement;
+    if (!parent) return;
+
+    let width = 0;
+    let height = 0;
+    let nodes: Node[] = [];
+    const mouse = { x: -1000, y: -1000 };
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    // Paleta de nodos (acentos institucionales)
+    const palette = ['#0070C0', '#00B0F0', '#6CB83F', '#E66C2C', '#7030A0'];
+
+    function resize() {
+      const rect = parent!.getBoundingClientRect();
+      width = rect.width;
+      height = rect.height;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      const densityAttr = parseFloat(canvas.dataset.density || '0.00009');
+      const count = Math.min(110, Math.max(28, Math.floor(width * height * densityAttr)));
+      nodes = Array.from({ length: count }, () => ({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        vx: (Math.random() - 0.5) * 0.35,
+        vy: (Math.random() - 0.5) * 0.35,
+        r: Math.random() * 2.2 + 1.1,
+      }));
+    }
+
+    const connectDist = 150;
+    const mouseRadius = 180;
+
+    function draw() {
+      ctx!.clearRect(0, 0, width, height);
+
+      for (let i = 0; i < nodes.length; i++) {
+        const n = nodes[i];
+
+        if (!reduceMotion) {
+          n.x += n.vx;
+          n.y += n.vy;
+          if (n.x < 0 || n.x > width) n.vx *= -1;
+          if (n.y < 0 || n.y > height) n.vy *= -1;
+
+          // Atracción suave hacia el cursor
+          const dxm = mouse.x - n.x;
+          const dym = mouse.y - n.y;
+          const dm = Math.hypot(dxm, dym);
+          if (dm < mouseRadius && dm > 0) {
+            const force = (1 - dm / mouseRadius) * 0.6;
+            n.x += (dxm / dm) * force;
+            n.y += (dym / dm) * force;
+          }
+        }
+
+        // Nodo
+        const color = palette[i % palette.length];
+        ctx!.beginPath();
+        ctx!.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+        ctx!.fillStyle = color + 'AA';
+        ctx!.fill();
+      }
+
+      // Conexiones entre nodos cercanos
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const a = nodes[i];
+          const b = nodes[j];
+          const dx = a.x - b.x;
+          const dy = a.y - b.y;
+          const dist = Math.hypot(dx, dy);
+          if (dist < connectDist) {
+            const alpha = (1 - dist / connectDist) * 0.22;
+            ctx!.strokeStyle = `rgba(0, 112, 192, ${alpha})`;
+            ctx!.lineWidth = 1;
+            ctx!.beginPath();
+            ctx!.moveTo(a.x, a.y);
+            ctx!.lineTo(b.x, b.y);
+            ctx!.stroke();
+          }
+        }
+      }
+
+      if (!reduceMotion) raf = requestAnimationFrame(draw);
+    }
+
+    let raf = 0;
+    function start() {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(draw);
+    }
+
+    function onMove(e: MouseEvent) {
+      const rect = canvas.getBoundingClientRect();
+      mouse.x = e.clientX - rect.left;
+      mouse.y = e.clientY - rect.top;
+    }
+    function onLeave() {
+      mouse.x = -1000;
+      mouse.y = -1000;
+    }
+
+    resize();
+    start();
+    window.addEventListener('resize', resize);
+    window.addEventListener('mousemove', onMove);
+    canvas.addEventListener('mouseleave', onLeave);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initNetwork);
+  } else {
+    initNetwork();
+  }
+</script>

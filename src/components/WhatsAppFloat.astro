@@ -1,0 +1,24 @@
+---
+import { Icon } from 'astro-icon/components';
+import { whatsappLink } from '../data/sitio';
+---
+
+<a
+  href={whatsappLink}
+  target="_blank"
+  rel="noopener"
+  class="group fixed bottom-5 right-5 z-50 flex items-center gap-3 sm:bottom-7 sm:right-7"
+  aria-label="Escríbenos por WhatsApp"
+>
+  {/* Tooltip */}
+  <span class="pointer-events-none hidden translate-x-2 rounded-full bg-navy px-4 py-2 text-sm font-semibold text-white opacity-0 shadow-soft-lg transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100 md:block">
+    ¿Hablamos?
+    <span class="absolute -right-1 top-1/2 h-3 w-3 -translate-y-1/2 rotate-45 bg-navy"></span>
+  </span>
+
+  {/* Botón con anillo pulsante */}
+  <span class="relative flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-soft-lg transition-transform duration-300 group-hover:scale-110 sm:h-16 sm:w-16">
+    <span class="absolute inset-0 rounded-full bg-[#25D366] animate-pulse-ring" aria-hidden="true"></span>
+    <Icon name="ph:whatsapp-logo-fill" class="relative h-7 w-7 sm:h-8 sm:w-8" />
+  </span>
+</a>

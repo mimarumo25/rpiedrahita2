@@ -1,0 +1,193 @@
+---
+import { Icon } from 'astro-icon/components';
+import { whatsappLink, firma } from '../data/sitio';
+
+interface Props {
+  activeNav?: 'inicio' | 'servicios' | 'beneficios' | 'metodologia' | 'contacto';
+}
+const { activeNav = 'inicio' } = Astro.props;
+
+const navItems = [
+  { id: 'inicio', label: 'Inicio', href: '/' },
+  { id: 'servicios', label: 'Servicios', href: '/servicios' },
+  { id: 'beneficios', label: 'Beneficios', href: '/#beneficios' },
+  { id: 'metodologia', label: 'Metodología', href: '/#metodologia' },
+  { id: 'contacto', label: 'Contacto', href: '/#contacto' },
+] as const;
+---
+
+<header
+  id="site-header"
+  class="fixed inset-x-0 top-0 z-50 transition-all duration-500"
+  data-state="top"
+>
+  <div class="container-rp">
+    <nav
+      class="mt-3 flex items-center justify-between rounded-2xl border border-white/50 bg-white/70 px-4 py-2.5 shadow-soft backdrop-blur-xl transition-all duration-500 sm:px-6"
+      aria-label="Navegación principal"
+    >
+      {/* --- Logo oficial --- */}
+      <a href="/" class="group flex items-center" aria-label="RPiedrahíta Contadores Públicos — Inicio">
+        <img
+          src="/logotipo.png"
+          alt="RPiedrahíta Contadores Públicos"
+          width="280"
+          height="76"
+          class="h-9 w-auto transition-transform duration-300 group-hover:scale-[1.03] sm:h-10"
+          decoding="async"
+        />
+      </a>
+
+      {/* --- Navegación desktop --- */}
+      <ul class="hidden items-center gap-7 lg:flex">
+        {navItems.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class="nav-link"
+              aria-current={activeNav === item.id ? 'page' : undefined}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      {/* --- CTA + WhatsApp desktop --- */}
+      <div class="hidden items-center gap-3 lg:flex">
+        <a
+          href={whatsappLink}
+          target="_blank"
+          rel="noopener"
+          class="btn-coral px-5 py-2.5 text-sm"
+        >
+          <Icon name="ph:whatsapp-logo-fill" class="h-4 w-4" />
+          Consulta gratis
+        </a>
+      </div>
+
+      {/* --- Botón menú móvil --- */}
+      <button
+        id="mobile-toggle"
+        class="flex h-11 w-11 items-center justify-center rounded-xl border border-navy/10 bg-white/80 text-navy transition hover:bg-gris-cl lg:hidden"
+        aria-label="Abrir menú"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <Icon name="ph:list-bold" class="h-6 w-6" data-icon="open" />
+        <Icon name="ph:x-bold" class="hidden h-6 w-6" data-icon="close" />
+      </button>
+    </nav>
+  </div>
+
+  {/* --- Menú móvil --- */}
+  <div
+    id="mobile-menu"
+    class="invisible fixed inset-0 z-40 translate-y-[-100%] opacity-0 transition-all duration-500 lg:hidden"
+    aria-hidden="true"
+  >
+    <div class="absolute inset-0 bg-navy/30 backdrop-blur-sm" data-close></div>
+    <div
+      class="absolute inset-x-3 top-3 origin-top rounded-3xl border border-white/60 bg-white/95 p-6 shadow-soft-lg backdrop-blur-xl"
+    >
+      <div class="mb-5 flex items-center justify-between">
+        <span class="font-display text-base font-extrabold text-navy">Menú</span>
+        <button
+          id="mobile-close"
+          class="flex h-10 w-10 items-center justify-center rounded-xl bg-gris-cl text-navy"
+          aria-label="Cerrar menú"
+        >
+          <Icon name="ph:x-bold" class="h-5 w-5" />
+        </button>
+      </div>
+      <ul class="flex flex-col gap-1">
+        {navItems.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class="flex items-center justify-between rounded-2xl px-4 py-3.5 text-base font-semibold text-navy transition hover:bg-institu/5 hover:text-institu"
+              data-nav-link
+            >
+              {item.label}
+              <Icon name="ph:caret-right-bold" class="h-4 w-4 text-gris-ej" />
+            </a>
+          </li>
+        ))}
+      </ul>
+      <a
+        href={whatsappLink}
+        target="_blank"
+        rel="noopener"
+        class="btn-coral mt-5 w-full"
+      >
+        <Icon name="ph:whatsapp-logo-fill" class="h-5 w-5" />
+        Consulta gratis
+      </a>
+      <div class="mt-4 space-y-1 border-t border-gris-cl pt-4 text-sm text-gris-ej">
+        <a href={firma.contacto.telefonoFijoHref} class="flex items-center gap-2 py-1">
+          <Icon name="ph:phone-fill" class="h-4 w-4 text-institu" /> {firma.contacto.telefonoFijo}
+        </a>
+        <a href={firma.contacto.emailHref} class="flex items-center gap-2 py-1">
+          <Icon name="ph:envelope-fill" class="h-4 w-4 text-institu" /> {firma.contacto.email}
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  // --- Header: cambio de estilo al hacer scroll ---
+  const header = document.getElementById('site-header');
+  if (header) {
+    const onScroll = () => {
+      header.dataset.state = window.scrollY > 20 ? 'scrolled' : 'top';
+      const nav = header.querySelector('nav');
+      if (nav) {
+        if (window.scrollY > 20) {
+          nav.classList.add('shadow-soft-lg', 'py-1.5');
+          nav.classList.remove('py-2.5');
+        } else {
+          nav.classList.remove('shadow-soft-lg', 'py-1.5');
+          nav.classList.add('py-2.5');
+        }
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+
+  // --- Menú móvil ---
+  const toggle = document.getElementById('mobile-toggle');
+  const close = document.getElementById('mobile-close');
+  const menu = document.getElementById('mobile-menu');
+  const openIcon = document?.querySelector('[data-icon="open"]');
+  const closeIcon = document?.querySelector('[data-icon="close"]');
+
+  const openMenu = () => {
+    menu?.classList.remove('invisible', 'translate-y-[-100%]', 'opacity-0');
+    menu?.classList.add('translate-y-0', 'opacity-100');
+    menu?.setAttribute('aria-hidden', 'false');
+    toggle?.setAttribute('aria-expanded', 'true');
+    openIcon?.classList.add('hidden');
+    closeIcon?.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  };
+  const closeMenu = () => {
+    menu?.classList.add('invisible', 'translate-y-[-100%]', 'opacity-0');
+    menu?.classList.remove('translate-y-0', 'opacity-100');
+    menu?.setAttribute('aria-hidden', 'true');
+    toggle?.setAttribute('aria-expanded', 'false');
+    openIcon?.classList.remove('hidden');
+    closeIcon?.classList.add('hidden');
+    document.body.style.overflow = '';
+  };
+
+  toggle?.addEventListener('click', openMenu);
+  close?.addEventListener('click', closeMenu);
+  menu?.querySelectorAll('[data-close], [data-nav-link]').forEach((el) =>
+    el.addEventListener('click', closeMenu)
+  );
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeMenu();
+  });
+</script>

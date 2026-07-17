@@ -1,0 +1,45 @@
+---
+import ServiceCard from './ServiceCard.astro';
+import SectionHeading from './SectionHeading.astro';
+import { servicios } from '../data/servicios';
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  /** Mostrar el encabezado de sección */
+  showHeading?: boolean;
+  /** Mostrar el CTA inferior */
+  showCta?: boolean;
+}
+const { showHeading = true, showCta = true } = Astro.props;
+---
+
+<section id="servicios" class="relative py-8 sm:py-12">
+  <div class="container-rp">
+    {showHeading && (
+      <SectionHeading
+        eyebrow="Servicios especializados"
+        eyebrowIcon="ph:sparkle-fill"
+        titulo="Soluciones contables para"
+        tituloDestacado="cada necesidad"
+        descripcion="Un portafolio completo que cubre todo el ciclo de su empresa: control, cumplimiento, información y gestión del talento."
+      />
+    )}
+
+    <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {servicios.map((s, i) => (
+        <div data-reveal="up" data-reveal-delay={(i % 3) * 100}>
+          <ServiceCard servicio={s} delay={(i % 3) * 100} />
+        </div>
+      ))}
+    </div>
+
+    {showCta && (
+      <div class="mt-12 text-center" data-reveal="up">
+        <a href="/servicios" class="btn-primary text-base">
+          Ver todos los servicios
+          <Icon name="ph:arrow-right-bold" class="h-4 w-4" />
+        </a>
+      </div>
+    )}
+  </div>
+</section>

@@ -1,0 +1,63 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import { Icon } from 'astro-icon/components';
+
+/**
+ * Carrusel de logos de clientes (marquee CSS).
+ * Como no hay logos reales, usamos "placeholders estilizados":
+ * monogramas en tarjetas glass con colores de la paleta.
+ * El cliente los reemplazará por logos reales.
+ */
+const clientes = [
+  { nombre: 'Construcol', color: '#0070C0' },
+  { nombre: 'AndesLogística', color: '#6CB83F' },
+  { nombre: 'TexMed', color: '#7030A0' },
+  { nombre: 'Inversiones Páramo', color: '#E66C2C' },
+  { nombre: 'Café Verdor', color: '#00B0F0' },
+  { nombre: 'Grupo Aurora', color: '#FFC000' },
+  { nombre: 'TecnoAndina', color: '#00BDB9' },
+  { nombre: 'Ferrer & Asoc.', color: '#C00000' },
+];
+
+// Duplicamos para el loop infinito del marquee
+const loop = [...clientes, ...clientes];
+---
+
+<section id="beneficios" class="relative py-8 sm:py-12">
+  <div class="container-rp">
+    <SectionHeading
+      eyebrow="Confianza compartida"
+      eyebrowIcon="ph:handshake-fill"
+      titulo="Empresas que confían en nosotros"
+      descripcion="Más de 500 organizaciones —de pymes familiares a grandes compañías, en sectores como construcción, manufactura, logística, tecnología y servicios— nos confían su contabilidad, su revisoría fiscal y su tranquilidad."
+    />
+  </div>
+
+  {/* Marquee con máscara de fade en los bordes */}
+  <div class="mt-12 overflow-hidden mask-fade-x" data-reveal="up">
+    <div class="flex w-max gap-5 animate-marquee hover:[animation-play-state:paused]">
+      {loop.map((c) => (
+        <div
+          class="group flex h-28 w-56 shrink-0 items-center justify-center rounded-3xl border border-white/60 bg-white/70 px-8 shadow-soft backdrop-blur-md transition-all duration-500 hover:-translate-y-1 hover:shadow-soft-lg"
+        >
+          <span class="flex items-center gap-3">
+            <span
+              class="flex h-11 w-11 items-center justify-center rounded-xl font-display text-lg font-extrabold text-white shadow-soft transition-transform duration-500 group-hover:rotate-6"
+              style={`background: linear-gradient(135deg, ${c.color}, ${c.color}aa)`}
+            >
+              {c.nombre.charAt(0)}
+            </span>
+            <span class="font-display text-base font-bold text-navy">{c.nombre}</span>
+          </span>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <div class="container-rp mt-10 text-center text-sm text-gris-ej" data-reveal="up">
+    <p class="inline-flex items-center gap-2">
+      <Icon name="ph:lock-simple-fill" class="h-4 w-4 text-institu" />
+      Por confidencialidad, protegemos la identidad de nuestros clientes.
+    </p>
+  </div>
+</section>

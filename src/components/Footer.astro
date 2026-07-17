@@ -1,0 +1,124 @@
+---
+import { Icon } from 'astro-icon/components';
+import { whatsappLink, firma } from '../data/sitio';
+
+const year = new Date().getFullYear();
+
+const serviciosLinks = [
+  { label: 'Revisoría Fiscal', href: '/servicios/revisoria-fiscal' },
+  { label: 'Auditoría Interna', href: '/servicios/auditoria-interna' },
+  { label: 'Auditoría Externa', href: '/servicios/auditoria-externa' },
+  { label: 'Outsourcing Contable', href: '/servicios/outsourcing-contable' },
+  { label: 'Outsourcing Control Interno', href: '/servicios/outsourcing-control-interno' },
+  { label: 'Liquidación de Nómina', href: '/servicios/nomina' },
+];
+---
+
+<footer class="relative mt-20 overflow-hidden bg-navy text-white">
+  {/* Decoración: blobs de color que asoman desde el borde superior */}
+  <div class="pointer-events-none absolute -top-24 left-1/4 h-64 w-64 rounded-full bg-institu/30 blur-3xl" aria-hidden="true"></div>
+  <div class="pointer-events-none absolute -top-16 right-1/4 h-56 w-56 rounded-full bg-coral/20 blur-3xl" aria-hidden="true"></div>
+  <div class="pointer-events-none absolute bottom-0 left-1/3 h-64 w-64 rounded-full bg-turquesa/20 blur-3xl" aria-hidden="true"></div>
+
+  <div class="container-rp relative z-10 py-16">
+    <div class="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
+      {/* --- Marca --- */}
+      <div>
+        <a
+          href="/"
+          class="inline-flex items-center rounded-2xl bg-white px-4 py-3 shadow-soft ring-1 ring-white/10 transition-transform duration-300 hover:-translate-y-0.5"
+          aria-label="RPiedrahíta Contadores Públicos — Inicio"
+        >
+          <img
+            src="/logotipo.png"
+            alt="RPiedrahíta Contadores Públicos"
+            width="280"
+            height="76"
+            class="h-9 w-auto sm:h-10"
+            decoding="async"
+          />
+        </a>
+        <p class="mt-5 max-w-xs text-sm leading-relaxed text-white/60">
+          Más de 40 años protegiendo el patrimonio de empresas colombianas con
+          revisoría fiscal, auditoría y outsourcing contable de alto nivel.
+        </p>
+        <div class="mt-6 flex gap-3">
+          <a href={firma.redes.linkedin} aria-label="LinkedIn" class="flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 text-white/70 ring-1 ring-white/10 transition hover:bg-institu hover:text-white">
+            <Icon name="ph:linkedin-logo-bold" class="h-5 w-5" />
+          </a>
+          <a href={firma.redes.instagram} aria-label="Instagram" class="flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 text-white/70 ring-1 ring-white/10 transition hover:bg-coral hover:text-white">
+            <Icon name="ph:instagram-logo-bold" class="h-5 w-5" />
+          </a>
+          <a href={firma.redes.facebook} aria-label="Facebook" class="flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 text-white/70 ring-1 ring-white/10 transition hover:bg-turquesa hover:text-white">
+            <Icon name="ph:facebook-logo-bold" class="h-5 w-5" />
+          </a>
+        </div>
+      </div>
+
+      {/* --- Servicios --- */}
+      <div>
+        <h3 class="font-display text-sm font-bold uppercase tracking-widest text-white/40">Servicios</h3>
+        <ul class="mt-5 space-y-3 text-sm">
+          {serviciosLinks.map((s) => (
+            <li>
+              <a href={s.href} class="text-white/70 transition hover:text-turquesa hover:underline underline-offset-4">{s.label}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* --- Navegación --- */}
+      <div>
+        <h3 class="font-display text-sm font-bold uppercase tracking-widest text-white/40">Sitio</h3>
+        <ul class="mt-5 space-y-3 text-sm">
+          <li><a href="/" class="text-white/70 transition hover:text-turquesa">Inicio</a></li>
+          <li><a href="/servicios" class="text-white/70 transition hover:text-turquesa">Servicios</a></li>
+          <li><a href="/#beneficios" class="text-white/70 transition hover:text-turquesa">Beneficios</a></li>
+          <li><a href="/#metodologia" class="text-white/70 transition hover:text-turquesa">Metodología</a></li>
+          <li><a href="/#contacto" class="text-white/70 transition hover:text-turquesa">Contacto</a></li>
+        </ul>
+      </div>
+
+      {/* --- Contacto --- */}
+      <div>
+        <h3 class="font-display text-sm font-bold uppercase tracking-widest text-white/40">Contacto</h3>
+        <ul class="mt-5 space-y-4 text-sm">
+          <li class="flex gap-3">
+            <Icon name="ph:map-pin-fill" class="mt-0.5 h-5 w-5 shrink-0 text-coral" />
+            <span class="text-white/70">
+              {firma.contacto.direccionLinea1}<br />
+              {firma.contacto.direccionLinea2}<br />
+              {firma.contacto.ciudad}
+            </span>
+          </li>
+          <li>
+            <a href={firma.contacto.telefonoFijoHref} class="flex items-center gap-3 text-white/70 transition hover:text-turquesa">
+              <Icon name="ph:phone-fill" class="h-5 w-5 shrink-0 text-verde-est" />
+              {firma.contacto.telefonoFijo}
+            </a>
+          </li>
+          <li>
+            <a href={whatsappLink} target="_blank" rel="noopener" class="flex items-center gap-3 text-white/70 transition hover:text-turquesa">
+              <Icon name="ph:whatsapp-logo-fill" class="h-5 w-5 shrink-0 text-[#25D366]" />
+              {firma.contacto.whatsapp}
+            </a>
+          </li>
+          <li>
+            <a href={firma.contacto.emailHref} class="flex items-center gap-3 text-white/70 transition hover:text-turquesa">
+              <Icon name="ph:envelope-fill" class="h-5 w-5 shrink-0 text-turquesa" />
+              {firma.contacto.email}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-7 text-center text-xs text-white/50 sm:flex-row sm:text-left">
+      <p>© {year} {firma.nombreCompleto}. Todos los derechos reservados.</p>
+      <p class="flex items-center gap-2">
+        <Icon name="ph:shield-check-fill" class="h-4 w-4 text-verde-est" />
+        Firma de contaduría pública registrada · Junta Central de Contadores
+      </p>
+    </div>
+  </div>
+</footer>
