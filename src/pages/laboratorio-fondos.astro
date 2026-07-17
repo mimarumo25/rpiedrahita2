@@ -1,0 +1,275 @@
+---
+/**
+ * LABORATORIO DE FONDOS ANIMADOS
+ * Página temporal (rama experimento/fondos-animados) para comparar en vivo
+ * distintas animaciones de fondo con contenido de muestra encima.
+ *
+ * Ruta: /laboratorio-fondos
+ */
+import '../styles/global.css';
+import { Icon } from 'astro-icon/components';
+
+const variantes = [
+  { id: 'constelacion', label: 'Constelación', desc: 'Red de nodos conectados (actual)', icon: 'ph:polygon-fill' },
+  { id: 'aurora', label: 'Aurora', desc: 'Manchas de color que fluyen', icon: 'ph:drop-half-fill' },
+  { id: 'particulas', label: 'Partículas', desc: 'Puntos que flotan hacia arriba', icon: 'ph:sparkle-fill' },
+  { id: 'malla', label: 'Malla de datos', desc: 'Rejilla de puntos con parallax', icon: 'ph:grid-four-fill' },
+];
+---
+
+<!doctype html>
+<html lang="es-CO">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Laboratorio de fondos · RPiedrahíta</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      @keyframes lab-pan {
+        0% { background-position: 0 0; }
+        100% { background-position: 60px 60px; }
+      }
+      @keyframes lab-hue {
+        0%, 100% { filter: blur(60px) hue-rotate(0deg); }
+        50% { filter: blur(60px) hue-rotate(25deg); }
+      }
+      .bg-layer { transition: opacity 0.6s ease; }
+      .bg-layer[hidden] { display: none; }
+    </style>
+  </head>
+  <body class="relative min-h-screen bg-blanco-co text-carbon font-sans antialiased">
+    <!-- ===================== CAPAS DE FONDO ===================== -->
+
+    <!-- Variante 1: Constelación (mesh + blobs + red de nodos) -->
+    <div id="v-constelacion" class="bg-layer pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-blanco-co" aria-hidden="true">
+      <div class="absolute inset-0 bg-mesh-base"></div>
+      <div class="absolute -left-32 top-[-10%] h-[34rem] w-[34rem] rounded-full bg-institu/20 blur-3xl animate-blob-drift"></div>
+      <div class="absolute right-[-12%] top-[20%] h-[30rem] w-[30rem] rounded-full bg-turquesa/20 blur-3xl animate-blob-drift" style="animation-delay:-6s"></div>
+      <div class="absolute bottom-[-15%] left-[25%] h-[32rem] w-[32rem] rounded-full bg-coral/15 blur-3xl animate-blob-drift" style="animation-delay:-12s"></div>
+      <canvas id="lab-net" class="absolute inset-0 h-full w-full opacity-60"></canvas>
+    </div>
+
+    <!-- Variante 2: Aurora (grandes manchas de color que fluyen y cambian de tono) -->
+    <div id="v-aurora" class="bg-layer pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-blanco-co" aria-hidden="true" hidden>
+      <div class="absolute -left-[10%] top-[-20%] h-[46rem] w-[46rem] rounded-full bg-institu/30 animate-blob-drift" style="filter:blur(70px)"></div>
+      <div class="absolute right-[-15%] top-[5%] h-[42rem] w-[42rem] rounded-full bg-morado/25 animate-blob-drift" style="animation-delay:-5s;filter:blur(80px)"></div>
+      <div class="absolute bottom-[-25%] left-[20%] h-[48rem] w-[48rem] rounded-full bg-turquesa/25 animate-blob-drift" style="animation-delay:-9s;filter:blur(80px)"></div>
+      <div class="absolute bottom-[10%] right-[10%] h-[34rem] w-[34rem] rounded-full bg-verde-est/20 animate-blob-drift" style="animation-delay:-13s;filter:blur(70px)"></div>
+    </div>
+
+    <!-- Variante 3: Partículas flotantes (canvas) -->
+    <div id="v-particulas" class="bg-layer pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-blanco-co" aria-hidden="true" hidden>
+      <div class="absolute inset-0 bg-mesh-base opacity-70"></div>
+      <canvas id="lab-dots" class="absolute inset-0 h-full w-full"></canvas>
+    </div>
+
+    <!-- Variante 4: Malla de datos (rejilla de puntos con leve parallax al cursor) -->
+    <div id="v-malla" class="bg-layer pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-blanco-co" aria-hidden="true" hidden>
+      <div class="absolute inset-0 bg-mesh-base opacity-60"></div>
+      <div
+        id="lab-grid"
+        class="absolute inset-[-60px]"
+        style="background-image: radial-gradient(rgba(0,112,192,0.5) 1.7px, transparent 2px); background-size: 30px 30px; animation: lab-pan 12s linear infinite; -webkit-mask-image: radial-gradient(ellipse at 50% 45%, black 70%, transparent 100%); mask-image: radial-gradient(ellipse at 50% 45%, black 70%, transparent 100%);"
+      ></div>
+      <div class="absolute left-[-10%] top-[10%] h-[30rem] w-[30rem] rounded-full bg-institu/15 blur-3xl animate-blob-drift"></div>
+      <div class="absolute bottom-[-10%] right-[5%] h-[28rem] w-[28rem] rounded-full bg-coral/12 blur-3xl animate-blob-drift" style="animation-delay:-7s"></div>
+    </div>
+
+    <!-- ===================== CONTENIDO DE MUESTRA ===================== -->
+    <main class="relative z-10 mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center px-6 py-32 text-center">
+      <span class="inline-flex items-center gap-2 rounded-full border border-white/60 bg-white/70 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-institu shadow-soft backdrop-blur">
+        <Icon name="ph:flask-fill" class="h-4 w-4 text-verde-est" />
+        Laboratorio de fondos
+      </span>
+      <h1 class="mt-6 font-display text-fluid-2xl font-extrabold leading-[1.05] tracking-tight text-navy text-balance">
+        Contaduría pública que <span class="text-gradient">protege</span> su empresa
+      </h1>
+      <p class="mx-auto mt-6 max-w-2xl text-fluid-base leading-relaxed text-gris-ej">
+        Compare cómo se ve el texto y las tarjetas sobre cada fondo animado. Use el panel de la
+        derecha para cambiar entre variantes y elija la que mejor se ajuste a la marca.
+      </p>
+
+      <div class="mt-10 grid w-full gap-6 sm:grid-cols-2">
+        <div class="glass-card text-left">
+          <span class="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-grad-institu text-white shadow-soft">
+            <Icon name="ph:shield-check-fill" class="h-6 w-6" />
+          </span>
+          <h3 class="font-display text-lg font-bold text-navy">Tarjeta glass de ejemplo</h3>
+          <p class="mt-2 text-sm leading-relaxed text-gris-ej">
+            Así se ve una tarjeta con desenfoque de fondo sobre esta animación. Revise el contraste y la nitidez del texto.
+          </p>
+        </div>
+        <div class="glass-card text-left">
+          <span class="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-grad-energia text-white shadow-soft">
+            <Icon name="ph:chart-line-up-fill" class="h-6 w-6" />
+          </span>
+          <h3 class="font-display text-lg font-bold text-navy">Legibilidad y foco</h3>
+          <p class="mt-2 text-sm leading-relaxed text-gris-ej">
+            El fondo debe aportar vida sin competir con el contenido. Elija el que se sienta más profesional y calmado.
+          </p>
+        </div>
+      </div>
+    </main>
+
+    <!-- ===================== PANEL DE CONTROL ===================== -->
+    <div class="fixed inset-x-0 bottom-4 z-50 flex justify-center px-4">
+      <div class="flex max-w-full flex-wrap items-center justify-center gap-2 rounded-3xl border border-white/60 bg-white/80 p-2.5 shadow-soft-lg backdrop-blur-xl">
+        <span class="px-2 text-[0.6rem] font-bold uppercase tracking-widest text-gris-ej">Fondo:</span>
+        {variantes.map((v, i) => (
+          <button
+            type="button"
+            data-variant={v.id}
+            class="lab-btn group flex items-center gap-2.5 rounded-2xl border border-transparent px-3 py-2 text-left transition-all duration-300 hover:bg-institu/5"
+            aria-pressed={i === 0 ? 'true' : 'false'}
+          >
+            <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-gris-cl text-navy transition group-[.is-active]:bg-grad-institu group-[.is-active]:text-white">
+              <Icon name={v.icon} class="h-4 w-4" />
+            </span>
+            <span class="min-w-0">
+              <span class="block whitespace-nowrap font-display text-sm font-bold text-navy">{v.label}</span>
+              <span class="hidden whitespace-nowrap text-xs text-gris-ej sm:block">{v.desc}</span>
+            </span>
+          </button>
+        ))}
+      </div>
+    </div>
+
+    <script>
+      // ---------- Cambio de variante ----------
+      const layers = {
+        constelacion: document.getElementById('v-constelacion'),
+        aurora: document.getElementById('v-aurora'),
+        particulas: document.getElementById('v-particulas'),
+        malla: document.getElementById('v-malla'),
+      };
+      const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('.lab-btn'));
+
+      function activate(id: string) {
+        Object.entries(layers).forEach(([key, el]) => {
+          if (!el) return;
+          if (key === id) el.removeAttribute('hidden');
+          else el.setAttribute('hidden', '');
+        });
+        buttons.forEach((b) => {
+          const active = b.dataset.variant === id;
+          b.classList.toggle('is-active', active);
+          b.setAttribute('aria-pressed', active ? 'true' : 'false');
+          b.classList.toggle('bg-institu/10', active);
+          b.classList.toggle('border-institu/20', active);
+        });
+        try { localStorage.setItem('lab-fondo', id); } catch (e) {}
+      }
+      buttons.forEach((b) => b.addEventListener('click', () => activate(b.dataset.variant || 'constelacion')));
+      const saved = (() => { try { return localStorage.getItem('lab-fondo'); } catch (e) { return null; } })();
+      activate(saved && layers[saved as keyof typeof layers] ? saved : 'constelacion');
+
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+      // ---------- Canvas 1: Constelación ----------
+      (function net() {
+        const canvas = document.getElementById('lab-net') as HTMLCanvasElement | null;
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+        const palette = ['#0070C0', '#00B0F0', '#6CB83F', '#E66C2C', '#7030A0'];
+        let w = 0, h = 0, nodes: { x: number; y: number; vx: number; vy: number; r: number }[] = [];
+        const mouse = { x: -1000, y: -1000 };
+        function resize() {
+          w = window.innerWidth; h = window.innerHeight;
+          canvas.width = w * dpr; canvas.height = h * dpr;
+          canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
+          ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
+          const count = Math.min(110, Math.max(30, Math.floor((w * h) * 0.00009)));
+          nodes = Array.from({ length: count }, () => ({
+            x: Math.random() * w, y: Math.random() * h,
+            vx: (Math.random() - 0.5) * 0.35, vy: (Math.random() - 0.5) * 0.35,
+            r: Math.random() * 2.2 + 1.1,
+          }));
+        }
+        function draw() {
+          ctx!.clearRect(0, 0, w, h);
+          for (let i = 0; i < nodes.length; i++) {
+            const n = nodes[i];
+            if (!reduce) {
+              n.x += n.vx; n.y += n.vy;
+              if (n.x < 0 || n.x > w) n.vx *= -1;
+              if (n.y < 0 || n.y > h) n.vy *= -1;
+              const dx = mouse.x - n.x, dy = mouse.y - n.y, d = Math.hypot(dx, dy);
+              if (d < 180 && d > 0) { const f = (1 - d / 180) * 0.6; n.x += (dx / d) * f; n.y += (dy / d) * f; }
+            }
+            ctx!.beginPath(); ctx!.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+            ctx!.fillStyle = palette[i % palette.length] + 'AA'; ctx!.fill();
+          }
+          for (let i = 0; i < nodes.length; i++)
+            for (let j = i + 1; j < nodes.length; j++) {
+              const a = nodes[i], b = nodes[j], dist = Math.hypot(a.x - b.x, a.y - b.y);
+              if (dist < 150) {
+                ctx!.strokeStyle = `rgba(0,112,192,${(1 - dist / 150) * 0.22})`;
+                ctx!.lineWidth = 1; ctx!.beginPath();
+                ctx!.moveTo(a.x, a.y); ctx!.lineTo(b.x, b.y); ctx!.stroke();
+              }
+            }
+          if (!reduce) requestAnimationFrame(draw);
+        }
+        resize();
+        window.addEventListener('resize', resize);
+        window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
+        draw();
+      })();
+
+      // ---------- Canvas 2: Partículas flotantes ----------
+      (function dots() {
+        const canvas = document.getElementById('lab-dots') as HTMLCanvasElement | null;
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+        const palette = ['#0070C0', '#00B0F0', '#6CB83F', '#E66C2C', '#7030A0', '#FFC000'];
+        let w = 0, h = 0, parts: { x: number; y: number; r: number; s: number; c: string; a: number }[] = [];
+        function resize() {
+          w = window.innerWidth; h = window.innerHeight;
+          canvas.width = w * dpr; canvas.height = h * dpr;
+          canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
+          ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
+          const count = Math.min(90, Math.max(30, Math.floor((w * h) * 0.00007)));
+          parts = Array.from({ length: count }, () => ({
+            x: Math.random() * w, y: Math.random() * h,
+            r: Math.random() * 4 + 1.5, s: Math.random() * 0.4 + 0.15,
+            c: palette[Math.floor(Math.random() * palette.length)],
+            a: Math.random() * 0.4 + 0.2,
+          }));
+        }
+        function draw() {
+          ctx!.clearRect(0, 0, w, h);
+          for (const p of parts) {
+            if (!reduce) { p.y -= p.s; if (p.y < -10) { p.y = h + 10; p.x = Math.random() * w; } }
+            ctx!.beginPath(); ctx!.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx!.fillStyle = p.c + Math.round(p.a * 255).toString(16).padStart(2, '0');
+            ctx!.fill();
+          }
+          if (!reduce) requestAnimationFrame(draw);
+        }
+        resize();
+        window.addEventListener('resize', resize);
+        draw();
+      })();
+
+      // ---------- Parallax de la malla ----------
+      (function grid() {
+        const g = document.getElementById('lab-grid');
+        if (!g || reduce) return;
+        window.addEventListener('mousemove', (e) => {
+          const x = (e.clientX / window.innerWidth - 0.5) * 20;
+          const y = (e.clientY / window.innerHeight - 0.5) * 20;
+          g.style.transform = `translate(${x}px, ${y}px)`;
+        });
+      })();
+    </script>
+  </body>
+</html>
