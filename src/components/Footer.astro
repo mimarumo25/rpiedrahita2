@@ -1,124 +1,166 @@
 ---
 import { Icon } from 'astro-icon/components';
-import { whatsappLink, firma } from '../data/sitio';
-
-const year = new Date().getFullYear();
-
-const serviciosLinks = [
-  { label: 'Revisoría Fiscal', href: '/servicios/revisoria-fiscal' },
-  { label: 'Auditoría Interna', href: '/servicios/auditoria-interna' },
-  { label: 'Auditoría Externa', href: '/servicios/auditoria-externa' },
-  { label: 'Outsourcing Contable', href: '/servicios/outsourcing-contable' },
-  { label: 'Outsourcing Control Interno', href: '/servicios/outsourcing-control-interno' },
-  { label: 'Liquidación de Nómina', href: '/servicios/nomina' },
-];
+import { firma, navegacion, whatsappLink, recursosTributarios } from '../data/sitio';
+import { servicios } from '../data/servicios';
 ---
-
-<footer class="relative mt-20 overflow-hidden bg-navy text-white">
-  {/* Decoración: blobs de color que asoman desde el borde superior */}
-  <div class="pointer-events-none absolute -top-24 left-1/4 h-64 w-64 rounded-full bg-institu/30 blur-3xl" aria-hidden="true"></div>
-  <div class="pointer-events-none absolute -top-16 right-1/4 h-56 w-56 rounded-full bg-coral/20 blur-3xl" aria-hidden="true"></div>
-  <div class="pointer-events-none absolute bottom-0 left-1/3 h-64 w-64 rounded-full bg-turquesa/20 blur-3xl" aria-hidden="true"></div>
-
-  <div class="container-rp relative z-10 py-16">
-    <div class="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
-      {/* --- Marca --- */}
+<footer class="relative mt-16 overflow-hidden bg-navy text-white">
+  <div class="pointer-events-none absolute -right-20 top-0 h-80 w-80 rounded-full bg-morado/30 blur-3xl" aria-hidden="true"></div>
+  <div class="container-rp relative py-14">
+    <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.25fr_1.2fr_.7fr_1fr]">
       <div>
-        <a
-          href="/"
-          class="inline-flex items-center rounded-2xl bg-white px-4 py-3 shadow-soft ring-1 ring-white/10 transition-transform duration-300 hover:-translate-y-0.5"
-          aria-label="RPiedrahíta Contadores Públicos — Inicio"
-        >
-          <img
-            src="/logotipo.png"
-            alt="RPiedrahíta Contadores Públicos"
-            width="280"
-            height="76"
-            class="h-9 w-auto sm:h-10"
-            decoding="async"
-          />
+        <a href="#inicio" class="inline-flex rounded-2xl bg-white px-4 py-3" aria-label={`${firma.nombre} — Inicio`}>
+          <img src="/logotipo.png" alt={firma.nombre} width="280" height="76" class="h-9 w-auto" loading="lazy" />
         </a>
-        <p class="mt-5 max-w-xs text-sm leading-relaxed text-white/60">
-          Más de 40 años protegiendo el patrimonio de empresas colombianas con
-          revisoría fiscal, auditoría y outsourcing contable de alto nivel.
-        </p>
-        <div class="mt-6 flex gap-3">
-          <a href={firma.redes.linkedin} aria-label="LinkedIn" class="flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 text-white/70 ring-1 ring-white/10 transition hover:bg-institu hover:text-white">
-            <Icon name="ph:linkedin-logo-bold" class="h-5 w-5" />
-          </a>
-          <a href={firma.redes.instagram} aria-label="Instagram" class="flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 text-white/70 ring-1 ring-white/10 transition hover:bg-coral hover:text-white">
-            <Icon name="ph:instagram-logo-bold" class="h-5 w-5" />
-          </a>
-          <a href={firma.redes.facebook} aria-label="Facebook" class="flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 text-white/70 ring-1 ring-white/10 transition hover:bg-turquesa hover:text-white">
-            <Icon name="ph:facebook-logo-bold" class="h-5 w-5" />
-          </a>
+        <p class="mt-5 max-w-xs text-sm leading-relaxed text-white/85">Experiencia que genera confianza.<br />Conocimiento que impulsa decisiones.</p>
+        <p class="mt-4 text-sm text-white/80">Más de 40 años acompañando empresas.</p>
+        <div class="mt-6 flex items-center gap-3" aria-label="Redes sociales de RPiedrahíta">
+          {firma.contacto.redesSociales.map((red) => (
+            <a
+              href={red.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${firma.nombre} en ${red.nombre}`}
+              title={red.nombre}
+              class="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/20 bg-white/10 text-white transition-all duration-300 hover:-translate-y-0.5 hover:border-turquesa hover:bg-turquesa hover:text-navy"
+            >
+              <Icon name={red.icono} class="h-5 w-5" />
+            </a>
+          ))}
         </div>
       </div>
-
-      {/* --- Servicios --- */}
       <div>
-        <h3 class="font-display text-sm font-bold uppercase tracking-widest text-white/40">Servicios</h3>
-        <ul class="mt-5 space-y-3 text-sm">
-          {serviciosLinks.map((s) => (
+        <h2 class="text-base text-white">Servicios</h2>
+        <ul class="mt-5 space-y-3 text-sm text-white/85">
+          {servicios.map((servicio) => <li><a href={`#${servicio.slug}`} class="footer-link">{servicio.titulo}</a></li>)}
+        </ul>
+      </div>
+      <div>
+        <h2 class="text-base text-white">Explore</h2>
+        <ul class="mt-5 space-y-3 text-sm text-white/85">
+          {navegacion.map((item) => <li><a href={item.href} class="footer-link">{item.label}</a></li>)}
+          {recursosTributarios.map((recurso) => (
             <li>
-              <a href={s.href} class="text-white/70 transition hover:text-turquesa hover:underline underline-offset-4">{s.label}</a>
+              <a href={recurso.href} download={recurso.archivo} class="footer-link inline-flex items-center gap-1.5 font-medium text-turquesa-cl">
+                <Icon name="ph:file-pdf-bold" class="h-4 w-4 shrink-0" />
+                {recurso.titulo}
+              </a>
             </li>
           ))}
         </ul>
       </div>
-
-      {/* --- Navegación --- */}
       <div>
-        <h3 class="font-display text-sm font-bold uppercase tracking-widest text-white/40">Sitio</h3>
-        <ul class="mt-5 space-y-3 text-sm">
-          <li><a href="/" class="text-white/70 transition hover:text-turquesa">Inicio</a></li>
-          <li><a href="/servicios" class="text-white/70 transition hover:text-turquesa">Servicios</a></li>
-          <li><a href="/#beneficios" class="text-white/70 transition hover:text-turquesa">Beneficios</a></li>
-          <li><a href="/#metodologia" class="text-white/70 transition hover:text-turquesa">Metodología</a></li>
-          <li><a href="/#contacto" class="text-white/70 transition hover:text-turquesa">Contacto</a></li>
-        </ul>
-      </div>
-
-      {/* --- Contacto --- */}
-      <div>
-        <h3 class="font-display text-sm font-bold uppercase tracking-widest text-white/40">Contacto</h3>
-        <ul class="mt-5 space-y-4 text-sm">
-          <li class="flex gap-3">
-            <Icon name="ph:map-pin-fill" class="mt-0.5 h-5 w-5 shrink-0 text-coral" />
-            <span class="text-white/70">
-              {firma.contacto.direccionLinea1}<br />
-              {firma.contacto.direccionLinea2}<br />
-              {firma.contacto.ciudad}
-            </span>
-          </li>
-          <li>
-            <a href={firma.contacto.telefonoFijoHref} class="flex items-center gap-3 text-white/70 transition hover:text-turquesa">
-              <Icon name="ph:phone-fill" class="h-5 w-5 shrink-0 text-verde-est" />
-              {firma.contacto.telefonoFijo}
-            </a>
-          </li>
-          <li>
-            <a href={whatsappLink} target="_blank" rel="noopener" class="flex items-center gap-3 text-white/70 transition hover:text-turquesa">
-              <Icon name="ph:whatsapp-logo-fill" class="h-5 w-5 shrink-0 text-[#25D366]" />
-              {firma.contacto.whatsapp}
-            </a>
-          </li>
-          <li>
-            <a href={firma.contacto.emailHref} class="flex items-center gap-3 text-white/70 transition hover:text-turquesa">
-              <Icon name="ph:envelope-fill" class="h-5 w-5 shrink-0 text-turquesa" />
-              {firma.contacto.email}
-            </a>
-          </li>
-        </ul>
+        <h2 class="text-base text-white">Conversemos</h2>
+        <address class="mt-5 space-y-4 text-sm not-italic text-white/85">
+          <p>{firma.contacto.direccionLinea1}<br />{firma.contacto.direccionLinea2}<br />{firma.contacto.ciudad}</p>
+          <a href={firma.contacto.telefonoFijoHref} class="footer-link block">{firma.contacto.telefonoFijo}</a>
+          <a href={whatsappLink} target="_blank" rel="noopener" class="footer-link flex items-center gap-2">
+            <Icon name="ph:whatsapp-logo-fill" class="h-4 w-4" />{firma.contacto.whatsapp}
+          </a>
+          <a href={firma.contacto.emailHref} class="footer-link block break-all">{firma.contacto.email}</a>
+        </address>
       </div>
     </div>
 
-    <div class="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-7 text-center text-xs text-white/50 sm:flex-row sm:text-left">
-      <p>© {year} {firma.nombreCompleto}. Todos los derechos reservados.</p>
-      <p class="flex items-center gap-2">
-        <Icon name="ph:shield-check-fill" class="h-4 w-4 text-verde-est" />
-        Firma de contaduría pública registrada · Junta Central de Contadores
-      </p>
+    <div class="mt-12 flex flex-col items-start justify-between gap-4 border-t border-white/20 pt-6 text-xs leading-relaxed text-white/80 sm:flex-row sm:items-center">
+      <p>© {new Date().getFullYear()} {firma.nombreCompleto}. Todos los derechos reservados.</p>
+      <a
+        href="#politica-tratamiento-datos"
+        data-open-policy
+        class="footer-link inline-flex items-center gap-2 font-semibold text-white/95 underline decoration-turquesa/70 underline-offset-4 hover:text-white"
+      >
+        <Icon name="ph:shield-check-duotone" class="h-4 w-4 text-turquesa" />
+        Política de Tratamiento de Datos Personales.
+      </a>
     </div>
   </div>
+
+  <dialog
+    id="politica-tratamiento-datos"
+    aria-labelledby="titulo-politica-datos"
+    class="policy-dialog m-auto w-[min(92vw,44rem)] rounded-3xl border border-navy/10 bg-white p-0 text-carbon shadow-soft-lg"
+  >
+    <div class="flex items-start justify-between gap-4 border-b border-navy/10 bg-blanco-co px-6 py-5 sm:px-8">
+      <div>
+        <span class="inline-flex items-center gap-1.5 rounded-full bg-institu/10 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-institu">
+          Aviso Legal · Texto provisional
+        </span>
+        <h2 id="titulo-politica-datos" class="mt-2 font-display text-xl font-extrabold text-navy sm:text-2xl">
+          Política de Tratamiento de Datos Personales.
+        </h2>
+      </div>
+      <button
+        type="button"
+        data-close-policy
+        aria-label="Cerrar Política de Tratamiento de Datos Personales"
+        class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-navy/15 bg-white text-navy transition hover:border-institu hover:text-institu"
+      >
+        <Icon name="ph:x-bold" class="h-4 w-4" />
+      </button>
+    </div>
+
+    <div class="max-h-[70vh] space-y-4 overflow-y-auto px-6 py-6 text-sm leading-relaxed text-carbon sm:px-8">
+      <p class="rounded-2xl border border-ambar-riesgo/40 bg-ambar-riesgo/10 px-4 py-3 text-xs font-medium text-navy">
+        <strong>Nota:</strong> Este contenido corresponde a un texto de relleno provisional dispuesto para revisión de diseño y estructura mientras se incorpora el documento oficial definitivo de la firma.
+      </p>
+
+      <h3 class="font-display text-base font-bold text-navy">1. Identificación del Responsable del Tratamiento</h3>
+      <p>
+        <strong>{firma.nombreCompleto}</strong>, con domicilio principal en {firma.contacto.direccionLinea1}, {firma.contacto.direccionLinea2}, {firma.contacto.ciudad}, correo electrónico <a href={firma.contacto.emailHref} class="font-semibold text-institu underline">{firma.contacto.email}</a> y teléfono <a href={firma.contacto.telefonoFijoHref} class="font-semibold text-institu underline">{firma.contacto.telefonoFijo}</a>, actúa como Responsable del Tratamiento de los datos personales recolectados a través de sus canales de atención y contacto institucional.
+      </p>
+
+      <h3 class="font-display text-base font-bold text-navy">2. Marco Normativo y Finalidad</h3>
+      <p>
+        En cumplimiento de la Ley 1581 de 2012, el Decreto 1377 de 2013 y las demás normas concordantes de la República de Colombia, los datos personales suministrados por clientes, proveedores, aliados, colaboradores y usuarios serán tratados con estricta confidencialidad para fines de contacto corporativo, atención de consultas comerciales, prestación de servicios profesionales de contaduría pública, revisoría fiscal, auditoría, outsourcing contable y gestión administrativa.
+      </p>
+
+      <h3 class="font-display text-base font-bold text-navy">3. Derechos de los Titulares</h3>
+      <p>
+        Los titulares de la información personal tienen derecho a conocer, actualizar, rectificar y solicitar la supresión de sus datos personales, así como a revocar la autorización otorgada para su tratamiento y presentar solicitudes o reclamos a través del correo <a href={firma.contacto.emailHref} class="font-semibold text-institu underline">{firma.contacto.email}</a> o en nuestras oficinas en Medellín.
+      </p>
+
+      <h3 class="font-display text-base font-bold text-navy">4. Vigencia</h3>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+      </p>
+    </div>
+
+    <div class="flex justify-end border-t border-navy/10 bg-blanco-co px-6 py-4 sm:px-8">
+      <button type="button" data-close-policy class="btn-primary px-6 py-2.5 text-xs">
+        Entendido
+      </button>
+    </div>
+  </dialog>
 </footer>
+
+<script>
+  const dialog = document.getElementById('politica-tratamiento-datos') as HTMLDialogElement | null;
+  const openLinks = document.querySelectorAll('[data-open-policy]');
+  const closeButtons = document.querySelectorAll('[data-close-policy]');
+
+  openLinks.forEach((link) => {
+    link.addEventListener('click', (event) => {
+      if (dialog && typeof dialog.showModal === 'function') {
+        event.preventDefault();
+        dialog.showModal();
+      }
+    });
+  });
+
+  closeButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      dialog?.close();
+    });
+  });
+
+  dialog?.addEventListener('click', (event) => {
+    const rect = dialog.getBoundingClientRect();
+    const clickedOutside =
+      event.clientX < rect.left ||
+      event.clientX > rect.right ||
+      event.clientY < rect.top ||
+      event.clientY > rect.bottom;
+    if (clickedOutside) {
+      dialog.close();
+    }
+  });
+</script>

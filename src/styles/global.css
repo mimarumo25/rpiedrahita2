@@ -81,7 +81,7 @@
     @apply btn bg-institu text-white shadow-soft hover:bg-navy hover:shadow-soft-lg hover:-translate-y-0.5;
   }
   .btn-coral {
-    @apply btn bg-coral text-white shadow-soft hover:brightness-110 hover:shadow-glowCoral hover:-translate-y-0.5;
+    @apply btn bg-coral text-white shadow-soft hover:brightness-90 hover:shadow-glowCoral hover:-translate-y-0.5;
   }
   .btn-ghost {
     @apply btn border-2 border-navy/15 bg-white/70 text-navy backdrop-blur hover:border-institu hover:text-institu hover:-translate-y-0.5;
@@ -104,17 +104,6 @@
   }
   .prisma-hover:hover::before {
     @apply opacity-100;
-  }
-
-  /* --- Texto con degradado --- */
-  .text-gradient {
-    @apply bg-grad-institu bg-clip-text text-transparent;
-  }
-  .text-gradient-coral {
-    background: linear-gradient(135deg, #e66c2c 0%, #ffc000 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
   }
 
   /* --- Enlace de navegación --- */
@@ -176,4 +165,70 @@
       transparent
     );
   }
+}
+
+/* Confianza con energía: la identidad existente, con superficies de lectura claras. */
+@layer base {
+  [id] { scroll-margin-top: 7rem; }
+  :focus-visible { outline: 3px solid #0070c0; outline-offset: 5px; }
+  footer :focus-visible { outline-color: #61cbf4; }
+  summary::marker { color: #0070c0; }
+}
+@layer components {
+  .section-space { @apply py-12 sm:py-16; }
+  .site-nav { background: rgba(255,255,255,.85); }
+  .text-gradient { @apply bg-grad-institu bg-clip-text text-transparent; }
+  .hero-section { min-height: min(900px, 100svh); }
+  .hero-background { object-position: center; }
+  .hero-shade { background: linear-gradient(180deg, rgba(0,45,86,.80), rgba(0,45,86,.72) 55%, rgba(0,45,86,.50)); }
+  .hero-secondary { border: 2px solid rgba(255,255,255,.8); background: rgba(0,45,86,.6); color: white; }
+  .hero-secondary:hover { background: #0070c0; }
+  .hero-section :focus-visible { outline-color: white; }
+  .hero-title { font-size: clamp(2rem, 4.1vw, 3.65rem); line-height: 1.2; letter-spacing: -.035em; }
+  .word-mark { position: relative; white-space: nowrap; isolation: isolate; }
+  .word-mark::after { content: ''; position: absolute; z-index: -1; left: -.02em; right: -.02em; bottom: .035em; height: .22em; border-radius: 60% 35% 45% 40%; background: var(--mark); transform: rotate(-1.5deg); }
+  .mark-coral { --mark: #E66C2C; }
+  .mark-turquesa { --mark: #00B0F0; }
+  .mark-verde { --mark: #6CB83F; white-space: normal; }
+  .about-panel { background: rgba(255,255,255,.80); box-shadow: 0 12px 40px -8px rgba(0,45,86,.15); backdrop-filter: blur(16px); }
+  .about-visual { min-width: 0; background: linear-gradient(135deg, #0070C0, #002D56); }
+  .service-card { background: rgba(255,255,255,.70); box-shadow: 0 4px 20px -2px rgba(0,45,86,.08); backdrop-filter: blur(24px); }
+  .service-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px; background: linear-gradient(90deg, var(--acento), color-mix(in srgb, var(--acento) 40%, transparent)); }
+  .service-card::before { content: ''; position: absolute; inset: 0; pointer-events: none; border-radius: inherit; background: radial-gradient(at 100% 0%, color-mix(in srgb, var(--acento) 10%, transparent), transparent 70%); opacity: 0; transition: opacity .3s; }
+  .service-card:hover::before { opacity: 1; }
+  .service-icon { background: var(--acento); }
+  .clients-band { background: rgba(255,255,255,.70); backdrop-filter: blur(16px); }
+  .dot-0 { background: #0070c0; }
+  .dot-1 { background: #6cb83f; }
+  .dot-2 { background: #7030a0; }
+  .dot-3 { background: #e66c2c; }
+  .client-group[open] summary { color: #00548f; }
+  .testimonial { background: rgba(255,255,255,.88); backdrop-filter: blur(16px); box-shadow: 0 4px 20px -2px rgba(0,45,86,.08); overflow: hidden; }
+  .testimonial::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px; background: linear-gradient(90deg, var(--testimonial-accent), color-mix(in srgb, var(--testimonial-accent) 45%, transparent)); }
+  .testimonial-0 { --testimonial-accent: #E66C2C; }
+  .testimonial-1 { --testimonial-accent: #7030A0; }
+  .testimonial-2 { --testimonial-accent: #00B0F0; }
+  .testimonial-3 { --testimonial-accent: #6CB83F; }
+  .testimonial-4 { --testimonial-accent: #0070C0; }
+  .testimonial-5 { --testimonial-accent: #FFC000; }
+  .quote-mark { color: var(--testimonial-accent, #7030a0); }
+  .testimonial-5 .quote-mark { color: #D99B00; }
+  .contact-cta { @apply shadow-soft-lg; }
+  .footer-link:hover { text-decoration: underline; text-underline-offset: 4px; color: #fff; }
+  .btn-coral { @apply text-white; }
+  .btn-coral:hover { transform: none; box-shadow: 0 7px 20px -10px rgba(0,45,86,.25); }
+  .btn-ghost:hover, .btn-primary:hover { transform: none; }
+  .mobile-toggle:not([hidden]), .motion-control:not([hidden]) { display: inline-flex; }
+  .mobile-dialog::backdrop, .policy-dialog::backdrop { background: rgba(0,45,86,.35); backdrop-filter: blur(6px); }
+  .motion-control:disabled { opacity: 1; cursor: default; }
+  .skip-link { position: fixed; left: 1rem; top: -10rem; z-index: 100; padding: 1rem; background: white; color: #002d56; border-radius: .5rem; }
+  .skip-link:focus { top: 1rem; }
+}
+@media (max-width: 639px) {
+  .hero-background { object-position: 58% center; }
+  .hero-title { letter-spacing: -.03em; }
+  .word-mark { white-space: normal; }
+}
+html[data-motion="paused"] *, html[data-motion="paused"] *::before, html[data-motion="paused"] *::after {
+  animation-play-state: paused !important;
 }

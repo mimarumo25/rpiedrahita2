@@ -1,0 +1,28 @@
+{
+  "name": "RPiedrahíta — Contadores Públicos y Auditores en Medellín",
+  "short_name": "RPiedrahíta",
+  "description": "Más de 40 años de trayectoria en Revisoría Fiscal, Auditoría Externa e Interna, Outsourcing Contable, Gestión Tributaria y BPO de Nómina en Medellín, Colombia.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F8F9FB",
+  "theme_color": "#002D56",
+  "lang": "es-CO",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "112x112",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/logotipo.png",
+      "sizes": "280x76",
+      "type": "image/png"
+    }
+  ]
+}
+

@@ -1,46 +1,14 @@
 ---
-import { Icon } from 'astro-icon/components';
-
 interface Props {
-  eyebrow?: string;
-  eyebrowIcon?: string;
   titulo: string;
-  /** Texto resaltado con degradado dentro del título */
   tituloDestacado?: string;
   descripcion?: string;
-  align?: 'left' | 'center';
-  color?: 'navy' | 'white';
 }
-const {
-  eyebrow,
-  eyebrowIcon = 'ph:sparkle-fill',
-  titulo,
-  tituloDestacado,
-  descripcion,
-  align = 'center',
-  color = 'navy',
-} = Astro.props;
-
-const alignCls = align === 'center' ? 'mx-auto text-center items-center' : 'text-left items-start';
-const titleColor = color === 'white' ? 'text-white' : 'text-navy';
-const descColor = color === 'white' ? 'text-white/75' : 'text-gris-ej';
-const eyebrowCls =
-  color === 'white'
-    ? 'border-white/20 bg-white/10 text-white'
-    : 'border-institu/20 bg-institu/5 text-institu';
+const { titulo, tituloDestacado, descripcion } = Astro.props;
 ---
-
-<div class={`flex max-w-2xl flex-col gap-4 ${alignCls}`}>
-  {eyebrow && (
-    <span class={`inline-flex w-fit items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-semibold uppercase tracking-widest ${eyebrowCls}`}>
-      <Icon name={eyebrowIcon} class="h-4 w-4" />
-      {eyebrow}
-    </span>
-  )}
-  <h2 class={`font-display text-fluid-xl font-extrabold leading-tight tracking-tight ${titleColor}`}>
-    {titulo}{tituloDestacado && (<span class="text-gradient"> {tituloDestacado}</span>)}
+<div class="mx-auto max-w-3xl text-center">
+  <h2 class="font-display text-fluid-xl font-extrabold leading-tight tracking-tight text-navy">
+    {titulo}{tituloDestacado && <span class="text-gradient mt-1 block">{tituloDestacado}</span>}
   </h2>
-  {descripcion && (
-    <p class={`text-fluid-base leading-relaxed ${descColor}`}>{descripcion}</p>
-  )}
+  {descripcion && <p class="mx-auto mt-5 max-w-2xl text-fluid-base leading-relaxed text-navy/80">{descripcion}</p>}
 </div>

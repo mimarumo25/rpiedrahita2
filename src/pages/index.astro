@@ -1,42 +1,21 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
-import TrustBar from '../components/TrustBar.astro';
-import RisksSection from '../components/RisksSection.astro';
+import AboutSection from '../components/AboutSection.astro';
 import ServicesGrid from '../components/ServicesGrid.astro';
 import ClientsCarousel from '../components/ClientsCarousel.astro';
+import TestimonialsSection from '../components/TestimonialsSection.astro';
 import MethodologySection from '../components/MethodologySection.astro';
 import ContactMap from '../components/ContactMap.astro';
 import CTASection from '../components/CTASection.astro';
 ---
-
-<BaseLayout activeNav="inicio">
-  {/* 1. Hero principal con red de nodos */}
+<BaseLayout>
   <Hero />
-
-  {/* 2. Franja de confianza y métricas animadas */}
-  <TrustBar />
-
-  {/* 3. Riesgos que enfrenta la empresa (semáforo) */}
-  <RisksSection />
-
-  {/* 4. Servicios especializados */}
+  <AboutSection />
   <ServicesGrid />
-
-  {/* 5. Empresas que confían en nosotros */}
   <ClientsCarousel />
-
-  {/* 6. Nuestro método probado / Metodología */}
+  <TestimonialsSection />
   <MethodologySection />
-
-  {/* 7. CTA final */}
-  <CTASection
-    titulo="¿Está su empresa realmente protegida?"
-    subtitulo="Una conversación de 15 minutos puede ahorrarle años de sanciones y sobresaltos. Hablemos, sin costo, sobre cómo blindar su contabilidad, su revisoría fiscal y su control interno."
-    ctaPrimario="Agende su consulta gratis"
-    variant="institu"
-  />
-
-  {/* 8. Oficina / Mapa de contacto */}
+  <CTASection />
   <ContactMap />
 </BaseLayout>

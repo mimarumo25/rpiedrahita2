@@ -1,59 +1,39 @@
 ---
+import { Image } from 'astro:assets';
 import { Icon } from 'astro-icon/components';
-import { whatsappLink } from '../data/sitio';
-
-interface Props {
-  titulo?: string;
-  subtitulo?: string;
-  ctaPrimario?: string;
-  ctaSecundarioHref?: string;
-  ctaSecundario?: string;
-  /** Variante de color de fondo */
-  variant?: 'institu' | 'coral' | 'navy';
-}
-const {
-  titulo = '¿Está su empresa protegida?',
-  subtitulo = 'Una conversación de 15 minutos puede ahorrarle años de problemas. Hablemos sin costo sobre cómo blindar su contabilidad, su fiscal y su control interno.',
-  ctaPrimario = 'Agenda su consulta gratis',
-  ctaSecundarioHref = '/servicios',
-  ctaSecundario = 'Ver servicios',
-  variant = 'institu',
-} = Astro.props;
-
-const fondos = {
-  institu: 'bg-grad-institu',
-  coral: 'bg-grad-energia',
-  navy: 'bg-navy',
-};
+import conversacionEmpresarial from '../assets/conversacion-empresarial.jpg';
+import { firma, whatsappLink } from '../data/sitio';
 ---
-
-<section class="container-rp py-8 sm:py-12">
-  <div class={`relative overflow-hidden rounded-5xl px-6 py-14 text-center shadow-soft-lg sm:px-12 sm:py-20 ${fondos[variant]}`}>
-    {/* Decoración */}
-    <div class="pointer-events-none absolute -left-10 -top-10 h-48 w-48 rounded-full bg-white/10 blur-2xl animate-float-soft" aria-hidden="true"></div>
-    <div class="pointer-events-none absolute -bottom-12 -right-8 h-56 w-56 rounded-full bg-white/10 blur-2xl animate-float-soft" style="animation-delay:-3s" aria-hidden="true"></div>
-    <div class="pointer-events-none absolute right-1/4 top-1/3 h-24 w-24 rounded-full bg-white/5 blur-xl" aria-hidden="true"></div>
-
-    <div class="relative z-10 mx-auto max-w-3xl">
-      <span class="mb-5 inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-white backdrop-blur">
-        <Icon name="ph:shield-star-fill" class="h-4 w-4" />
-        Consulta gratuita
-      </span>
-      <h2 class="font-display text-fluid-2xl font-extrabold text-white text-balance">
-        {titulo}
-      </h2>
-      <p class="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-white/80 sm:text-fluid-base">
-        {subtitulo}
-      </p>
-      <div class="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row">
-        <a href={whatsappLink} target="_blank" rel="noopener" class="btn bg-white text-navy shadow-soft hover:bg-gris-cl hover:-translate-y-0.5">
-          <Icon name="ph:whatsapp-logo-fill" class="h-5 w-5 text-[#25D366]" />
-          {ctaPrimario}
-        </a>
-        <a href={ctaSecundarioHref} class="btn border-2 border-white/40 text-white backdrop-blur hover:bg-white/10 hover:-translate-y-0.5">
-          {ctaSecundario}
-          <Icon name="ph:arrow-right-bold" class="h-4 w-4" />
-        </a>
+<section class="container-rp section-space">
+  <div class="contact-cta relative isolate overflow-hidden rounded-5xl bg-grad-institu shadow-soft-lg">
+    <div class="pointer-events-none absolute -left-16 -top-16 -z-10 h-72 w-72 rounded-full bg-turquesa/30 blur-3xl animate-blob-drift" aria-hidden="true"></div>
+    <div class="pointer-events-none absolute -bottom-20 left-1/3 -z-10 h-72 w-72 rounded-full bg-coral/30 blur-3xl animate-blob-drift" style="animation-delay:-8s" aria-hidden="true"></div>
+    <div class="grid grid-cols-1 lg:grid-cols-12">
+      <div class="flex flex-col justify-center px-6 py-12 sm:px-12 sm:py-16 lg:col-span-6 lg:py-20">
+        <h2 class="text-fluid-xl leading-tight text-white">Conversemos sobre el<br class="hidden sm:block" /> <span class="word-mark mark-coral">futuro de su empresa</span></h2>
+        <p class="mt-5 max-w-xl text-fluid-base leading-relaxed text-white/95">
+          Cuéntenos qué necesita. Nuestro equipo está listo para escucharle y acompañar sus próximas decisiones.
+        </p>
+        <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+          <a href={whatsappLink} target="_blank" rel="noopener" class="btn-coral">
+            <Icon name="ph:whatsapp-logo-fill" class="h-5 w-5" /> Conversemos sobre su empresa
+          </a>
+          <a href={firma.contacto.emailHref} class="btn border border-white/35 bg-white/10 text-white backdrop-blur hover:bg-white/20">
+            <Icon name="ph:envelope-simple-bold" class="h-5 w-5" /> {firma.contacto.email}
+          </a>
+        </div>
+      </div>
+      <div class="relative min-h-[280px] sm:min-h-[360px] lg:col-span-6 lg:min-h-[440px]">
+        <Image
+          src={conversacionEmpresarial}
+          alt="Ejecutivos colombianos revisando proyecciones financieras en una oficina de Medellín"
+          widths={[480, 768, 1120, 1408]}
+          sizes="(max-width: 1023px) calc(100vw - 40px), 600px"
+          format="webp"
+          quality={86}
+          loading="lazy"
+          class="h-full w-full object-cover object-center lg:absolute lg:inset-0"
+        />
       </div>
     </div>
   </div>

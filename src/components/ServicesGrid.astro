@@ -2,44 +2,516 @@
 import ServiceCard from './ServiceCard.astro';
 import SectionHeading from './SectionHeading.astro';
 import { servicios } from '../data/servicios';
+import { whatsappLink, recursosTributarios, indicadoresTributarios } from '../data/sitio';
 import { Icon } from 'astro-icon/components';
 
-interface Props {
-  /** Mostrar el encabezado de sección */
-  showHeading?: boolean;
-  /** Mostrar el CTA inferior */
-  showCta?: boolean;
-}
-const { showHeading = true, showCta = true } = Astro.props;
+const topeActivosCop = indicadoresTributarios.smlmv2025 * indicadoresTributarios.topeActivosRevisoriaSmlmv;
+const topeIngresosCop = indicadoresTributarios.smlmv2025 * indicadoresTributarios.topeIngresosRevisoriaSmlmv;
+const formatCop = (val: number) =>
+  new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(val);
 ---
-
-<section id="servicios" class="relative py-8 sm:py-12">
+<section id="servicios" class="section-space">
   <div class="container-rp">
-    {showHeading && (
-      <SectionHeading
-        eyebrow="Servicios especializados"
-        eyebrowIcon="ph:sparkle-fill"
-        titulo="Soluciones contables para"
-        tituloDestacado="cada necesidad"
-        descripcion="Un portafolio completo que cubre todo el ciclo de su empresa: control, cumplimiento, información y gestión del talento."
-      />
-    )}
-
-    <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {servicios.map((s, i) => (
-        <div data-reveal="up" data-reveal-delay={(i % 3) * 100}>
-          <ServiceCard servicio={s} delay={(i % 3) * 100} />
-        </div>
-      ))}
+    <SectionHeading titulo="Conocimiento especializado." tituloDestacado="Soluciones para su empresa."
+      descripcion="Un equipo que acompaña su contabilidad, fortalece el control y aporta claridad a sus decisiones." />
+    <div class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" data-reveal>
+      {servicios.map((servicio) => <ServiceCard servicio={servicio} />)}
     </div>
 
-    {showCta && (
-      <div class="mt-12 text-center" data-reveal="up">
-        <a href="/servicios" class="btn-primary text-base">
-          Ver todos los servicios
-          <Icon name="ph:arrow-right-bold" class="h-4 w-4" />
-        </a>
+    {/* --- Recursos Tributarios (Calendario, Cartilla y Calculadoras Blindadas) --- */}
+    <div id="recursos-tributarios" class="mt-12 rounded-4xl border border-navy/10 bg-white/85 p-6 shadow-soft backdrop-blur-xl sm:p-9" data-reveal>
+      <div class="flex flex-col justify-between gap-4 border-b border-navy/10 pb-6 lg:flex-row lg:items-end">
+        <div>
+          <span class="eyebrow">
+            <span class="h-2 w-2 rounded-full bg-coral" aria-hidden="true"></span>
+            Herramientas de consulta
+          </span>
+          <h3 class="mt-3 font-display text-2xl font-extrabold text-navy sm:text-3xl">
+            Recursos y Calculadoras <span class="text-gradient">Tributarias</span>
+          </h3>
+        </div>
+        <p class="max-w-xl text-sm leading-relaxed text-carbon">
+          Descargue nuestras publicaciones anuales de referencia o utilice los simuladores interactivos con parámetros editables para planificar el cumplimiento de su empresa.
+        </p>
       </div>
-    )}
+
+      {/* --- Tarjetas PDF Descargables --- */}
+      <div class="mt-7 grid gap-5 md:grid-cols-2">
+        {recursosTributarios.map((recurso) => (
+          <a
+            href={recurso.href}
+            download={recurso.archivo}
+            style={`--acento: ${recurso.acento}`}
+            class="service-card group relative flex flex-col justify-between gap-5 overflow-hidden rounded-3xl border border-navy/10 bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-soft-lg sm:flex-row sm:items-center sm:p-7"
+          >
+            <div class="flex items-start gap-4">
+              <div class="service-icon flex h-13 w-13 shrink-0 items-center justify-center rounded-2xl text-white shadow-sm">
+                <Icon name={recurso.icono} class="h-6 w-6" />
+              </div>
+              <div>
+                <span class="inline-block rounded-full bg-navy/5 px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider text-navy/75">
+                  {recurso.etiqueta}
+                </span>
+                <h4 class="mt-1.5 font-display text-xl font-extrabold text-navy group-hover:text-institu">
+                  {recurso.titulo}
+                </h4>
+                <p class="mt-1.5 text-sm leading-relaxed text-carbon">
+                  {recurso.descripcion}
+                </p>
+              </div>
+            </div>
+
+            <span class="inline-flex shrink-0 items-center gap-2 self-start rounded-full border border-navy/15 bg-blanco-co px-4 py-2 text-xs font-bold text-navy transition group-hover:border-institu group-hover:bg-institu group-hover:text-white sm:self-center">
+              Descargar PDF
+              <Icon name="ph:download-simple-bold" class="h-4 w-4" />
+            </span>
+          </a>
+        ))}
+      </div>
+
+      {/* --- Candado de Vigencia Automático + TRM en vivo (Datos Abiertos Colombia - Superfinanciera) --- */}
+      <div class="mt-8 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-institu/15 bg-blanco-co px-5 py-3.5">
+        <div class="flex flex-wrap items-center gap-3 text-xs font-semibold text-navy" id="estado-vigencia-indicadores">
+          <span class="inline-flex items-center gap-2">
+            <span id="badge-vigencia-dot" class="h-2.5 w-2.5 shrink-0 rounded-full bg-verde-est"></span>
+            <span id="texto-vigencia-indicadores">
+              Parámetros base precargados: Vigencia {indicadoresTributarios.anioVigente} (UVT {formatCop(indicadoresTributarios.uvt2026)} · SMLMV {indicadoresTributarios.anioAnterior} para topes {formatCop(indicadoresTributarios.smlmv2025)})
+            </span>
+          </span>
+          <span
+            id="trm-live-pill"
+            hidden
+            class="inline-flex items-center gap-1.5 rounded-full border border-institu/20 bg-white px-3 py-1 text-[11px] font-bold text-institu shadow-sm"
+          >
+            <Icon name="ph:currency-dollar-bold" class="h-3.5 w-3.5 text-verde-est" />
+            <span id="trm-live-text">TRM hoy: consultando Superfinanciera...</span>
+          </span>
+        </div>
+        <span class="text-[11px] font-medium text-gris-ej">
+          Puede modificar manualmente el valor de la UVT o del SMLMV en cada calculadora
+        </span>
+      </div>
+
+      {/* --- Las 2 Herramientas Blindadas: 1. Validador Revisoría Fiscal y 2. Conversor UVT ↔ COP --- */}
+      <div class="mt-6 grid gap-6 lg:grid-cols-2">
+        {/* Herramienta 1: Validador de Obligatoriedad de Revisoría Fiscal */}
+        <div
+          class="service-card relative flex flex-col justify-between overflow-hidden rounded-3xl border border-navy/10 bg-white p-6 sm:p-7"
+          style="--acento: #6CB83F"
+        >
+          <div>
+            <div class="flex items-center justify-between gap-3">
+              <span class="inline-flex items-center gap-1.5 rounded-full bg-verde-est/15 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-navy">
+                <Icon name="ph:scales-duotone" class="h-4 w-4 text-verde-est" />
+                Ley 43 de 1990 · Art. 13 Par. 2
+              </span>
+              <span class="text-xs font-semibold text-gris-ej">Tope: 5.000 / 3.000 SMLMV</span>
+            </div>
+
+            <h4 class="mt-3 font-display text-xl font-extrabold text-navy">
+              ¿Su empresa está obligada a tener Revisor Fiscal?
+            </h4>
+            <p class="mt-1.5 text-xs leading-relaxed text-carbon">
+              Verifique si su sociedad cumple los topes legales de activos o ingresos brutos al 31 de diciembre del año inmediatamente anterior.
+            </p>
+
+            <div class="mt-5 space-y-4">
+              <div class="grid gap-3 sm:grid-cols-2">
+                <div>
+                  <label for="rf-tipo-sociedad" class="block text-xs font-bold text-navy">
+                    Tipo de sociedad
+                  </label>
+                  <select
+                    id="rf-tipo-sociedad"
+                    class="mt-1.5 w-full rounded-xl border border-navy/20 bg-blanco-co px-3.5 py-2.5 text-xs font-semibold text-navy focus:border-institu focus:outline-none"
+                  >
+                    <option value="topes">S.A.S. / Ltda. / Otra (Por topes)</option>
+                    <option value="obligada">Sociedad Anónima (S.A.) / Sucursal extranjera</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label for="rf-smlmv-base" class="block text-xs font-bold text-navy">
+                    SMLMV año anterior ($) <span class="font-normal text-gris-ej">(editable)</span>
+                  </label>
+                  <input
+                    id="rf-smlmv-base"
+                    type="number"
+                    min="100000"
+                    step="1000"
+                    value={indicadoresTributarios.smlmv2025}
+                    class="mt-1.5 w-full rounded-xl border border-navy/20 bg-blanco-co px-3.5 py-2.5 text-xs font-semibold text-navy focus:border-institu focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              <div class="grid gap-3 sm:grid-cols-2">
+                <div>
+                  <label for="rf-activos" class="block text-xs font-bold text-navy">
+                    Activos brutos cierre año anterior ($)
+                  </label>
+                  <input
+                    id="rf-activos"
+                    type="number"
+                    min="0"
+                    step="10000000"
+                    placeholder="Ej: 7500000000"
+                    class="mt-1.5 w-full rounded-xl border border-navy/20 bg-white px-3.5 py-2.5 text-xs font-semibold text-navy focus:border-institu focus:outline-none"
+                  />
+                  <span id="rf-tope-activos-label" class="mt-1 block text-[11px] text-gris-ej">
+                    Tope 5.000 SMLMV: {formatCop(topeActivosCop)}
+                  </span>
+                </div>
+
+                <div>
+                  <label for="rf-ingresos" class="block text-xs font-bold text-navy">
+                    Ingresos brutos cierre año anterior ($)
+                  </label>
+                  <input
+                    id="rf-ingresos"
+                    type="number"
+                    min="0"
+                    step="10000000"
+                    placeholder="Ej: 4500000000"
+                    class="mt-1.5 w-full rounded-xl border border-navy/20 bg-white px-3.5 py-2.5 text-xs font-semibold text-navy focus:border-institu focus:outline-none"
+                  />
+                  <span id="rf-tope-ingresos-label" class="mt-1 block text-[11px] text-gris-ej">
+                    Tope 3.000 SMLMV: {formatCop(topeIngresosCop)}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="rf-resultado-box" class="mt-5 rounded-2xl border border-navy/10 bg-blanco-co p-4">
+            <p id="rf-resultado-titulo" class="font-display text-sm font-extrabold text-navy">
+              Ingrese los activos o ingresos brutos de su empresa para validar
+            </p>
+            <p id="rf-resultado-detalle" class="mt-1 text-xs leading-relaxed text-carbon">
+              Si sus activos brutos igualan o superan 5.000 SMLMV ({formatCop(topeActivosCop)}) o sus ingresos brutos igualan o superan 3.000 SMLMV ({formatCop(topeIngresosCop)}), está obligada a tener Revisor Fiscal.
+            </p>
+            <a
+              href={whatsappLink}
+              target="_blank"
+              rel="noopener"
+              class="mt-3 inline-flex items-center gap-1.5 text-xs font-bold text-institu underline decoration-institu/50 underline-offset-4 hover:text-navy"
+            >
+              Consultar o cotizar Revisoría Fiscal con RPiedrahíta
+              <Icon name="ph:arrow-up-right-bold" class="h-3.5 w-3.5" />
+            </a>
+          </div>
+        </div>
+
+        {/* Herramienta 2: Conversor UVT ↔ Pesos Colombianos (COP) */}
+        <div
+          class="service-card relative flex flex-col justify-between overflow-hidden rounded-3xl border border-navy/10 bg-white p-6 sm:p-7"
+          style="--acento: #00B0F0"
+        >
+          <div>
+            <div class="flex items-center justify-between gap-3">
+              <span class="inline-flex items-center gap-1.5 rounded-full bg-turquesa/15 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-navy">
+                <Icon name="ph:calculator-duotone" class="h-4 w-4 text-institu" />
+                Conversor Tributario
+              </span>
+              <span class="text-xs font-semibold text-gris-ej">Cálculo bidireccional</span>
+            </div>
+
+            <h4 class="mt-3 font-display text-xl font-extrabold text-navy">
+              Conversor de UVT a Pesos (COP) y Topes Clave
+            </h4>
+            <p class="mt-1.5 text-xs leading-relaxed text-carbon">
+              Convierta cualquier cifra entre Unidades de Valor Tributario (UVT) y pesos colombianos, o consulte las bases mínimas de referencia.
+            </p>
+
+            <div class="mt-5 space-y-4">
+              <div class="grid gap-3 sm:grid-cols-3">
+                <div>
+                  <label for="uvt-valor-unitario" class="block text-xs font-bold text-navy">
+                    Valor 1 UVT ($) <span class="font-normal text-gris-ej">(editable)</span>
+                  </label>
+                  <input
+                    id="uvt-valor-unitario"
+                    type="number"
+                    min="1000"
+                    step="1"
+                    value={indicadoresTributarios.uvt2026}
+                    class="mt-1.5 w-full rounded-xl border border-navy/20 bg-blanco-co px-3.5 py-2.5 text-xs font-semibold text-navy focus:border-institu focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label for="uvt-input-cantidad" class="block text-xs font-bold text-navy">
+                    Cantidad en UVT
+                  </label>
+                  <input
+                    id="uvt-input-cantidad"
+                    type="number"
+                    min="0"
+                    step="any"
+                    value="10"
+                    class="mt-1.5 w-full rounded-xl border border-navy/20 bg-white px-3.5 py-2.5 text-xs font-semibold text-navy focus:border-institu focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label for="uvt-input-pesos" class="block text-xs font-bold text-navy">
+                    Equivalente en Pesos ($)
+                  </label>
+                  <input
+                    id="uvt-input-pesos"
+                    type="number"
+                    min="0"
+                    step="1000"
+                    value={indicadoresTributarios.uvt2026 * 10}
+                    class="mt-1.5 w-full rounded-xl border border-navy/20 bg-white px-3.5 py-2.5 text-xs font-semibold text-navy focus:border-institu focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <span class="block text-[11px] font-bold uppercase tracking-wider text-gris-ej">
+                  Referencias rápidas frecuentes (clic para calcular):
+                </span>
+                <div class="mt-2 flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    data-uvt-preset="10"
+                    data-uvt-label="Sanción mínima DIAN (10 UVT)"
+                    class="rounded-full border border-navy/15 bg-blanco-co px-3 py-1.5 text-xs font-semibold text-navy transition hover:border-institu hover:bg-institu hover:text-white"
+                  >
+                    10 UVT · Sanción mínima
+                  </button>
+                  <button
+                    type="button"
+                    data-uvt-preset="4"
+                    data-uvt-label="Base mínima Retefuente Servicios (4 UVT)"
+                    class="rounded-full border border-navy/15 bg-blanco-co px-3 py-1.5 text-xs font-semibold text-navy transition hover:border-institu hover:bg-institu hover:text-white"
+                  >
+                    4 UVT · Base Servicios
+                  </button>
+                  <button
+                    type="button"
+                    data-uvt-preset="27"
+                    data-uvt-label="Base mínima Retefuente Compras (27 UVT)"
+                    class="rounded-full border border-navy/15 bg-blanco-co px-3 py-1.5 text-xs font-semibold text-navy transition hover:border-institu hover:bg-institu hover:text-white"
+                  >
+                    27 UVT · Base Compras
+                  </button>
+                  <button
+                    type="button"
+                    data-uvt-preset="1400"
+                    data-uvt-label="Tope Ingresos / Consumos Renta PN (1.400 UVT)"
+                    class="rounded-full border border-navy/15 bg-blanco-co px-3 py-1.5 text-xs font-semibold text-navy transition hover:border-institu hover:bg-institu hover:text-white"
+                  >
+                    1.400 UVT · Tope Ingresos Renta
+                  </button>
+                  <button
+                    type="button"
+                    data-uvt-preset="4500"
+                    data-uvt-label="Tope Patrimonio Bruto Renta PN (4.500 UVT)"
+                    class="rounded-full border border-navy/15 bg-blanco-co px-3 py-1.5 text-xs font-semibold text-navy transition hover:border-institu hover:bg-institu hover:text-white"
+                  >
+                    4.500 UVT · Tope Patrimonio
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-5 rounded-2xl border border-navy/10 bg-blanco-co p-4">
+            <p id="uvt-resultado-concepto" class="text-xs font-bold uppercase tracking-wider text-institu">
+              Sanción mínima DIAN (10 UVT)
+            </p>
+            <p id="uvt-resultado-valor" class="mt-1 font-display text-2xl font-extrabold text-navy">
+              10 UVT = {formatCop(indicadoresTributarios.uvt2026 * 10)}
+            </p>
+            <p class="mt-1 text-xs text-carbon">
+              Cálculo directo: <span id="uvt-formula-detalle">10 UVT × {formatCop(indicadoresTributarios.uvt2026)}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <p class="mt-5 text-center text-[11px] leading-relaxed text-gris-ej">
+        <strong>Aviso de alcance profesional:</strong> Los resultados de estas calculadoras son de carácter informativo y de referencia, calculados con base en los parámetros ingresados por el usuario. No constituyen concepto tributario ni dictamen de revisoría fiscal.
+      </p>
+    </div>
+
+    <div class="mt-9 text-center">
+      <a href={whatsappLink} target="_blank" rel="noopener" class="btn-ghost">
+        Hablemos de lo que necesita <Icon name="ph:arrow-up-right-bold" class="h-4 w-4" />
+      </a>
+    </div>
   </div>
 </section>
+
+<script>
+  const copFormatter = new Intl.NumberFormat('es-CO', {
+    style: 'currency',
+    currency: 'COP',
+    maximumFractionDigits: 0,
+  });
+
+  // Elementos del Validador de Revisoría Fiscal
+  const rfTipo = document.getElementById('rf-tipo-sociedad') as HTMLSelectElement | null;
+  const rfSmlmv = document.getElementById('rf-smlmv-base') as HTMLInputElement | null;
+  const rfActivos = document.getElementById('rf-activos') as HTMLInputElement | null;
+  const rfIngresos = document.getElementById('rf-ingresos') as HTMLInputElement | null;
+  const rfTopeActivosLabel = document.getElementById('rf-tope-activos-label');
+  const rfTopeIngresosLabel = document.getElementById('rf-tope-ingresos-label');
+  const rfResultadoBox = document.getElementById('rf-resultado-box');
+  const rfResultadoTitulo = document.getElementById('rf-resultado-titulo');
+  const rfResultadoDetalle = document.getElementById('rf-resultado-detalle');
+
+  // Elementos del Conversor UVT
+  const uvtUnitario = document.getElementById('uvt-valor-unitario') as HTMLInputElement | null;
+  const uvtCantidad = document.getElementById('uvt-input-cantidad') as HTMLInputElement | null;
+  const uvtPesos = document.getElementById('uvt-input-pesos') as HTMLInputElement | null;
+  const uvtConcepto = document.getElementById('uvt-resultado-concepto');
+  const uvtValor = document.getElementById('uvt-resultado-valor');
+  const uvtFormula = document.getElementById('uvt-formula-detalle');
+  const uvtPresets = document.querySelectorAll('[data-uvt-preset]');
+
+  // Elementos del Candado de Vigencia
+  const dotVigencia = document.getElementById('badge-vigencia-dot');
+  const textoVigencia = document.getElementById('texto-vigencia-indicadores');
+
+  function actualizarRevisoria() {
+    if (!rfSmlmv || !rfTipo || !rfResultadoTitulo || !rfResultadoDetalle || !rfResultadoBox) return;
+    const smlmv = Math.max(0, Number(rfSmlmv.value) || 0);
+    const topeActivos = smlmv * 5000;
+    const topeIngresos = smlmv * 3000;
+
+    if (rfTopeActivosLabel) rfTopeActivosLabel.textContent = `Tope 5.000 SMLMV: ${copFormatter.format(topeActivos)}`;
+    if (rfTopeIngresosLabel) rfTopeIngresosLabel.textContent = `Tope 3.000 SMLMV: ${copFormatter.format(topeIngresos)}`;
+
+    if (rfTipo.value === 'obligada') {
+      rfResultadoBox.className = 'mt-5 rounded-2xl border border-coral/40 bg-coral/10 p-4';
+      rfResultadoTitulo.textContent = 'SÍ está obligada a tener Revisor Fiscal por naturaleza jurídica';
+      rfResultadoDetalle.textContent =
+        'Por disposición del artículo 203 del Código de Comercio, todas las Sociedades Anónimas (S.A.) y las sucursales de compañías extranjeras deben contar con Revisor Fiscal sin importar su nivel de activos o ingresos.';
+      return;
+    }
+
+    const activos = Number(rfActivos?.value || 0);
+    const ingresos = Number(rfIngresos?.value || 0);
+
+    if (!rfActivos?.value && !rfIngresos?.value) {
+      rfResultadoBox.className = 'mt-5 rounded-2xl border border-navy/10 bg-blanco-co p-4';
+      rfResultadoTitulo.textContent = 'Ingrese los activos o ingresos brutos de su empresa para validar';
+      rfResultadoDetalle.textContent = `Si sus activos brutos igualan o superan 5.000 SMLMV (${copFormatter.format(topeActivos)}) o sus ingresos brutos igualan o superan 3.000 SMLMV (${copFormatter.format(topeIngresos)}), está obligada a tener Revisor Fiscal.`;
+      return;
+    }
+
+    const superaActivos = activos >= topeActivos;
+    const superaIngresos = ingresos >= topeIngresos;
+
+    if (superaActivos || superaIngresos) {
+      rfResultadoBox.className = 'mt-5 rounded-2xl border border-coral/40 bg-coral/10 p-4';
+      rfResultadoTitulo.textContent = 'SÍ está obligada a tener Revisor Fiscal (Ley 43 de 1990, Art. 13)';
+      const motivos = [];
+      if (superaActivos) motivos.push(`sus activos (${copFormatter.format(activos)}) alcanzan o superan los 5.000 SMLMV (${copFormatter.format(topeActivos)})`);
+      if (superaIngresos) motivos.push(`sus ingresos (${copFormatter.format(ingresos)}) alcanzan o superan los 3.000 SMLMV (${copFormatter.format(topeIngresos)})`);
+      rfResultadoDetalle.textContent = `De acuerdo con los valores ingresados, ${motivos.join(' y ')}.`;
+    } else {
+      rfResultadoBox.className = 'mt-5 rounded-2xl border border-verde-est/40 bg-verde-est/10 p-4';
+      rfResultadoTitulo.textContent = 'No supera los topes generales de obligatoriedad (Ley 43 de 1990)';
+      rfResultadoDetalle.textContent = `Sus activos e ingresos están por debajo de 5.000 SMLMV (${copFormatter.format(topeActivos)}) y 3.000 SMLMV (${copFormatter.format(topeIngresos)}). Verifique si sus estatutos sociales o una norma especial de su sector exigen Revisoría Fiscal.`;
+    }
+  }
+
+  function actualizarDesdeUvt(labelCustom?: string) {
+    if (!uvtUnitario || !uvtCantidad || !uvtPesos || !uvtValor || !uvtFormula) return;
+    const valorUvt = Math.max(1, Number(uvtUnitario.value) || 0);
+    const cantidad = Math.max(0, Number(uvtCantidad.value) || 0);
+    const totalPesos = Math.round(cantidad * valorUvt);
+    uvtPesos.value = String(totalPesos);
+    if (uvtConcepto && labelCustom) uvtConcepto.textContent = labelCustom;
+    else if (uvtConcepto && !labelCustom) uvtConcepto.textContent = 'Conversión directa UVT a Pesos (COP)';
+    const uvtFormatted = new Intl.NumberFormat('es-CO', { maximumFractionDigits: 2 }).format(cantidad);
+    uvtValor.textContent = `${uvtFormatted} UVT = ${copFormatter.format(totalPesos)}`;
+    uvtFormula.textContent = `${uvtFormatted} UVT × ${copFormatter.format(valorUvt)}`;
+  }
+
+  function actualizarDesdePesos() {
+    if (!uvtUnitario || !uvtCantidad || !uvtPesos || !uvtValor || !uvtFormula) return;
+    const valorUvt = Math.max(1, Number(uvtUnitario.value) || 1);
+    const totalPesos = Math.max(0, Number(uvtPesos.value) || 0);
+    const cantidad = Number((totalPesos / valorUvt).toFixed(2));
+    uvtCantidad.value = String(cantidad);
+    if (uvtConcepto) uvtConcepto.textContent = 'Conversión directa Pesos (COP) a UVT';
+    const uvtFormatted = new Intl.NumberFormat('es-CO', { maximumFractionDigits: 2 }).format(cantidad);
+    uvtValor.textContent = `${copFormatter.format(totalPesos)} = ${uvtFormatted} UVT`;
+    uvtFormula.textContent = `${copFormatter.format(totalPesos)} ÷ ${copFormatter.format(valorUvt)}`;
+  }
+
+  [rfTipo, rfSmlmv, rfActivos, rfIngresos].forEach((el) => {
+    el?.addEventListener('input', actualizarRevisoria);
+    el?.addEventListener('change', actualizarRevisoria);
+  });
+
+  uvtUnitario?.addEventListener('input', () => actualizarDesdeUvt());
+  uvtCantidad?.addEventListener('input', () => actualizarDesdeUvt());
+  uvtPesos?.addEventListener('input', () => actualizarDesdePesos());
+
+  uvtPresets.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const preset = btn.getAttribute('data-uvt-preset');
+      const label = btn.getAttribute('data-uvt-label') || '';
+      if (preset && uvtCantidad) {
+        uvtCantidad.value = preset;
+        actualizarDesdeUvt(label);
+      }
+    });
+  });
+
+  // Cargar /indicadores.json y validar vigencia contra el año actual del navegador
+  fetch('/indicadores.json')
+    .then((res) => (res.ok ? res.json() : null))
+    .then((data) => {
+      if (!data) return;
+      if (uvtUnitario && data.uvt) uvtUnitario.value = String(data.uvt);
+      if (rfSmlmv && data.smlmvAnioAnterior) rfSmlmv.value = String(data.smlmvAnioAnterior);
+      actualizarRevisoria();
+      actualizarDesdeUvt('Sanción mínima DIAN (10 UVT)');
+
+      const currentYear = new Date().getFullYear();
+      const anioConfig = Number(data.anioVigente) || 2026;
+      if (textoVigencia && dotVigencia) {
+        if (currentYear > anioConfig) {
+          dotVigencia.className = 'h-2.5 w-2.5 shrink-0 rounded-full bg-ambar-riesgo';
+          textoVigencia.textContent = `Nota: Los valores base precargados corresponden al año ${anioConfig}. Verifique o ingrese manualmente en las casillas el valor de la UVT y del SMLMV vigentes en ${currentYear}.`;
+        } else {
+          dotVigencia.className = 'h-2.5 w-2.5 shrink-0 rounded-full bg-verde-est';
+          textoVigencia.textContent = `Parámetros base precargados: Vigencia ${anioConfig} (UVT ${copFormatter.format(data.uvt)} · SMLMV ${data.anioAnterior} para topes ${copFormatter.format(data.smlmvAnioAnterior)})`;
+        }
+      }
+    })
+    .catch(() => {});
+
+  // Consultar TRM oficial en tiempo real desde Datos Abiertos Colombia (Superfinanciera) con respaldo en DolarApi
+  const trmPill = document.getElementById('trm-live-pill');
+  const trmText = document.getElementById('trm-live-text');
+  fetch('https://www.datos.gov.co/resource/32sa-8pi3.json?$limit=1&$order=vigenciadesde%20DESC')
+    .then((res) => (res.ok ? res.json() : Promise.reject()))
+    .then((rows) => {
+      const row = Array.isArray(rows) ? rows[0] : null;
+      const valor = row ? Number(row.valor) : 0;
+      if (valor > 0 && trmPill && trmText) {
+        trmText.textContent = `TRM Oficial Superfinanciera: ${copFormatter.format(valor)} COP/USD`;
+        trmPill.hidden = false;
+      }
+    })
+    .catch(() => {
+      fetch('https://co.dolarapi.com/v1/trm')
+        .then((res) => (res.ok ? res.json() : null))
+        .then((data) => {
+          const valor = data ? Number(data.valor) : 0;
+          if (valor > 0 && trmPill && trmText) {
+            trmText.textContent = `TRM Oficial hoy: ${copFormatter.format(valor)} COP/USD`;
+            trmPill.hidden = false;
+          }
+        })
+        .catch(() => {});
+    });
+</script>

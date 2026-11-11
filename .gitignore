@@ -1,6 +1,8 @@
 # build output
 dist/
 .astro/
+.playwright-mcp/
+output/playwright/
 
 # dependencies
 node_modules/

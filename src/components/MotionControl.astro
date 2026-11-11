@@ -1,0 +1,30 @@
+---
+import { Icon } from 'astro-icon/components';
+---
+<button id="motion-control" hidden type="button" aria-pressed="false"
+  class="motion-control fixed bottom-5 left-4 z-40 items-center gap-2 rounded-full bg-white/95 px-4 py-3 text-xs font-semibold text-navy shadow-soft backdrop-blur">
+  <Icon name="ph:pause-bold" class="h-4 w-4" />
+  <span>Pausar animaciones</span>
+</button>
+<script>
+  const control = document.querySelector<HTMLButtonElement>('#motion-control');
+  const label = control?.querySelector('span');
+  const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let paused = false;
+  if (control && label) {
+    const update = () => {
+      const stopped = paused || preference.matches || document.hidden;
+      document.documentElement.dataset.motion = stopped ? 'paused' : 'running';
+      control.setAttribute('aria-pressed', String(paused || preference.matches));
+      control.disabled = preference.matches;
+      label.textContent = preference.matches ? 'Movimiento reducido' : paused ? 'Activar animaciones' : 'Pausar animaciones';
+      control.title = preference.matches ? 'Se respeta la preferencia de movimiento reducido de su dispositivo' : '';
+      document.dispatchEvent(new Event('rp:motion-change'));
+    };
+    control.hidden = false;
+    control.addEventListener('click', () => { paused = !paused; update(); });
+    preference.addEventListener('change', update);
+    document.addEventListener('visibilitychange', update);
+    update();
+  }
+</script>
