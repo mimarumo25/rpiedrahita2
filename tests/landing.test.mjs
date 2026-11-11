@@ -23,7 +23,7 @@ test('la salida pública contiene contenido real y todas las anclas resuelven', 
     assert.ok(html.includes(`alt="Logotipo oficial de ${nombre}"`), `Logo de ${nombre}`);
   }
   assert.match(html, /clients-marquee-track[^>]*animate-marquee/);
-  assert.match(html, /testimonials-grid/);
+  assert.match(html, /testimonials-marquee-track[^>]*animate-marquee-slow/);
   for (const testimonio of testimonios) {
     assert.ok(html.includes(testimonio.cita), testimonio.empresa);
     assert.ok(html.includes(`alt="Logotipo oficial de ${testimonio.empresa}"`), `Logo de ${testimonio.empresa}`);

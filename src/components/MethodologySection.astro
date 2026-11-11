@@ -8,28 +8,32 @@ const pasos = [
     titulo: 'Diagnóstico',
     descripcion: 'Conocemos su empresa, identificamos riesgos y entendemos sus objetivos.',
     icono: 'ph:chart-bar-fill',
-    color: '#002D56',
+    color: '#0070C0',
+    textColor: '#ffffff',
   },
   {
     n: '02',
     titulo: 'Plan a la medida',
     descripcion: 'Definimos una estrategia de control, cumplimiento e información alineada con sus necesidades.',
     icono: 'ph:blueprint-fill',
-    color: '#0070C0',
+    color: '#00B0F0',
+    textColor: '#002D56',
   },
   {
     n: '03',
     titulo: 'Implementación',
     descripcion: 'Ponemos en marcha procesos, controles y reportes con acompañamiento constante y comunicación clara.',
     icono: 'ph:gear-six-fill',
-    color: '#00548F',
+    color: '#6CB83F',
+    textColor: '#002D56',
   },
   {
     n: '04',
     titulo: 'Monitoreo y mejora',
     descripcion: 'Medimos resultados, anticipamos riesgos y mejoramos continuamente. La confianza se cuida todos los días.',
     icono: 'ph:chart-line-up-fill',
-    color: '#00B0F0',
+    color: '#E66C2C',
+    textColor: '#ffffff',
   },
 ];
 ---
@@ -45,20 +49,20 @@ const pasos = [
     />
 
     <div class="relative mt-14">
-      <div class="absolute left-8 right-8 top-10 hidden h-0.5 bg-gradient-to-r from-navy via-institu to-turquesa lg:block" aria-hidden="true"></div>
+      <div class="absolute left-8 right-8 top-10 hidden h-1 rounded-full bg-gradient-to-r from-institu via-verde-est to-coral lg:block" aria-hidden="true"></div>
 
       <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {pasos.map((p, i) => (
-          <div class="relative rounded-3xl border border-white/80 bg-white/85 p-7 shadow-soft backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-soft-lg" data-reveal="up" data-reveal-delay={i * 100}>
+          <div class="relative overflow-hidden rounded-3xl border border-white/80 bg-white/85 p-7 shadow-soft backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-soft-lg" style={`border-top: 5px solid ${p.color}`} data-reveal="up" data-reveal-delay={i * 100}>
             <div class="mb-5 flex items-center justify-between gap-3">
               <span
-                class="flex h-12 w-12 items-center justify-center rounded-2xl text-white shadow-soft"
-                style={`background: ${p.color}`}
+                class="flex h-12 w-12 items-center justify-center rounded-2xl shadow-soft"
+                style={`background: ${p.color}; color: ${p.textColor}`}
                 aria-hidden="true"
               >
                 <Icon name={p.icono} class="h-6 w-6" />
               </span>
-              <span class="font-display text-2xl font-extrabold tracking-tight text-institu/40">
+              <span class="font-display text-2xl font-extrabold tracking-tight" style={`color: ${p.color}`}>
                 {p.n}
               </span>
             </div>

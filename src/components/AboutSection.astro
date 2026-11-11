@@ -9,24 +9,15 @@ import leaLogo from '../assets/lea-global.png';
     <div class="about-panel rounded-4xl border border-white/80 p-6 sm:p-10 lg:p-12">
       <div class="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-12">
         <div class="lg:col-span-7">
-          <h2 class="text-fluid-xl leading-tight">Quiénes somos.<br /><span class="word-mark mark-turquesa">Un aliado para decidir.</span></h2>
-          <ul class="mt-6 flex flex-wrap gap-2.5 text-sm font-bold text-navy" aria-label="Nuestra forma de trabajar">
-            <li class="inline-flex items-center gap-2 rounded-full border border-navy/10 bg-white px-4 py-2 shadow-sm">
-              <span class="h-2.5 w-2.5 rounded-full bg-coral" aria-hidden="true"></span>
-              Independencia
-            </li>
-            <li class="inline-flex items-center gap-2 rounded-full border border-navy/10 bg-white px-4 py-2 shadow-sm">
-              <span class="h-2.5 w-2.5 rounded-full bg-turquesa" aria-hidden="true"></span>
-              Rigor técnico
-            </li>
-            <li class="inline-flex items-center gap-2 rounded-full border border-navy/10 bg-white px-4 py-2 shadow-sm">
-              <span class="h-2.5 w-2.5 rounded-full bg-verde-est" aria-hidden="true"></span>
-              Visión estratégica
-            </li>
+          <h2 class="text-fluid-xl leading-tight">Quiénes somos.<br /><span class="word-mark mark-verde">Un aliado para decidir.</span></h2>
+          <ul class="mt-7 flex flex-wrap gap-2.5 text-sm font-bold text-navy" aria-label="Nuestra forma de trabajar">
+            <li class="rounded-full bg-coral px-4 py-2 text-white shadow-sm">Independencia</li>
+            <li class="rounded-full bg-turquesa px-4 py-2 text-navy shadow-sm">Rigor técnico</li>
+            <li class="rounded-full bg-verde-est px-4 py-2 text-navy shadow-sm">Visión estratégica</li>
           </ul>
           <div class="mt-7 space-y-4 text-base leading-relaxed text-navy/85">
             {firma.presentacion.map((parrafo, i) => (
-              <p class={i === firma.presentacion.length - 1 ? 'rounded-r-2xl border-l-4 border-institu bg-institu/5 px-5 py-3.5 font-semibold text-navy' : ''}>
+              <p class={i === firma.presentacion.length - 1 ? 'rounded-r-2xl border-l-4 border-coral bg-coral/10 px-5 py-3.5 font-semibold text-navy' : ''}>
                 {parrafo}
               </p>
             ))}
@@ -34,28 +25,30 @@ import leaLogo from '../assets/lea-global.png';
         </div>
 
         <aside class="flex min-w-0 flex-col lg:col-span-5" aria-label="Trayectoria y asociación internacional">
-          <figure class="about-visual overflow-hidden rounded-3xl shadow-soft-lg ring-1 ring-navy/10">
+          <figure class="about-visual overflow-hidden rounded-3xl shadow-soft-lg">
             <Image src={firma.imagenNosotros.src} alt={firma.imagenNosotros.alt}
               widths={[320, 480, 768, 960]} sizes="(max-width: 639px) calc(100vw - 88px), (max-width: 1023px) calc(100vw - 144px), 460px"
               format="webp" quality={82} loading="lazy" class="block h-auto w-full object-cover" />
             <figcaption class="flex flex-wrap items-center justify-between gap-4 p-6 text-white">
               <div class="flex items-center gap-4">
-                <p class="shrink-0 font-display text-5xl font-extrabold tracking-tight text-white">{firma.anosExperiencia}<span class="text-turquesa">+</span></p>
+                <p class="shrink-0 font-display text-5xl font-extrabold tracking-tight text-white">{firma.anosExperiencia}<span class="text-ambar-riesgo">+</span></p>
                 <p class="text-base font-bold leading-snug text-white">años de trayectoria profesional</p>
               </div>
-              <p class="text-xs text-white/80">Imagen de referencia</p>
+              <p class="text-xs text-white/90">Imagen de referencia</p>
             </figcaption>
           </figure>
         </aside>
       </div>
 
-      <div class="mt-8 flex flex-col items-start gap-5 rounded-3xl border border-institu/15 bg-gradient-to-r from-white via-white to-institu/5 p-6 shadow-soft sm:mt-10 sm:flex-row sm:items-center sm:gap-7 sm:px-8 sm:py-6">
-        <Image src={leaLogo} alt="LEA Global" width={110} widths={[110, 220]} sizes="110px"
-          format="png" loading="lazy" class="h-12 w-auto shrink-0 object-contain sm:h-14" />
-        <div class="hidden h-12 w-px shrink-0 bg-navy/10 sm:block" aria-hidden="true"></div>
+      <div class="relative mt-8 flex flex-col items-start gap-5 overflow-hidden rounded-3xl bg-grad-aurora p-6 text-white shadow-soft-lg sm:mt-10 sm:flex-row sm:items-center sm:gap-7 sm:px-8 sm:py-6">
+        <div class="flex shrink-0 items-center justify-center rounded-2xl bg-white/95 px-4 py-2.5 shadow-sm">
+          <Image src={leaLogo} alt="LEA Global" width={104} widths={[104, 208]} sizes="104px"
+            format="png" loading="lazy" class="h-11 w-auto object-contain sm:h-12" />
+        </div>
+        <div class="hidden h-12 w-px shrink-0 bg-white/25 sm:block" aria-hidden="true"></div>
         <div class="min-w-0">
-          <h3 class="text-lg font-bold text-navy sm:text-xl">Miembro de LEA GLOBAL</h3>
-          <p class="mt-1.5 text-sm leading-relaxed text-navy/80">{firma.asociacion}</p>
+          <h3 class="text-xl font-bold text-white">Miembro de LEA GLOBAL</h3>
+          <p class="mt-1.5 text-sm leading-relaxed text-white/95">{firma.asociacion}</p>
         </div>
       </div>
     </div>

@@ -198,18 +198,18 @@
   .service-card:hover::before { opacity: 1; }
   .service-icon { background: var(--acento); }
   .clients-band { background: rgba(255,255,255,.70); backdrop-filter: blur(16px); }
-  .dot-0 { background: #002d56; }
-  .dot-1 { background: #0070c0; }
-  .dot-2 { background: #00b0f0; }
-  .dot-3 { background: #6cb83f; }
+  .dot-0 { background: #0070c0; }
+  .dot-1 { background: #6cb83f; }
+  .dot-2 { background: #7030a0; }
+  .dot-3 { background: #e66c2c; }
   .client-group[open] summary { color: #00548f; }
   .testimonial { background: rgba(255,255,255,.88); backdrop-filter: blur(16px); box-shadow: 0 4px 20px -2px rgba(0,45,86,.08); overflow: hidden; }
-  .testimonial::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: var(--testimonial-accent); }
-  .testimonial-0 { --testimonial-accent: #002D56; }
-  .testimonial-1 { --testimonial-accent: #0070C0; }
+  .testimonial::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px; background: var(--testimonial-accent); }
+  .testimonial-0 { --testimonial-accent: #E66C2C; }
+  .testimonial-1 { --testimonial-accent: #7030A0; }
   .testimonial-2 { --testimonial-accent: #00B0F0; }
-  .quote-mark { color: #0070c0; }
-  .testimonial-0 .quote-mark { color: #002D56; }
+  .quote-mark { color: #7030a0; }
+  .testimonial-0 .quote-mark { color: #E66C2C; }
   .testimonial-2 .quote-mark { color: #00B0F0; }
   .contact-cta { @apply shadow-soft-lg; }
   .footer-link:hover { text-decoration: underline; text-underline-offset: 4px; color: #fff; }
