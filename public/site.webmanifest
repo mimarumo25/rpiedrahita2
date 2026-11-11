@@ -9,6 +9,11 @@
   "lang": "es-CO",
   "icons": [
     {
+      "src": "/favicon.png",
+      "sizes": "112x112",
+      "type": "image/png"
+    },
+    {
       "src": "/favicon.svg",
       "sizes": "any",
       "type": "image/svg+xml"

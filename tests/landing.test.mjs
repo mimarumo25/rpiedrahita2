@@ -23,11 +23,21 @@ test('la salida pública contiene contenido real y todas las anclas resuelven', 
     assert.ok(html.includes(`alt="Logotipo oficial de ${nombre}"`), `Logo de ${nombre}`);
   }
   assert.match(html, /clients-marquee-track[^>]*animate-marquee/);
-  assert.match(html, /testimonials-marquee-track[^>]*animate-marquee-slow/);
+  assert.match(html, /testimonials-grid/);
+  assert.equal(testimonios.length, 6);
   for (const testimonio of testimonios) {
     assert.ok(html.includes(testimonio.cita), testimonio.empresa);
     assert.ok(html.includes(`alt="Logotipo oficial de ${testimonio.empresa}"`), `Logo de ${testimonio.empresa}`);
   }
+  assert.match(html, /Política de Tratamiento de Datos Personales\./);
+  assert.ok(html.includes('https://www.instagram.com/p/C7kjm7dRlBs/'), 'Enlace de Instagram');
+  assert.ok(html.includes('https://www.facebook.com/rpiedrahitacontadores'), 'Enlace de Facebook');
+  assert.ok(html.includes('/CALENDARIO_rp.pdf'), 'Enlace a Calendario Tributario');
+  assert.ok(html.includes('/CARTILLA_RP.pdf'), 'Enlace a Cartilla Tributaria');
+  assert.equal(existsSync(new URL('../dist/CALENDARIO_rp.pdf', import.meta.url)), true);
+  assert.equal(existsSync(new URL('../dist/CARTILLA_RP.pdf', import.meta.url)), true);
+  assert.equal(existsSync(new URL('../dist/indicadores.json', import.meta.url)), true);
+  assert.equal(existsSync(new URL('../dist/favicon.png', import.meta.url)), true);
   assert.match(html, /geo\.region" content="CO-ANT"/);
   assert.match(html, /OfferCatalog/);
   assert.equal(existsSync(new URL('../dist/robots.txt', import.meta.url)), true);

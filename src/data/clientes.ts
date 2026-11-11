@@ -45,19 +45,37 @@ export const testimonios = [
   {
     empresa: 'Prebel BIC S.A.',
     cargo: 'Gerente Financiero',
-    cita: 'RPiedrahíta es un gran aliado para nosotros: una firma absolutamente profesional, dedicada, responsable e íntegra, con un equipo de seres humanos espectacular que nos acompaña a cuidar y proteger nuestra compañía',
+    cita: 'RPiedrahíta es un gran aliado para nosotros: una firma absolutamente profesional, dedicada, responsable e íntegra, con un equipo de seres humanos espectacular que nos acompaña a cuidar y proteger nuestra compañía.',
+    extracto: false,
+  },
+  {
+    empresa: 'UMO S.A.',
+    cargo: 'Accionista y miembro de la Junta Directiva',
+    cita: 'Quienes viven en contacto con tantas empresas saben lo que significa hacer empresa en un país como Colombia. Por eso es tan meritorio encontrar una compañía liderada con los principios, valores y la ética de trabajo que caracterizan a RPiedrahíta. Ojalá tuviéramos muchas empresas y líderes así en el país.',
+    extracto: false,
+  },
+  {
+    empresa: 'Fundación Óyeme',
+    cargo: 'Directora General',
+    cita: 'El profesionalismo y la responsabilidad que caracterizan el trabajo de RPiedrahíta como contadores públicos y revisores fiscales han sido un acierto total para el desarrollo de nuestra labor misional. Su seriedad y compromiso nos generan confianza frente a la transparencia y la ética que debe acompañar toda nuestra gestión institucional.',
+    extracto: false,
+  },
+  {
+    empresa: 'Medicina Fetal S.A.S.',
+    cargo: 'Gerente General',
+    cita: 'Agradecemos el acompañamiento honesto, riguroso y cercano de RPiedrahíta, que ha ayudado a nuestra empresa —como a tantas otras en Colombia— a ser mejor cada día.',
+    extracto: false,
+  },
+  {
+    empresa: 'Valores Simesa S.A.',
+    cargo: 'Gerente General',
+    cita: 'Con su trabajo y el de todo su equipo, han construido una empresa sólida, de gran reputación y estándares de calidad sobresalientes.',
     extracto: false,
   },
   {
     empresa: 'CI. RTA Design S.A.S.',
     cargo: 'Gerente Administrativo y Financiero',
     cita: 'Sentimos el respaldo constante del equipo de RPiedrahíta, con la misma energía y compromiso de hace más de 20 años que llevamos trabajando juntos.',
-    extracto: true,
-  },
-  {
-    empresa: 'Fundación Óyeme',
-    cargo: 'Directora General',
-    cita: 'Su seriedad y compromiso nos generan confianza frente a la transparencia y la ética que debe acompañar toda nuestra gestión institucional.',
     extracto: true,
   },
 ];

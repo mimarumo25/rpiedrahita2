@@ -28,10 +28,61 @@ export const firma = {
     emailHref: 'mailto:contaduria@rpiedrahita.co',
     mapsEmbed: 'https://www.google.com/maps?q=Pasaje+Astoria+Carrera+50+52+Medellin&output=embed',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=Pasaje+Astoria+Carrera+50+52+Medellin',
+    redesSociales: [
+      {
+        nombre: 'Instagram',
+        href: 'https://www.instagram.com/p/C7kjm7dRlBs/',
+        icono: 'ph:instagram-logo-fill',
+      },
+      {
+        nombre: 'Facebook',
+        href: 'https://www.facebook.com/rpiedrahitacontadores',
+        icono: 'ph:facebook-logo-fill',
+      },
+    ],
   },
 } as const;
 
 export const whatsappLink = `${firma.contacto.whatsappHref}?text=${encodeURIComponent(firma.contacto.whatsappMensaje)}`;
+
+export const recursosTributarios = [
+  {
+    titulo: 'Calendario Tributario',
+    descripcion: 'Consulte y descargue las fechas clave y plazos de vencimiento de las obligaciones tributarias vigentes en Colombia.',
+    href: '/CALENDARIO_rp.pdf',
+    archivo: 'CALENDARIO_rp.pdf',
+    icono: 'ph:calendar-check-duotone',
+    acento: '#0070C0',
+    etiqueta: 'PDF Descargable',
+  },
+  {
+    titulo: 'Cartilla Tributaria',
+    descripcion: 'Guía práctica descargable con tarifas, topes, retenciones e indicadores tributarios esenciales para su empresa.',
+    href: '/CARTILLA_RP.pdf',
+    archivo: 'CARTILLA_RP.pdf',
+    icono: 'ph:book-open-text-duotone',
+    acento: '#E66C2C',
+    etiqueta: 'PDF Descargable',
+  },
+] as const;
+
+export const indicadoresTributarios = {
+  anioVigente: 2026,
+  anioAnterior: 2025,
+  uvt2026: 52374,
+  uvt2025: 49799,
+  smlmv2026: 1750905,
+  auxilioTransporte2026: 249095,
+  smlmv2025: 1423500,
+  topeActivosRevisoriaSmlmv: 5000,
+  topeIngresosRevisoriaSmlmv: 3000,
+  topesRentaPN: {
+    patrimonioUvt: 4500,
+    ingresosUvt: 1400,
+    tarjetasUvt: 1400,
+    consignacionesUvt: 1400,
+  },
+} as const;
 
 export const navegacion = [
   { label: 'Inicio', href: '#inicio' },
