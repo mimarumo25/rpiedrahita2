@@ -6,14 +6,14 @@ const pasos = [
   {
     n: '01',
     titulo: 'Diagnóstico',
-    descripcion: 'Conocemos su empresa, identificamos riesgos y entendemos sus objetivos. Sin esta base, nada funciona.',
+    descripcion: 'Conocemos su empresa, identificamos riesgos y entendemos sus objetivos.',
     icono: 'ph:chart-bar-fill',
     color: '#0070C0',
   },
   {
     n: '02',
     titulo: 'Plan a la medida',
-    descripcion: 'Diseñamos una estrategia de control, cumplimiento e información que se ajusta como un traje a su realidad.',
+    descripcion: 'Definimos una estrategia de control, cumplimiento e información alineada con sus necesidades.',
     icono: 'ph:blueprint-fill',
     color: '#00B0F0',
   },
@@ -34,17 +34,15 @@ const pasos = [
 ];
 ---
 
-<section id="metodologia" class="relative overflow-hidden py-8 sm:py-12">
+<section id="metodologia" class="section-space relative overflow-hidden">
   {/* Fondo con tono institucional */}
   <div class="absolute inset-0 -z-10 bg-gradient-to-b from-transparent via-gris-cl/50 to-transparent" aria-hidden="true"></div>
 
   <div class="container-rp">
     <SectionHeading
-      eyebrow="Nuestro método probado"
-      eyebrowIcon="ph:compass-fill"
-      titulo="Una metodología que"
-      tituloDestacado="transforma su contabilidad"
-      descripcion="No vendemos servicios genéricos: aplicamos un método probado durante 40 años para convertir la contaduría en una ventaja competitiva para su empresa."
+      titulo="Cerca de su empresa."
+      tituloDestacado="En cada paso."
+      descripcion="Escuchamos, planeamos y acompañamos. Así construimos una relación de trabajo con objetivos claros."
     />
 
     {/* Timeline horizontal (desktop) / vertical (móvil) */}
@@ -59,7 +57,7 @@ const pasos = [
             <div class="relative z-10 mb-6 flex items-center gap-4 lg:block">
               <span
                 class="timeline-node ring-4 ring-blanco-co"
-                style={`background: linear-gradient(135deg, ${p.color}, ${p.color}aa)`}
+                style={`background: ${p.color}; color: ${i === 0 ? '#fff' : '#002D56'}`}
               >
                 {p.n}
               </span>
@@ -72,8 +70,8 @@ const pasos = [
             {/* Contenido */}
             <div class="lg:pl-0">
               <span
-                class="mb-3 flex h-11 w-11 items-center justify-center rounded-2xl text-white shadow-soft"
-                style={`background: ${p.color}`}
+                class="mb-3 flex h-11 w-11 items-center justify-center rounded-2xl text-navy shadow-soft"
+                style={`background: ${p.color}; color: ${i === 0 ? '#fff' : '#002D56'}`}
               >
                 <Icon name={p.icono} class="h-5 w-5" />
               </span>

@@ -123,6 +123,7 @@ export default {
         'pulse-ring': 'pulse-ring 2s cubic-bezier(0.2,0.6,0.3,1) infinite',
         'spin-slow': 'spin-slow 28s linear infinite',
         marquee: 'marquee 32s linear infinite',
+        'marquee-slow': 'marquee 48s linear infinite',
         'fade-up': 'fade-up 0.7s ease-out both',
       },
     },

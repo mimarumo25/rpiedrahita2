@@ -1,44 +1,15 @@
 ---
 import { Icon } from 'astro-icon/components';
-import { acentoHex, type Servicio } from '../data/servicios';
+import type { Servicio } from '../data/servicios';
 
-interface Props {
-  servicio: Servicio;
-  /** Retraso de la animación de entrada (ms) */
-  delay?: number;
-}
-const { servicio, delay = 0 } = Astro.props;
-const hex = acentoHex[servicio.acento];
+interface Props { servicio: Servicio; }
+const { servicio } = Astro.props;
 ---
-
-<a
-  href={`/servicios/${servicio.slug}`}
-  class="prisma-hover glass-card group flex flex-col"
-  style={`--acento: ${hex}; animation-delay: ${delay}ms`}
->
-  {/* Borde superior de color (acento del servicio) */}
-  <span
-    class="absolute inset-x-0 top-0 h-1.5 rounded-t-3xl transition-all duration-500 group-hover:h-2"
-    style={`background: linear-gradient(90deg, ${hex}, ${hex}66)`}
-  ></span>
-
-  {/* Icono */}
-  <span
-    class="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl text-white shadow-soft transition-all duration-500 group-hover:scale-110 group-hover:rotate-3"
-    style={`background: linear-gradient(135deg, ${hex}, ${hex}99)`}
-  >
+<article id={servicio.slug} class="service-card relative flex flex-col overflow-hidden rounded-3xl p-7 sm:p-8"
+  style={`--acento: ${servicio.acento}`}>
+  <span class="service-icon mb-6 flex h-14 w-14 items-center justify-center rounded-2xl shadow-soft" style={`color: ${['#0070C0', '#7030A0', '#E66C2C'].includes(servicio.acento) ? '#fff' : '#002D56'}`} aria-hidden="true">
     <Icon name={servicio.icono} class="h-7 w-7" />
   </span>
-
-  <h3 class="font-display text-xl font-extrabold text-navy transition-colors group-hover:text-[var(--acento)]">
-    {servicio.titulo}
-  </h3>
-  <p class="mt-1 text-sm font-semibold" style={`color: ${hex}`}>{servicio.tagline}</p>
-  <p class="mt-3 flex-1 text-sm leading-relaxed text-gris-ej">{servicio.resumen}</p>
-
-  {/* Ver más */}
-  <span class="mt-5 flex items-center gap-2 text-sm font-bold text-navy transition-colors group-hover:text-[var(--acento)]">
-    Conocer el servicio
-    <Icon name="ph:arrow-right-bold" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1.5" />
-  </span>
-</a>
+  <h3 class="font-display text-xl font-bold leading-snug text-navy">{servicio.titulo}</h3>
+  <p class="mt-4 text-base leading-relaxed text-navy/80">{servicio.resumen}</p>
+</article>

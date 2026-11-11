@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "src/styles/global.css"
+        ],
+        "createdAt": "2026-11-11T04:53:43.104Z",
+        "reason": "Agent review: service-card::after restores the original 6px top color band; testimonial::before extends that same accent pattern. User explicitly requested preserving the original vivid colors. Intentional horizontal accents retained; exception limited to this rule in this stylesheet."
+      }
+    ]
+  }
+}

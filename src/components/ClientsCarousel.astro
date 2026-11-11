@@ -1,63 +1,102 @@
 ---
 import SectionHeading from './SectionHeading.astro';
-import { Icon } from 'astro-icon/components';
+import { clientesDestacados, clientesPorServicio } from '../data/clientes';
+import logoMadecentro from '../assets/clientes/madecentro.png';
+import logoEstra from '../assets/clientes/estra.svg';
+import logoGrupoBios from '../assets/clientes/grupo-bios.svg';
+import logoPrebel from '../assets/clientes/prebel.svg';
+import logoWompi from '../assets/clientes/wompi.svg';
+import logoWenia from '../assets/clientes/wenia.svg';
+import logoValoresSimesa from '../assets/clientes/valores-simesa.png';
+import logoFundacionOyeme from '../assets/clientes/fundacion-oyeme.png';
 
-/**
- * Carrusel de logos de clientes (marquee CSS).
- * Como no hay logos reales, usamos "placeholders estilizados":
- * monogramas en tarjetas glass con colores de la paleta.
- * El cliente los reemplazará por logos reales.
- */
-const clientes = [
-  { nombre: 'Construcol', color: '#0070C0' },
-  { nombre: 'AndesLogística', color: '#6CB83F' },
-  { nombre: 'TexMed', color: '#7030A0' },
-  { nombre: 'Inversiones Páramo', color: '#E66C2C' },
-  { nombre: 'Café Verdor', color: '#00B0F0' },
-  { nombre: 'Grupo Aurora', color: '#FFC000' },
-  { nombre: 'TecnoAndina', color: '#00BDB9' },
-  { nombre: 'Ferrer & Asoc.', color: '#C00000' },
-];
+const logosPorCliente: Record<string, ImageMetadata> = {
+  'Grupo Madecentro': logoMadecentro,
+  'Industrias Estra S.A.': logoEstra,
+  'Grupo BIOS (antes Grupo Contegral)': logoGrupoBios,
+  'PREBEL S.A.S.': logoPrebel,
+  'WOMPI S.A.S.': logoWompi,
+  'WENIA S.A.S.': logoWenia,
+  'Valores Simesa S.A.': logoValoresSimesa,
+  'Fundación Óyeme': logoFundacionOyeme,
+};
 
-// Duplicamos para el loop infinito del marquee
-const loop = [...clientes, ...clientes];
+const dots = ['dot-0', 'dot-1', 'dot-2', 'dot-3'];
+const clientesBanner = clientesDestacados.map((nombre, i) => ({
+  nombre,
+  logo: logosPorCliente[nombre],
+  dot: dots[i % dots.length],
+}));
 ---
-
-<section id="beneficios" class="relative py-8 sm:py-12">
+<section id="clientes" class="section-space">
   <div class="container-rp">
-    <SectionHeading
-      eyebrow="Confianza compartida"
-      eyebrowIcon="ph:handshake-fill"
-      titulo="Empresas que confían en nosotros"
-      descripcion="Más de 500 organizaciones —de pymes familiares a grandes compañías, en sectores como construcción, manufactura, logística, tecnología y servicios— nos confían su contabilidad, su revisoría fiscal y su tranquilidad."
-    />
+    <SectionHeading titulo="La confianza tiene" tituloDestacado="nombres propios."
+      descripcion="Empresas y organizaciones que forman parte de nuestra trayectoria." />
   </div>
 
-  {/* Marquee con máscara de fade en los bordes */}
-  <div class="mt-12 overflow-hidden mask-fade-x" data-reveal="up">
-    <div class="flex w-max gap-5 animate-marquee hover:[animation-play-state:paused]">
-      {loop.map((c) => (
-        <div
-          class="group flex h-28 w-56 shrink-0 items-center justify-center rounded-3xl border border-white/60 bg-white/70 px-8 shadow-soft backdrop-blur-md transition-all duration-500 hover:-translate-y-1 hover:shadow-soft-lg"
-        >
-          <span class="flex items-center gap-3">
-            <span
-              class="flex h-11 w-11 items-center justify-center rounded-xl font-display text-lg font-extrabold text-white shadow-soft transition-transform duration-500 group-hover:rotate-6"
-              style={`background: linear-gradient(135deg, ${c.color}, ${c.color}aa)`}
-            >
-              {c.nombre.charAt(0)}
-            </span>
-            <span class="font-display text-base font-bold text-navy">{c.nombre}</span>
-          </span>
-        </div>
-      ))}
+  <div class="mt-10 overflow-hidden py-3 mask-fade-x" data-reveal>
+    <div class="clients-marquee-track flex w-max gap-5 pr-5 animate-marquee hover:[animation-play-state:paused] focus-within:[animation-play-state:paused]">
+      <ul class="flex shrink-0 items-stretch gap-5" aria-label="Clientes destacados">
+        {clientesBanner.map((cliente) => (
+          <li class="clients-band group flex w-64 shrink-0 flex-col justify-between rounded-3xl border border-white/70 p-5 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-soft-lg sm:w-72">
+            <div class="flex h-20 w-full items-center justify-center rounded-2xl bg-white px-5 py-3 shadow-sm ring-1 ring-navy/5">
+              {cliente.logo && (
+                <img
+                  src={cliente.logo.src}
+                  width={cliente.logo.width}
+                  height={cliente.logo.height}
+                  alt={`Logotipo oficial de ${cliente.nombre}`}
+                  loading="lazy"
+                  decoding="async"
+                  class="h-14 max-h-14 w-auto max-w-[200px] object-contain transition-transform duration-300 group-hover:scale-105"
+                />
+              )}
+            </div>
+            <div class="mt-4 flex items-center justify-center gap-2.5 text-center font-display text-sm font-bold leading-snug text-navy sm:text-base">
+              <span class={`h-2.5 w-2.5 shrink-0 rounded-full ${cliente.dot}`} aria-hidden="true"></span>
+              <span>{cliente.nombre}</span>
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      <ul class="flex shrink-0 items-stretch gap-5" aria-hidden="true">
+        {clientesBanner.map((cliente) => (
+          <li class="clients-band group flex w-64 shrink-0 flex-col justify-between rounded-3xl border border-white/70 p-5 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-soft-lg sm:w-72">
+            <div class="flex h-20 w-full items-center justify-center rounded-2xl bg-white px-5 py-3 shadow-sm ring-1 ring-navy/5">
+              {cliente.logo && (
+                <img
+                  src={cliente.logo.src}
+                  width={cliente.logo.width}
+                  height={cliente.logo.height}
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                  class="h-14 max-h-14 w-auto max-w-[200px] object-contain transition-transform duration-300 group-hover:scale-105"
+                />
+              )}
+            </div>
+            <div class="mt-4 flex items-center justify-center gap-2.5 text-center font-display text-sm font-bold leading-snug text-navy sm:text-base">
+              <span class={`h-2.5 w-2.5 shrink-0 rounded-full ${cliente.dot}`}></span>
+              <span>{cliente.nombre}</span>
+            </div>
+          </li>
+        ))}
+      </ul>
     </div>
   </div>
 
-  <div class="container-rp mt-10 text-center text-sm text-gris-ej" data-reveal="up">
-    <p class="inline-flex items-center gap-2">
-      <Icon name="ph:lock-simple-fill" class="h-4 w-4 text-institu" />
-      Por confidencialidad, protegemos la identidad de nuestros clientes.
-    </p>
+  <div class="container-rp mt-10">
+    <h3 class="mb-5 text-lg font-bold text-navy">Explore nuestra experiencia por servicio</h3>
+    <div class="client-list rounded-3xl bg-white/90 px-5 sm:px-8">
+      {clientesPorServicio.map((grupo) => (
+        <details class="client-group border-b border-navy/10 last:border-b-0">
+          <summary class="cursor-pointer py-5 pr-2 font-display text-base font-bold text-navy sm:text-lg">{grupo.servicio}</summary>
+          <ul class="grid gap-x-10 gap-y-3 pb-7 pl-5 text-sm leading-relaxed text-navy/85 sm:grid-cols-2 lg:grid-cols-3">
+            {grupo.empresas.map((empresa) => <li class="list-disc marker:text-institu">{empresa}</li>)}
+          </ul>
+        </details>
+      ))}
+    </div>
   </div>
 </section>

@@ -4,11 +4,9 @@ import SectionHeading from './SectionHeading.astro';
 import { whatsappLink, firma } from '../data/sitio';
 ---
 
-<section id="contacto" class="relative py-8 sm:py-12">
+<section id="contacto" class="section-space relative">
   <div class="container-rp">
     <SectionHeading
-      eyebrow="Hablemos"
-      eyebrowIcon="ph:map-pin-fill"
       titulo="Visítenos en"
       tituloDestacado="Medellín"
       descripcion="Estamos en el corazón de Medellín. Pásese a tomar un café o escríbanos desde cualquier lugar de Colombia."
@@ -16,7 +14,7 @@ import { whatsappLink, firma } from '../data/sitio';
 
     <div class="mt-14 grid gap-8 lg:grid-cols-[1fr_1.3fr]">
       {/* --- Tarjeta de datos --- */}
-      <div class="glass-card flex flex-col" data-reveal="left">
+      <div class="contact-panel flex flex-col rounded-4xl bg-white/95 p-6 sm:p-9" data-reveal="left">
         <h3 class="font-display text-2xl font-extrabold text-navy">Nuestra oficina</h3>
         <p class="mt-2 text-gris-ej">Atendemos con cita previa para dedicarle todo nuestro tiempo.</p>
 
@@ -69,15 +67,19 @@ import { whatsappLink, firma } from '../data/sitio';
 
         <a href={whatsappLink} target="_blank" rel="noopener" class="btn-coral mt-8 w-full">
           <Icon name="ph:whatsapp-logo-fill" class="h-5 w-5" />
-          Solicitar consulta gratis
+          Conversemos sobre su empresa
         </a>
       </div>
 
       {/* --- Mapa --- */}
-      <div class="relative overflow-hidden rounded-4xl border border-white/60 shadow-soft" data-reveal="right">
+      <div class="relative flex flex-col overflow-hidden rounded-4xl bg-white/95 shadow-soft" data-reveal="right">
+        <a href={firma.contacto.mapsLink} target="_blank" rel="noopener" class="flex items-center justify-between gap-3 px-6 py-5 font-semibold text-navy underline decoration-institu/40 underline-offset-4 hover:decoration-institu">
+          Ver ubicación en Google Maps
+          <Icon name="ph:arrow-up-right-bold" class="h-5 w-5 shrink-0" />
+        </a>
         <iframe
           src={firma.contacto.mapsEmbed}
-          class="h-full min-h-[420px] w-full"
+          class="min-h-[420px] w-full flex-1"
           style="border:0"
           loading="lazy"
           referrerpolicy="no-referrer-when-downgrade"

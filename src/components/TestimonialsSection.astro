@@ -1,0 +1,126 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import { testimonios } from '../data/clientes';
+import logoPrebel from '../assets/clientes/prebel.svg';
+import logoRtaDesign from '../assets/clientes/rta-design.png';
+import logoFundacionOyeme from '../assets/clientes/fundacion-oyeme.png';
+
+const logosPorTestimonio: Record<string, ImageMetadata> = {
+  'Prebel BIC S.A.': logoPrebel,
+  'CI. RTA Design S.A.S.': logoRtaDesign,
+  'Fundación Óyeme': logoFundacionOyeme,
+};
+
+const tones = ['testimonial-0', 'testimonial-1', 'testimonial-2'];
+const items = testimonios.map((testimonio, i) => ({
+  ...testimonio,
+  tone: tones[i % tones.length],
+  logo: logosPorTestimonio[testimonio.empresa],
+}));
+---
+<section id="testimonios" class="section-space">
+  <div class="container-rp">
+    <SectionHeading titulo="La mejor forma de conocernos:" tituloDestacado="escuchar a nuestros clientes."
+      descripcion="Palabras compartidas con motivo de nuestros 40 años de constitución." />
+  </div>
+
+  <div class="mt-12 overflow-hidden py-4 mask-fade-x" data-reveal>
+    <div class="testimonials-marquee-track flex w-max gap-6 pr-6 animate-marquee-slow hover:[animation-play-state:paused] focus-within:[animation-play-state:paused]">
+      <div class="flex shrink-0 items-stretch gap-6" role="region" aria-label="Carrusel de testimonios de clientes">
+        {items.map((testimonio) => (
+          <figure class={`testimonial ${testimonio.tone} relative flex w-[21rem] shrink-0 flex-col justify-between rounded-4xl p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-soft-lg sm:w-[27rem] sm:p-9 lg:w-[31rem]`}>
+            <div>
+              <span class="quote-mark block font-display text-6xl leading-none" aria-hidden="true">“</span>
+              <blockquote class="relative mt-2 text-base leading-relaxed text-navy sm:text-lg sm:leading-relaxed">
+                <p>{testimonio.cita}</p>
+              </blockquote>
+            </div>
+            <figcaption class="mt-7 flex items-center justify-between gap-4 border-t border-navy/15 pt-5 text-navy">
+              <div>
+                <strong class="block font-display text-base">{testimonio.empresa}</strong>
+                <span class="mt-1 block text-sm">{testimonio.cargo}</span>
+                {testimonio.extracto && <span class="mt-2 block text-xs text-navy/75">Extracto del testimonio</span>}
+              </div>
+              {testimonio.logo && (
+                <div class="flex h-14 w-32 shrink-0 items-center justify-center rounded-xl bg-white px-3 py-2 shadow-sm ring-1 ring-navy/5">
+                  <img
+                    src={testimonio.logo.src}
+                    width={testimonio.logo.width}
+                    height={testimonio.logo.height}
+                    alt={`Logotipo oficial de ${testimonio.empresa}`}
+                    loading="lazy"
+                    decoding="async"
+                    class="h-10 max-h-10 w-auto max-w-[110px] object-contain"
+                  />
+                </div>
+              )}
+            </figcaption>
+          </figure>
+        ))}
+        {items.map((testimonio) => (
+          <figure aria-hidden="true" class={`testimonial ${testimonio.tone} relative flex w-[21rem] shrink-0 flex-col justify-between rounded-4xl p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-soft-lg sm:w-[27rem] sm:p-9 lg:w-[31rem]`}>
+            <div>
+              <span class="quote-mark block font-display text-6xl leading-none">“</span>
+              <blockquote class="relative mt-2 text-base leading-relaxed text-navy sm:text-lg sm:leading-relaxed">
+                <p>{testimonio.cita}</p>
+              </blockquote>
+            </div>
+            <figcaption class="mt-7 flex items-center justify-between gap-4 border-t border-navy/15 pt-5 text-navy">
+              <div>
+                <strong class="block font-display text-base">{testimonio.empresa}</strong>
+                <span class="mt-1 block text-sm">{testimonio.cargo}</span>
+                {testimonio.extracto && <span class="mt-2 block text-xs text-navy/75">Extracto del testimonio</span>}
+              </div>
+              {testimonio.logo && (
+                <div class="flex h-14 w-32 shrink-0 items-center justify-center rounded-xl bg-white px-3 py-2 shadow-sm ring-1 ring-navy/5">
+                  <img
+                    src={testimonio.logo.src}
+                    width={testimonio.logo.width}
+                    height={testimonio.logo.height}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    class="h-10 max-h-10 w-auto max-w-[110px] object-contain"
+                  />
+                </div>
+              )}
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+
+      <div class="flex shrink-0 items-stretch gap-6" aria-hidden="true">
+        {[...items, ...items].map((testimonio) => (
+          <figure class={`testimonial ${testimonio.tone} relative flex w-[21rem] shrink-0 flex-col justify-between rounded-4xl p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-soft-lg sm:w-[27rem] sm:p-9 lg:w-[31rem]`}>
+            <div>
+              <span class="quote-mark block font-display text-6xl leading-none">“</span>
+              <blockquote class="relative mt-2 text-base leading-relaxed text-navy sm:text-lg sm:leading-relaxed">
+                <p>{testimonio.cita}</p>
+              </blockquote>
+            </div>
+            <figcaption class="mt-7 flex items-center justify-between gap-4 border-t border-navy/15 pt-5 text-navy">
+              <div>
+                <strong class="block font-display text-base">{testimonio.empresa}</strong>
+                <span class="mt-1 block text-sm">{testimonio.cargo}</span>
+                {testimonio.extracto && <span class="mt-2 block text-xs text-navy/75">Extracto del testimonio</span>}
+              </div>
+              {testimonio.logo && (
+                <div class="flex h-14 w-32 shrink-0 items-center justify-center rounded-xl bg-white px-3 py-2 shadow-sm ring-1 ring-navy/5">
+                  <img
+                    src={testimonio.logo.src}
+                    width={testimonio.logo.width}
+                    height={testimonio.logo.height}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    class="h-10 max-h-10 w-auto max-w-[110px] object-contain"
+                  />
+                </div>
+              )}
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
