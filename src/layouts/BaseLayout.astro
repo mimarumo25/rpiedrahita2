@@ -3,17 +3,169 @@ import '../styles/global.css';
 import { getImage } from 'astro:assets';
 import oficinas from '../assets/oficinas-medellin.png';
 import { firma } from '../data/sitio';
+import { servicios } from '../data/servicios';
+import { testimonios } from '../data/clientes';
 import BackgroundFX from '../components/BackgroundFX.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import WhatsAppFloat from '../components/WhatsAppFloat.astro';
 import MotionControl from '../components/MotionControl.astro';
 
-const title = 'RPiedrahíta | Auditoría, Contabilidad y Confianza en Medellín';
-const description = 'Más de 40 años de trayectoria profesional. Revisoría fiscal, auditoría, outsourcing contable, gestión tributaria y BPO de nómina con independencia y rigor técnico.';
+const title = 'RPiedrahíta | Revisoría Fiscal, Auditoría y Outsourcing Contable en Medellín';
+const description = 'Firma con más de 40 años de trayectoria en Medellín, Colombia. Revisoría fiscal, auditoría externa e interna, outsourcing contable, gestión tributaria y BPO de nómina. Miembro de LEA Global.';
+const keywords = 'revisoría fiscal Medellín, auditoría externa Medellín, auditoría interna Colombia, outsourcing contable Medellín, gestión tributaria, BPO de nómina Colombia, control interno, debida diligencia, contadores públicos Medellín, RPiedrahíta, LEA Global Colombia';
 const canonical = new URL('/', Astro.site).toString();
+const logoUrl = new URL('/logotipo.png', Astro.site).toString();
 const socialImage = await getImage({ src: oficinas, width: 1200, format: 'jpg', quality: 82 });
 const imageUrl = new URL(socialImage.src, Astro.site).toString();
+const gscVerification = import.meta.env.PUBLIC_GSC_VERIFICATION;
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': ['AccountingService', 'ProfessionalService', 'LocalBusiness'],
+      '@id': `${canonical}#organization`,
+      name: firma.nombreCompleto,
+      alternateName: ['RPiedrahíta', 'RPiedrahíta Contadores Públicos', 'RPiedrahíta Auditores & Asociados'],
+      description,
+      url: canonical,
+      logo: {
+        '@type': 'ImageObject',
+        url: logoUrl,
+        width: 280,
+        height: 76,
+      },
+      image: [imageUrl, logoUrl],
+      telephone: '+57-604-4489390',
+      contactPoint: [
+        {
+          '@type': 'ContactPoint',
+          telephone: '+57-604-4489390',
+          contactType: 'customer service',
+          areaServed: 'CO',
+          availableLanguage: ['Spanish'],
+        },
+        {
+          '@type': 'ContactPoint',
+          telephone: '+57-314-8926596',
+          contactType: 'sales',
+          areaServed: 'CO',
+          availableLanguage: ['Spanish'],
+        },
+      ],
+      email: firma.contacto.email,
+      foundingDate: '1986',
+      slogan: 'Experiencia que genera confianza. Conocimiento que impulsa decisiones.',
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: `${firma.contacto.direccionLinea2}, ${firma.contacto.direccionLinea1}`,
+        addressLocality: 'Medellín',
+        addressRegion: 'Antioquia',
+        postalCode: '050012',
+        addressCountry: 'CO',
+      },
+      geo: {
+        '@type': 'GeoCoordinates',
+        latitude: 6.2496,
+        longitude: -75.5676,
+      },
+      hasMap: firma.contacto.mapsLink,
+      areaServed: [
+        {
+          '@type': 'City',
+          name: 'Medellín',
+        },
+        {
+          '@type': 'AdministrativeArea',
+          name: 'Antioquia',
+        },
+        {
+          '@type': 'Country',
+          name: 'Colombia',
+        },
+      ],
+      memberOf: {
+        '@type': 'Organization',
+        name: 'LEA Global (Leading Edge Alliance)',
+        url: 'https://www.leaglobal.com/',
+      },
+      knowsAbout: [
+        'Revisoría Fiscal en Colombia',
+        'Auditoría Externa y Financiera (NIIF / NIA)',
+        'Auditoría Interna y Gestión de Riesgos',
+        'Outsourcing Contable y Procesamiento Integral de la Contabilidad',
+        'Gestión Tributaria y Cumplimiento Fiscal en Colombia',
+        'BPO de Nómina y Seguridad Social',
+        'Outsourcing de Control Interno',
+        'Debida Diligencia (Due Diligence)',
+      ],
+      hasOfferCatalog: {
+        '@type': 'OfferCatalog',
+        name: 'Servicios Profesionales de Auditoría, Revisoría Fiscal, Contabilidad y Nómina',
+        itemListElement: servicios.map((servicio, idx) => ({
+          '@type': 'Offer',
+          position: idx + 1,
+          itemOffered: {
+            '@type': 'Service',
+            '@id': `${canonical}#${servicio.slug}`,
+            name: servicio.titulo,
+            description: servicio.resumen,
+            url: `${canonical}#${servicio.slug}`,
+            provider: {
+              '@id': `${canonical}#organization`,
+            },
+            areaServed: {
+              '@type': 'Country',
+              name: 'Colombia',
+            },
+          },
+        })),
+      },
+      review: testimonios.map((t) => ({
+        '@type': 'Review',
+        author: {
+          '@type': 'Organization',
+          name: `${t.empresa} (${t.cargo})`,
+        },
+        reviewBody: t.cita,
+        itemReviewed: {
+          '@id': `${canonical}#organization`,
+        },
+      })),
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${canonical}#website`,
+      url: canonical,
+      name: firma.nombre,
+      alternateName: firma.nombreCompleto,
+      description,
+      inLanguage: 'es-CO',
+      publisher: {
+        '@id': `${canonical}#organization`,
+      },
+    },
+    {
+      '@type': 'WebPage',
+      '@id': `${canonical}#webpage`,
+      url: canonical,
+      name: title,
+      description,
+      inLanguage: 'es-CO',
+      isPartOf: {
+        '@id': `${canonical}#website`,
+      },
+      about: {
+        '@id': `${canonical}#organization`,
+      },
+      primaryImageOfPage: {
+        '@type': 'ImageObject',
+        url: imageUrl,
+      },
+    },
+  ],
+};
 ---
 <!doctype html>
 <html lang="es-CO">
@@ -23,8 +175,27 @@ const imageUrl = new URL(socialImage.src, Astro.site).toString();
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
+    <meta name="author" content={firma.nombreCompleto} />
+    <meta name="theme-color" content="#002D56" />
     <link rel="canonical" href={canonical} />
-    <meta name="robots" content="index, follow" />
+    <link rel="alternate" hreflang="es-CO" href={canonical} />
+    <link rel="alternate" hreflang="es" href={canonical} />
+    <link rel="alternate" hreflang="x-default" href={canonical} />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="help" type="text/plain" title="LLMs Information (GEO)" href="/llms.txt" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    {gscVerification && <meta name="google-site-verification" content={gscVerification} />}
+
+    {/* Geo / Local SEO Meta Tags (Medellín, Antioquia, Colombia) */}
+    <meta name="geo.region" content="CO-ANT" />
+    <meta name="geo.placename" content="Medellín, Antioquia, Colombia" />
+    <meta name="geo.position" content="6.2496;-75.5676" />
+    <meta name="ICBM" content="6.2496, -75.5676" />
+
+    {/* Open Graph */}
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="es_CO" />
     <meta property="og:site_name" content={firma.nombreCompleto} />
@@ -32,32 +203,21 @@ const imageUrl = new URL(socialImage.src, Astro.site).toString();
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={imageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="675" />
     <meta property="og:image:alt" content="Imagen de referencia empresarial en Medellín al atardecer" />
+
+    {/* Twitter / X Cards */}
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={imageUrl} />
+
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
-    <script type="application/ld+json" set:html={JSON.stringify({
-      '@context': 'https://schema.org',
-      '@type': 'AccountingService',
-      name: firma.nombreCompleto,
-      description,
-      url: canonical,
-      image: imageUrl,
-      telephone: firma.contacto.telefonoFijo,
-      email: firma.contacto.email,
-      address: {
-        '@type': 'PostalAddress',
-        streetAddress: `${firma.contacto.direccionLinea2}, ${firma.contacto.direccionLinea1}`,
-        addressLocality: 'Medellín',
-        addressCountry: 'CO',
-      },
-      areaServed: 'Colombia',
-    })} />
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
   </head>
   <body class="relative min-h-screen">
     <a href="#contenido" class="skip-link">Ir al contenido</a>

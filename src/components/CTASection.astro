@@ -2,29 +2,37 @@
 import { Image } from 'astro:assets';
 import { Icon } from 'astro-icon/components';
 import conversacionEmpresarial from '../assets/conversacion-empresarial.jpg';
-import { whatsappLink } from '../data/sitio';
+import { firma, whatsappLink } from '../data/sitio';
 ---
 <section class="container-rp section-space">
-  <div class="contact-cta relative isolate flex min-h-[440px] items-end justify-center overflow-hidden rounded-5xl px-6 pb-10 pt-48 text-center sm:min-h-[520px] sm:px-12 sm:pb-14 sm:pt-60 lg:min-h-[560px] lg:pb-16 lg:pt-72">
-    <Image
-      src={conversacionEmpresarial}
-      alt=""
-      widths={[480, 768, 1120, 1408]}
-      sizes="(max-width: 1280px) calc(100vw - 40px), 1200px"
-      format="webp"
-      quality={86}
-      loading="lazy"
-      class="cta-background absolute inset-0 -z-20 h-full w-full object-cover"
-    />
-    <div class="cta-shade pointer-events-none absolute inset-0 -z-10" aria-hidden="true"></div>
-    <div class="relative mx-auto max-w-3xl">
-      <h2 class="text-fluid-xl leading-tight text-white drop-shadow-md">Conversemos sobre el<br class="hidden sm:block" /> futuro de su empresa</h2>
-      <p class="mx-auto mt-4 max-w-xl text-fluid-base leading-relaxed text-white drop-shadow">
-        Cuéntenos qué necesita. Nuestro equipo está listo para escucharle y acompañar sus próximas decisiones.
-      </p>
-      <a href={whatsappLink} target="_blank" rel="noopener" class="btn mt-7 bg-white text-navy shadow-soft-lg hover:bg-gris-cl">
-        <Icon name="ph:whatsapp-logo-fill" class="h-5 w-5 text-[#25D366]" /> Conversemos sobre su empresa
-      </a>
+  <div class="contact-cta overflow-hidden rounded-5xl bg-grad-institu shadow-soft-lg">
+    <div class="grid grid-cols-1 lg:grid-cols-12">
+      <div class="flex flex-col justify-center px-6 py-12 sm:px-12 sm:py-16 lg:col-span-6 lg:py-20">
+        <h2 class="text-fluid-xl leading-tight text-white">Conversemos sobre el<br class="hidden sm:block" /> futuro de su empresa</h2>
+        <p class="mt-5 max-w-xl text-fluid-base leading-relaxed text-white/90">
+          Cuéntenos qué necesita. Nuestro equipo está listo para escucharle y acompañar sus próximas decisiones.
+        </p>
+        <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+          <a href={whatsappLink} target="_blank" rel="noopener" class="btn bg-white text-navy shadow-soft hover:bg-gris-cl">
+            <Icon name="ph:whatsapp-logo-fill" class="h-5 w-5 text-[#25D366]" /> Conversemos sobre su empresa
+          </a>
+          <a href={firma.contacto.emailHref} class="btn border border-white/35 bg-white/10 text-white backdrop-blur hover:bg-white/20">
+            <Icon name="ph:envelope-simple-bold" class="h-5 w-5" /> {firma.contacto.email}
+          </a>
+        </div>
+      </div>
+      <div class="relative min-h-[280px] sm:min-h-[360px] lg:col-span-6 lg:min-h-[440px]">
+        <Image
+          src={conversacionEmpresarial}
+          alt="Ejecutivos colombianos revisando proyecciones financieras en una oficina de Medellín"
+          widths={[480, 768, 1120, 1408]}
+          sizes="(max-width: 1023px) calc(100vw - 40px), 600px"
+          format="webp"
+          quality={86}
+          loading="lazy"
+          class="h-full w-full object-cover object-center lg:absolute lg:inset-0"
+        />
+      </div>
     </div>
   </div>
 </section>

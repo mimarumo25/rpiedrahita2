@@ -23,11 +23,17 @@ test('la salida pública contiene contenido real y todas las anclas resuelven', 
     assert.ok(html.includes(`alt="Logotipo oficial de ${nombre}"`), `Logo de ${nombre}`);
   }
   assert.match(html, /clients-marquee-track[^>]*animate-marquee/);
-  assert.match(html, /testimonials-marquee-track[^>]*animate-marquee-slow/);
+  assert.match(html, /testimonials-grid/);
   for (const testimonio of testimonios) {
     assert.ok(html.includes(testimonio.cita), testimonio.empresa);
     assert.ok(html.includes(`alt="Logotipo oficial de ${testimonio.empresa}"`), `Logo de ${testimonio.empresa}`);
   }
+  assert.match(html, /geo\.region" content="CO-ANT"/);
+  assert.match(html, /OfferCatalog/);
+  assert.equal(existsSync(new URL('../dist/robots.txt', import.meta.url)), true);
+  assert.equal(existsSync(new URL('../dist/sitemap.xml', import.meta.url)), true);
+  assert.equal(existsSync(new URL('../dist/llms.txt', import.meta.url)), true);
+  assert.equal(existsSync(new URL('../dist/site.webmanifest', import.meta.url)), true);
   assert.doesNotMatch(html, /500\+|0 sanciones|gratis|gratuita|Construcol|AndesLogística/i);
   assert.match(html, /fetchpriority="high"/);
   assert.match(html, /srcset="[^"]+\.webp/);

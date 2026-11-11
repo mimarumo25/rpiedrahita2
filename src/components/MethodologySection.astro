@@ -8,34 +8,33 @@ const pasos = [
     titulo: 'Diagnóstico',
     descripcion: 'Conocemos su empresa, identificamos riesgos y entendemos sus objetivos.',
     icono: 'ph:chart-bar-fill',
-    color: '#0070C0',
+    color: '#002D56',
   },
   {
     n: '02',
     titulo: 'Plan a la medida',
     descripcion: 'Definimos una estrategia de control, cumplimiento e información alineada con sus necesidades.',
     icono: 'ph:blueprint-fill',
-    color: '#00B0F0',
+    color: '#0070C0',
   },
   {
     n: '03',
     titulo: 'Implementación',
     descripcion: 'Ponemos en marcha procesos, controles y reportes con acompañamiento constante y comunicación clara.',
     icono: 'ph:gear-six-fill',
-    color: '#6CB83F',
+    color: '#00548F',
   },
   {
     n: '04',
     titulo: 'Monitoreo y mejora',
     descripcion: 'Medimos resultados, anticipamos riesgos y mejoramos continuamente. La confianza se cuida todos los días.',
     icono: 'ph:chart-line-up-fill',
-    color: '#E66C2C',
+    color: '#00B0F0',
   },
 ];
 ---
 
 <section id="metodologia" class="section-space relative overflow-hidden">
-  {/* Fondo con tono institucional */}
   <div class="absolute inset-0 -z-10 bg-gradient-to-b from-transparent via-gris-cl/50 to-transparent" aria-hidden="true"></div>
 
   <div class="container-rp">
@@ -45,39 +44,27 @@ const pasos = [
       descripcion="Escuchamos, planeamos y acompañamos. Así construimos una relación de trabajo con objetivos claros."
     />
 
-    {/* Timeline horizontal (desktop) / vertical (móvil) */}
-    <div class="relative mt-16">
-      {/* Línea conectora horizontal */}
-      <div class="absolute left-0 right-0 top-6 hidden h-0.5 bg-gradient-to-r from-institu via-verde-est to-coral lg:block" aria-hidden="true"></div>
+    <div class="relative mt-14">
+      <div class="absolute left-8 right-8 top-10 hidden h-0.5 bg-gradient-to-r from-navy via-institu to-turquesa lg:block" aria-hidden="true"></div>
 
-      <div class="grid gap-10 lg:grid-cols-4 lg:gap-6">
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {pasos.map((p, i) => (
-          <div class="relative" data-reveal="up" data-reveal-delay={i * 120}>
-            {/* Nodo */}
-            <div class="relative z-10 mb-6 flex items-center gap-4 lg:block">
+          <div class="relative rounded-3xl border border-white/80 bg-white/85 p-7 shadow-soft backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-soft-lg" data-reveal="up" data-reveal-delay={i * 100}>
+            <div class="mb-5 flex items-center justify-between gap-3">
               <span
-                class="timeline-node ring-4 ring-blanco-co"
-                style={`background: ${p.color}; color: ${i === 0 ? '#fff' : '#002D56'}`}
+                class="flex h-12 w-12 items-center justify-center rounded-2xl text-white shadow-soft"
+                style={`background: ${p.color}`}
+                aria-hidden="true"
               >
+                <Icon name={p.icono} class="h-6 w-6" />
+              </span>
+              <span class="font-display text-2xl font-extrabold tracking-tight text-institu/40">
                 {p.n}
               </span>
-              {/* Línea vertical en móvil */}
-              {i < pasos.length - 1 && (
-                <span class="h-px w-full bg-gradient-to-r from-gris-cl to-transparent lg:hidden" aria-hidden="true"></span>
-              )}
             </div>
 
-            {/* Contenido */}
-            <div class="lg:pl-0">
-              <span
-                class="mb-3 flex h-11 w-11 items-center justify-center rounded-2xl text-navy shadow-soft"
-                style={`background: ${p.color}; color: ${i === 0 ? '#fff' : '#002D56'}`}
-              >
-                <Icon name={p.icono} class="h-5 w-5" />
-              </span>
-              <h3 class="font-display text-xl font-bold text-navy">{p.titulo}</h3>
-              <p class="mt-2 text-sm leading-relaxed text-gris-ej">{p.descripcion}</p>
-            </div>
+            <h3 class="font-display text-xl font-bold text-navy">{p.titulo}</h3>
+            <p class="mt-2.5 text-sm leading-relaxed text-navy/80">{p.descripcion}</p>
           </div>
         ))}
       </div>
