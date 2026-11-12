@@ -1,0 +1,242 @@
+---
+import { Icon } from 'astro-icon/components';
+---
+<dialog
+  id="image-lightbox"
+  aria-label="Visor de imágenes ampliadas"
+  class="lightbox-dialog m-auto h-full max-h-[92vh] w-[min(94vw,68rem)] rounded-3xl border border-white/20 bg-navy/95 p-0 text-white shadow-soft-lg backdrop:bg-navy/80 backdrop:backdrop-blur-md"
+>
+  <div class=" flex h-full flex-col justify-between p-4 sm:p-6">
+    {/* Barra superior */}
+    <div class="flex items-center justify-between gap-4 border-b border-white/15 pb-3">
+      <div class="flex items-center gap-2.5 min-w-0">
+        <span class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-turquesa/20 text-turquesa">
+          <Icon name="ph:images-duotone" class="h-4 w-4" />
+        </span>
+        <p id="lightbox-counter" class="text-xs font-bold uppercase tracking-widest text-white/80">
+          Imagen 1 de 1
+        </p>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button
+          type="button"
+          id="lightbox-zoom"
+          aria-label="Alternar zoom de la imagen"
+          title="Acercar / Alejar"
+          class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition hover:border-turquesa hover:bg-turquesa hover:text-navy"
+        >
+          <Icon name="ph:magnifying-glass-plus-bold" class="h-4 w-4" />
+        </button>
+        <button
+          type="button"
+          id="lightbox-close"
+          aria-label="Cerrar visor de imagen"
+          title="Cerrar (Esc)"
+          class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition hover:border-coral hover:bg-coral hover:text-white"
+        >
+          <Icon name="ph:x-bold" class="h-4 w-4" />
+        </button>
+      </div>
+    </div>
+
+    {/* Contenedor central de la imagen con controles Anterior / Siguiente */}
+    <div class="relative my-4 flex flex-1 items-center justify-center overflow-auto rounded-2xl bg-white/5 p-4">
+      <button
+        type="button"
+        id="lightbox-prev"
+        aria-label="Imagen anterior"
+        title="Anterior"
+        class="absolute left-3 z-10 inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/25 bg-navy/85 text-white shadow-soft transition hover:border-turquesa hover:bg-turquesa hover:text-navy"
+      >
+        <Icon name="ph:caret-left-bold" class="h-5 w-5" />
+      </button>
+
+      <img
+        id="lightbox-img"
+        src=""
+        alt=""
+        class="max-h-[68vh] max-w-full rounded-xl bg-white/95 p-2 object-contain shadow-soft-lg transition-transform duration-300"
+      />
+
+      <button
+        type="button"
+        id="lightbox-next"
+        aria-label="Imagen siguiente"
+        title="Siguiente"
+        class="absolute right-3 z-10 inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/25 bg-navy/85 text-white shadow-soft transition hover:border-turquesa hover:bg-turquesa hover:text-navy"
+      >
+        <Icon name="ph:caret-right-bold" class="h-5 w-5" />
+      </button>
+    </div>
+
+    {/* Pie de foto */}
+    <div class="border-t border-white/15 pt-3 text-center">
+      <p id="lightbox-caption" class="font-display text-sm font-bold text-white sm:text-base"></p>
+    </div>
+  </div>
+</dialog>
+
+<script>
+  const dialog = document.getElementById('image-lightbox') as HTMLDialogElement | null;
+  const imgEl = document.getElementById('lightbox-img') as HTMLImageElement | null;
+  const captionEl = document.getElementById('lightbox-caption');
+  const counterEl = document.getElementById('lightbox-counter');
+  const closeBtn = document.getElementById('lightbox-close');
+  const zoomBtn = document.getElementById('lightbox-zoom');
+  const prevBtn = document.getElementById('lightbox-prev');
+  const nextBtn = document.getElementById('lightbox-next');
+
+  interface GalleryItem {
+    src: string;
+    alt: string;
+  }
+
+  let galleryItems: GalleryItem[] = [];
+  let currentIndex = 0;
+  let isZoomed = false;
+
+  function collectGalleryImages(): HTMLImageElement[] {
+    const selectors = [
+      '.about-visual img',
+      '.contact-cta img',
+      '.clients-band:not([aria-hidden="true"]) img[alt]:not([alt=""])',
+      '.testimonials-grid img[alt]:not([alt=""])',
+      '[data-lightbox] img',
+      'img[data-lightbox]',
+    ];
+    const nodes = Array.from(document.querySelectorAll<HTMLImageElement>(selectors.join(', ')));
+    const seen = new Set<string>();
+    const unique: HTMLImageElement[] = [];
+
+    nodes.forEach((node) => {
+      node.classList.add('cursor-zoom-in');
+      if (!node.hasAttribute('title')) {
+        node.setAttribute('title', 'Clic para ampliar imagen');
+      }
+      const key = node.currentSrc || node.src;
+      if (key && !seen.has(key)) {
+        seen.add(key);
+        unique.push(node);
+      }
+    });
+
+    return nodes;
+  }
+
+  function buildUniqueGallery(): GalleryItem[] {
+    const allNodes = collectGalleryImages();
+    const seen = new Set<string>();
+    const list: GalleryItem[] = [];
+    for (const node of allNodes) {
+      const src = node.currentSrc || node.src;
+      const alt = node.alt || 'Imagen de RPiedrahíta';
+      if (src && !seen.has(src)) {
+        seen.add(src);
+        list.push({ src, alt });
+      }
+    }
+    return list;
+  }
+
+  function renderCurrent() {
+    if (!imgEl || galleryItems.length === 0) return;
+    const item = galleryItems[currentIndex];
+    isZoomed = false;
+    imgEl.style.transform = 'scale(1)';
+    imgEl.src = item.src;
+    imgEl.alt = item.alt;
+    if (captionEl) captionEl.textContent = item.alt;
+    if (counterEl) counterEl.textContent = `Imagen ${currentIndex + 1} de ${galleryItems.length}`;
+  }
+
+  function openAtSrc(src: string, alt: string) {
+    if (!dialog || typeof dialog.showModal !== 'function') return;
+    galleryItems = buildUniqueGallery();
+    const foundIdx = galleryItems.findIndex((item) => item.src === src);
+    if (foundIdx >= 0) {
+      currentIndex = foundIdx;
+    } else {
+      galleryItems.unshift({ src, alt: alt || 'Imagen ampliada' });
+      currentIndex = 0;
+    }
+    renderCurrent();
+    dialog.showModal();
+  }
+
+  // Inicializar cursores y delegación de clic para todas las imágenes de galería/secciones
+  collectGalleryImages();
+
+  document.addEventListener('click', (event) => {
+    const target = event.target as HTMLElement | null;
+    if (!target) return;
+    const trigger = target.closest('[data-lightbox-trigger]') as HTMLElement | null;
+    if (trigger) {
+      const innerImg = trigger.querySelector('img') as HTMLImageElement | null;
+      if (innerImg) {
+        event.preventDefault();
+        openAtSrc(innerImg.currentSrc || innerImg.src, innerImg.alt);
+        return;
+      }
+    }
+
+    const clickedImg = target.closest(
+      '.about-visual img, .contact-cta img, .clients-band img, .testimonials-grid img, [data-lightbox] img, img[data-lightbox]'
+    ) as HTMLImageElement | null;
+
+    if (clickedImg) {
+      event.preventDefault();
+      openAtSrc(clickedImg.currentSrc || clickedImg.src, clickedImg.alt);
+    }
+  });
+
+  prevBtn?.addEventListener('click', () => {
+    if (galleryItems.length === 0) return;
+    currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
+    renderCurrent();
+  });
+
+  nextBtn?.addEventListener('click', () => {
+    if (galleryItems.length === 0) return;
+    currentIndex = (currentIndex + 1) % galleryItems.length;
+    renderCurrent();
+  });
+
+  zoomBtn?.addEventListener('click', () => {
+    if (!imgEl) return;
+    isZoomed = !isZoomed;
+    imgEl.style.transform = isZoomed ? 'scale(1.5)' : 'scale(1)';
+  });
+
+  imgEl?.addEventListener('click', () => {
+    if (!imgEl) return;
+    isZoomed = !isZoomed;
+    imgEl.style.transform = isZoomed ? 'scale(1.5)' : 'scale(1)';
+  });
+
+  closeBtn?.addEventListener('click', () => {
+    dialog?.close();
+  });
+
+  dialog?.addEventListener('click', (event) => {
+    const rect = dialog.getBoundingClientRect();
+    const outside =
+      event.clientX < rect.left ||
+      event.clientX > rect.right ||
+      event.clientY < rect.top ||
+      event.clientY > rect.bottom;
+    if (outside) dialog.close();
+  });
+
+  window.addEventListener('keydown', (event) => {
+    if (!dialog?.open) return;
+    if (event.key === 'ArrowLeft') {
+      currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
+      renderCurrent();
+    } else if (event.key === 'ArrowRight') {
+      currentIndex = (currentIndex + 1) % galleryItems.length;
+      renderCurrent();
+    }
+  });
+</script>
+

@@ -23,7 +23,7 @@ import { firma, whatsappLink } from '../data/sitio';
           </a>
         </div>
       </div>
-      <div class="relative min-h-[280px] sm:min-h-[360px] lg:col-span-6 lg:min-h-[440px]">
+      <div data-lightbox-trigger class="group relative min-h-[280px] cursor-zoom-in overflow-hidden sm:min-h-[360px] lg:col-span-6 lg:min-h-[440px]">
         <Image
           src={conversacionEmpresarial}
           alt="Ejecutivos colombianos revisando proyecciones financieras en una oficina de Medellín"
@@ -32,8 +32,12 @@ import { firma, whatsappLink } from '../data/sitio';
           format="webp"
           quality={86}
           loading="lazy"
-          class="h-full w-full object-cover object-center lg:absolute lg:inset-0"
+          class="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105 lg:absolute lg:inset-0"
         />
+        <span class="pointer-events-none absolute bottom-4 right-4 z-10 inline-flex items-center gap-1.5 rounded-full bg-navy/80 px-3.5 py-1.5 text-xs font-bold text-white backdrop-blur-sm transition group-hover:bg-coral">
+          <Icon name="ph:magnifying-glass-plus-bold" class="h-4 w-4" />
+          Ampliar foto
+        </span>
       </div>
     </div>
   </div>

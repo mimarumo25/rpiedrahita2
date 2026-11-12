@@ -25,10 +25,15 @@ import leaLogo from '../assets/lea-global.png';
         </div>
 
         <aside class="flex min-w-0 flex-col lg:col-span-5" aria-label="Trayectoria y asociación internacional">
-          <figure class="about-visual overflow-hidden rounded-3xl shadow-soft-lg">
-            <Image src={firma.imagenNosotros.src} alt={firma.imagenNosotros.alt}
-              widths={[320, 480, 768, 960]} sizes="(max-width: 639px) calc(100vw - 88px), (max-width: 1023px) calc(100vw - 144px), 460px"
-              format="webp" quality={82} loading="lazy" class="block h-auto w-full object-cover" />
+          <figure data-lightbox-trigger class="about-visual group relative cursor-zoom-in overflow-hidden rounded-3xl shadow-soft-lg">
+            <div class="relative overflow-hidden">
+              <Image src={firma.imagenNosotros.src} alt={firma.imagenNosotros.alt}
+                widths={[320, 480, 768, 960]} sizes="(max-width: 639px) calc(100vw - 88px), (max-width: 1023px) calc(100vw - 144px), 460px"
+                format="webp" quality={82} loading="lazy" class="block h-auto w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+              <span class="pointer-events-none absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-navy/80 px-3 py-1.5 text-[11px] font-bold text-white backdrop-blur-sm transition group-hover:bg-institu">
+                Clic para ampliar
+              </span>
+            </div>
             <figcaption class="flex flex-wrap items-center justify-between gap-4 p-6 text-white">
               <div class="flex items-center gap-4">
                 <p class="shrink-0 font-display text-5xl font-extrabold tracking-tight text-white">{firma.anosExperiencia}<span class="text-ambar-riesgo">+</span></p>
