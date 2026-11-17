@@ -11,5 +11,9 @@ const { servicio } = Astro.props;
     <Icon name={servicio.icono} class="h-7 w-7" />
   </span>
   <h3 class="font-display text-xl font-bold leading-snug text-navy">{servicio.titulo}</h3>
-  <p class="mt-4 text-base leading-relaxed text-navy/80">{servicio.resumen}</p>
+  <div class="mt-4 space-y-3 text-base leading-relaxed text-navy/80">
+    {servicio.resumen.split('\n\n').map((parrafo) => (
+      <p>{parrafo}</p>
+    ))}
+  </div>
 </article>

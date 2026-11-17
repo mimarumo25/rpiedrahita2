@@ -112,7 +112,7 @@ const structuredData = {
             '@type': 'Service',
             '@id': `${canonical}#${servicio.slug}`,
             name: servicio.titulo,
-            description: servicio.resumen,
+            description: servicio.resumen.replace(/\s+/g, ' ').trim(),
             url: `${canonical}#${servicio.slug}`,
             provider: {
               '@id': `${canonical}#organization`,
