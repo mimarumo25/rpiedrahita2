@@ -5,15 +5,43 @@ import type { Servicio } from '../data/servicios';
 interface Props { servicio: Servicio; }
 const { servicio } = Astro.props;
 ---
-<article id={servicio.slug} class="service-card relative flex flex-col overflow-hidden rounded-3xl p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-soft-lg sm:p-8"
+<article id={servicio.slug} class="service-card relative flex flex-col overflow-hidden rounded-3xl p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-soft-lg sm:p-7"
   style={`--acento: ${servicio.acento}`}>
-  <span class="service-icon mb-6 flex h-14 w-14 items-center justify-center rounded-2xl shadow-soft" style={`color: ${['#0070C0', '#7030A0', '#E66C2C'].includes(servicio.acento) ? '#fff' : '#002D56'}`} aria-hidden="true">
-    <Icon name={servicio.icono} class="h-7 w-7" />
-  </span>
-  <h3 class="font-display text-xl font-bold leading-snug text-navy">{servicio.titulo}</h3>
-  <div class="mt-4 space-y-3 text-base leading-relaxed text-navy/80">
+  <div class="flex items-center gap-4">
+    <span class="service-icon flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl shadow-soft" style={`color: ${['#0070C0', '#7030A0', '#E66C2C'].includes(servicio.acento) ? '#fff' : '#002D56'}`} aria-hidden="true">
+      <Icon name={servicio.icono} class="h-7 w-7" />
+    </span>
+    <h3 class="font-display text-xl font-bold leading-snug text-navy sm:text-[1.35rem]">{servicio.titulo}</h3>
+  </div>
+  <div data-service-desc class="mt-4 line-clamp-4 space-y-3 text-justify text-base leading-relaxed text-navy/85">
     {servicio.resumen.split('\n\n').map((parrafo) => (
       <p>{parrafo}</p>
     ))}
   </div>
+  <button
+    type="button"
+    data-service-toggle
+    aria-expanded="false"
+    class="mt-auto inline-flex items-center gap-1.5 self-start pt-3.5 text-sm font-bold text-institu transition hover:text-navy"
+  >
+    <span data-toggle-label>Leer más</span>
+    <Icon name="ph:caret-down-bold" class="h-4 w-4 transition-transform duration-200" data-toggle-icon />
+  </button>
 </article>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-service-toggle]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const card = button.closest('article');
+      const desc = card?.querySelector('[data-service-desc]');
+      const label = button.querySelector('[data-toggle-label]');
+      const icon = button.querySelector('[data-toggle-icon]');
+      if (!desc) return;
+
+      const isCollapsed = desc.classList.toggle('line-clamp-4');
+      button.setAttribute('aria-expanded', String(!isCollapsed));
+      if (label) label.textContent = isCollapsed ? 'Leer más' : 'Ver menos';
+      icon?.classList.toggle('rotate-180', !isCollapsed);
+    });
+  });
+</script>
