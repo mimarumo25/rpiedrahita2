@@ -14,18 +14,18 @@ import { whatsappLink, firma, navegacion } from '../data/sitio';
       <a href={whatsappLink} target="_blank" rel="noopener" class="btn-coral hidden px-5 py-2.5 lg:inline-flex">
         <Icon name="ph:whatsapp-logo-fill" class="h-4 w-4" /> Conversemos
       </a>
-      <button id="mobile-toggle" hidden class="mobile-toggle h-11 w-11 items-center justify-center rounded-xl bg-institu/10 text-navy lg:!hidden"
+      <button id="mobile-toggle" hidden class="mobile-toggle h-11 w-11 items-center justify-center rounded-xl bg-institu/10 text-black lg:!hidden"
         aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu">
         <Icon name="ph:list-bold" class="h-6 w-6" />
       </button>
     </nav>
     <noscript>
-      <nav aria-label="Navegación móvil" class="mt-2 flex flex-wrap justify-center gap-x-5 gap-y-2 rounded-2xl bg-white p-3 text-sm font-semibold text-navy lg:hidden">
+      <nav aria-label="Navegación móvil" class="mt-2 flex flex-wrap justify-center gap-x-5 gap-y-2 rounded-2xl bg-white p-3 text-sm font-semibold text-black lg:hidden">
         {navegacion.map((item) => <a href={item.href}>{item.label}</a>)}
       </nav>
     </noscript>
   </div>
-  <dialog id="mobile-menu" class="mobile-dialog fixed inset-x-3 top-3 m-0 w-auto max-w-none rounded-3xl bg-white p-6 text-navy shadow-soft-lg" aria-label="Menú de navegación">
+  <dialog id="mobile-menu" class="mobile-dialog fixed inset-x-3 top-3 m-0 w-auto max-w-none rounded-3xl bg-white p-6 text-black shadow-soft-lg" aria-label="Menú de navegación">
     <div class="mb-4 flex items-center justify-between">
       <span class="font-display text-xl font-bold">Explore RPiedrahíta</span>
       <button id="mobile-close" class="flex h-11 w-11 items-center justify-center rounded-xl bg-gris-cl" aria-label="Cerrar menú">

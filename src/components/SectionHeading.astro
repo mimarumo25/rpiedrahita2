@@ -7,8 +7,8 @@ interface Props {
 const { titulo, tituloDestacado, descripcion } = Astro.props;
 ---
 <div class="mx-auto max-w-3xl text-center">
-  <h2 class="font-display text-fluid-xl font-extrabold leading-tight tracking-tight text-navy">
-    {titulo}{tituloDestacado && <span class="text-gradient mt-1 block">{tituloDestacado}</span>}
+  <h2 class="font-display text-fluid-xl font-extrabold leading-tight tracking-tight text-black">
+    {titulo}{tituloDestacado && <span class="mt-1 block text-black">{tituloDestacado}</span>}
   </h2>
-  {descripcion && <p class="mx-auto mt-5 max-w-2xl text-fluid-base leading-relaxed text-navy/80">{descripcion}</p>}
+  {descripcion && <p class="mx-auto mt-5 max-w-2xl text-fluid-base leading-relaxed text-black">{descripcion}</p>}
 </div>

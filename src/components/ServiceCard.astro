@@ -11,9 +11,9 @@ const { servicio } = Astro.props;
     <span class="service-icon flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl shadow-soft" style={`color: ${['#0070C0', '#7030A0', '#E66C2C'].includes(servicio.acento) ? '#fff' : '#002D56'}`} aria-hidden="true">
       <Icon name={servicio.icono} class="h-7 w-7" />
     </span>
-    <h3 class="font-display text-xl font-bold leading-snug text-navy sm:text-[1.35rem]">{servicio.titulo}</h3>
+    <h3 class="font-display text-xl font-bold leading-snug text-black sm:text-[1.35rem]">{servicio.titulo}</h3>
   </div>
-  <div data-service-desc class="mt-4 line-clamp-4 space-y-3 text-justify text-base leading-relaxed text-navy/85">
+  <div data-service-desc class="mt-4 line-clamp-4 space-y-3 text-justify text-base leading-relaxed text-black">
     {servicio.resumen.split('\n\n').map((parrafo) => (
       <p>{parrafo}</p>
     ))}
